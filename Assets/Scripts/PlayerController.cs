@@ -28,7 +28,6 @@ public class PlayerController : MonoBehaviour
     public bool rotatingLeft = false;
     public bool strafingRight = false;
     public bool strafingLeft = false;
-    bool backwards = false;
     public bool rolling;
 
     void Start()
@@ -137,10 +136,11 @@ public class PlayerController : MonoBehaviour
         }
         else if (braking)
         {
-            if (currentSpeed > 1)
+            if (currentSpeed > 0.05)
             {
                 rb.AddForce(rb.velocity.normalized * -(drag * 3));
-            } else
+            }
+            else
             {
                 rb.velocity = Vector2.zero;
             }
@@ -149,7 +149,7 @@ public class PlayerController : MonoBehaviour
         {
             if (currentSpeed > 0.05)
             {
-                rb.AddForce(direction * -drag);
+                rb.AddForce(rb.velocity.normalized * -drag);
             }
         }
 
@@ -182,21 +182,25 @@ public class PlayerController : MonoBehaviour
 
         if (rotatingLeft && !rotatingRight)
         {
-            Debug.Log(2 + Input.GetAxis("Strafe1"));
             rb.rotation += (rolling ? 4f : (3f - Input.GetAxis("Strafe1") * 2f)) * rotationSpeed * Mathf.Abs(Input.GetAxis("Horizontal1"));
         } else if (rotatingRight && !rotatingLeft)
         {
-            Debug.Log(2 + Input.GetAxis("Strafe1"));
             rb.rotation -= (rolling ? 4f : (3f + Input.GetAxis("Strafe1") * 2f)) * rotationSpeed * Mathf.Abs(Input.GetAxis("Horizontal1"));
         }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        bounceTime = Time.time + bounceDuration;
-        Debug.Log(collision.contacts[0].normal);
-        rb.velocity = Vector2.Reflect(lastSpeed, collision.contacts[0].normal);
-        //rb.rotation = Vector2.SignedAngle(Vector2.right, rb.velocity);
-        Debug.Log(rb.rotation);
+        if (collision.collider.tag == "Wall")
+        {
+            bounceTime = Time.time + bounceDuration;
+            rb.velocity = Vector2.Reflect(lastSpeed, collision.contacts[0].normal);
+            //rb.rotation = Vector2.SignedAngle(Vector2.right, rb.velocity);
+        }
+        else if (collision.collider.tag == "Player")
+        {
+            bounceTime = Time.time + bounceDuration;
+            rb.AddForce(collision.contacts[0].normal * 500);
+        }
     }
 }

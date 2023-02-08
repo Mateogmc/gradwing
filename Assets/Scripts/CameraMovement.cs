@@ -1,4 +1,5 @@
 using UnityEngine;
+using Mirror;
 
 public class CameraMovement : MonoBehaviour
 {
@@ -7,16 +8,19 @@ public class CameraMovement : MonoBehaviour
     private Vector3 velocity = Vector3.zero;
     private Vector2 lastSpeed;
 
-    [SerializeField] private GameObject player;
-    private PlayerController pC;
+    [SerializeField] public GameObject player;
+    public MultiplayerController pC;
 
-    private void Start()
+    public void Initialize(GameObject player)
     {
-        pC = player.GetComponent<PlayerController>();
+        this.player = player;
+        pC = player.GetComponent<MultiplayerController>();
+        transform.position = new Vector3(player.transform.position.x, player.transform.position.y, transform.position.z);
     }
 
     private void FixedUpdate()
     {
+        if (pC == null) { return; }
         lastSpeed = pC.lastSpeed / 2;
 
         if (pC.strafingLeft && pC.rotatingLeft)
