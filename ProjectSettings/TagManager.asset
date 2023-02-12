@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - Wall
+  - Ramp
+  - Heal
+  - Item
+  - Trap
+  - Rebounder
   layers:
   - Default
   - TransparentFX
@@ -13,7 +18,7 @@ TagManager:
   - Water
   - UI
   - Player
-  - 
+  - Rebounder
   - 
   - 
   - 
@@ -41,4 +46,22 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 4218630915
+    locked: 0
+  - name: Road
+    uniqueID: 2397438221
+    locked: 0
+  - name: Grounded Elements
+    uniqueID: 203061563
+    locked: 0
+  - name: Players
+    uniqueID: 2115187257
+    locked: 0
+  - name: Foreground
+    uniqueID: 1493722965
+    locked: 0
+  - name: UI
+    uniqueID: 1756033503
     locked: 0
