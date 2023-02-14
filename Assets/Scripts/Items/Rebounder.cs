@@ -20,6 +20,8 @@ public class Rebounder : NetworkBehaviour
         if (playerState == PlayerStates.Jumping)
         {
             this.airborne = airborne;
+            currentScale = 1 + Mathf.Sin(airborne);
+            gameObject.layer = 9;
         }
     }
 
@@ -60,8 +62,9 @@ public class Rebounder : NetworkBehaviour
                 }
                 else
                 {
+                    sr.sortingLayerID = SortingLayer.NameToID("Players");
                     currentState = PlayerStates.Grounded;
-                    Physics2D.IgnoreLayerCollision(3, 7, false);
+                    gameObject.layer = 7;
                     currentScale = 1;
                 }
             }
@@ -97,9 +100,10 @@ public class Rebounder : NetworkBehaviour
     {
         if (currentState == PlayerStates.Grounded)
         {
+            sr.sortingLayerID = SortingLayer.NameToID("Foreground");
             currentState = PlayerStates.Jumping;
             airborne = Mathf.PI;
-            Physics2D.IgnoreLayerCollision(3, 7, true);
+            gameObject.layer = 9;
         }
     }
 
@@ -117,7 +121,7 @@ public class Rebounder : NetworkBehaviour
             {
                 bouncesLeft--;
 
-                transform.position += new Vector3(collision.contacts[0].normal.x, collision.contacts[0].normal.y, 0) / 2;
+                transform.position += new Vector3(collision.contacts[0].normal.x, collision.contacts[0].normal.y, 0);
                 rb.velocity = Vector2.Reflect(lastSpeed, collision.contacts[0].normal);
             } else
             {

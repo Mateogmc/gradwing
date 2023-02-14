@@ -22,3 +22,6 @@
 - Added _Jump_ item
 - Added _Trap_ item
 - Added _Rebounder_ item
+
+*Version 0.6.1*
+- Added _Laser_ item

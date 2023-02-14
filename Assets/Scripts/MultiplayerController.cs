@@ -39,7 +39,7 @@ public class MultiplayerController : FSM
     [HideInInspector] public float bounceTime = 0f;
     float airborne = 0f;
     [SyncVar(hook = nameof(OnAirborneChange))] float currentScale = 1;
-    Vector2 direction;
+    public Vector2 direction;
     [HideInInspector] public Vector2 lastSpeed;
 
     [HideInInspector]  bool accelerating = false;
@@ -66,13 +66,20 @@ public class MultiplayerController : FSM
     [SerializeField] Sprite laser;
     [SerializeField] Image itemSprite;
 
-    [SyncVar(hook = nameof(OnShieldChange))]float shielded = 0f;
+    [SyncVar(hook = nameof(OnShieldChange))] float shielded = 0f;
     float slowTimer = 0f;
 
     [SerializeField] GameObject trapPrefab;
 
     [SerializeField] GameObject rebounderPrefab;
     Vector3 itemPosition;
+
+    [SerializeField] GameObject laserHit;
+    [SerializeField] LineRenderer lineRenderer;
+    [SyncVar(hook = nameof(OnFiringLaserChange))] bool firingLaser = false;
+    [SyncVar(hook = nameof(OnLaserCountdownChange))] float laserCountdown = 0f;
+    [SerializeField] LayerMask layerMask;
+    [SerializeField] GameObject laserPoint;
 
     [SerializeField] [SyncVar(hook = nameof(OnItemChange))] Items currentItem = Items.None;
 
@@ -94,6 +101,11 @@ public class MultiplayerController : FSM
         if (!isLocalPlayer) { return; }
         CheckInput();
         CheckState();
+        if (currentItem == Items.Laser)
+        {
+            LaserUpdate();
+        }
+
         currentSpeed = rb.velocity.magnitude;
         lastSpeed = rb.velocity;
     }
@@ -123,11 +135,18 @@ public class MultiplayerController : FSM
         {
             currentMaxSpeed = maxSpeed;
         }
-        if (currentState == PlayerStates.Dead) {
-            Physics2D.IgnoreLayerCollision(6, 6, true);
-        } else
+        if (currentState == PlayerStates.Dead)
         {
-            Physics2D.IgnoreLayerCollision(6, 6, false);
+            gameObject.layer = 10;
+        }
+        if (firingLaser && laserCountdown < Time.time)
+        {
+            CmdLaserHit(transform.position + new Vector3(direction.x, direction.y, 0) * 2, direction);
+            firingLaser = false;
+            lineRenderer.enabled = false;
+            currentItem = Items.None;
+            itemSprite.sprite = none;
+            CmdUseItem();
         }
     }
 
@@ -136,12 +155,21 @@ public class MultiplayerController : FSM
         if (shielded > Time.time)
         {
             shieldRenderer.enabled = !shieldRenderer.enabled;
-            Debug.Log(shieldDuration);
         }
         else if (shieldRenderer.enabled)
         {
             shieldRenderer.enabled = false;
-            Debug.Log(shielded - Time.time);
+        }
+        if (currentItem == Items.Laser && laserCountdown < Time.time)
+        {
+            lineRenderer.enabled = true;
+        }
+        if (firingLaser && laserCountdown > Time.time)
+        {
+            lineRenderer.enabled = !lineRenderer.enabled;
+        } else if (currentItem != Items.Laser)
+        {
+            lineRenderer.enabled = false;
         }
     }
 
@@ -156,6 +184,7 @@ public class MultiplayerController : FSM
         currentState = PlayerStates.Grounded;
         sr.transform.localScale = Vector3.one;
         CmdSetScale(sr.transform.localScale.x);
+        gameObject.layer = 6;
     }
 
     private void OnHealthChange(float oldHealth, float newHealth)
@@ -176,6 +205,16 @@ public class MultiplayerController : FSM
     private void OnShieldChange(float oldShield, float newShield)
     {
         shielded = Time.time + shieldDuration;
+    }
+
+    private void OnFiringLaserChange(bool oldBool, bool newBool)
+    {
+        firingLaser = newBool;
+    }
+
+    private void OnLaserCountdownChange(float oldCountdown, float newCountdown)
+    {
+        laserCountdown = Time.time + 0.5f;
     }
 
     private void OnItemChange(Items oldItem, Items newItem)
@@ -308,7 +347,8 @@ public class MultiplayerController : FSM
                 break;
 
             case PlayerStates.Grounded:
-                Physics2D.IgnoreLayerCollision(3, 6, false);
+                gameObject.layer = 6;
+                sr.sortingLayerID = SortingLayer.NameToID("Players");
                 direction = new Vector2(Mathf.Cos(rb.rotation * Mathf.Deg2Rad), Mathf.Sin(rb.rotation * Mathf.Deg2Rad));
                 if (rolling)
                 {
@@ -400,13 +440,12 @@ public class MultiplayerController : FSM
                 if (airborne > 0)
                 {
                     airborne -= 0.05f;
-                    sr.transform.localScale = new Vector3(1 + Mathf.Sin(airborne), 1 + Mathf.Sin(airborne), 1);
+                    sr.transform.localScale = new Vector3(1 + Mathf.Abs(Mathf.Sin(airborne)), 1 + Mathf.Abs(Mathf.Sin(airborne)), 1);
                     CmdSetScale(sr.transform.localScale.x);
                     //CmdSetScale(sr.transform.localScale);
                 } else
                 {
                     currentState = PlayerStates.Grounded;
-                    Physics2D.IgnoreLayerCollision(3, 6, false);
                     sr.transform.localScale = new Vector3(1, 1, 1);
                 }
                 if (rotatingLeft && !rotatingRight)
@@ -439,6 +478,7 @@ public class MultiplayerController : FSM
                     sr.transform.localScale -= new Vector3(0.05f, 0.05f, 0);
                     CmdSetScale(sr.transform.localScale.x);
                 }
+                gameObject.layer = 10;
                 CmdChangeHealth(health);
                 rb.velocity = Vector3.zero;
                 break;
@@ -459,19 +499,26 @@ public class MultiplayerController : FSM
             if (iterations % 2 == 0)
             {
                 health = 0;
+                currentItem = Items.None;
+                itemSprite.sprite = none;
+                lineRenderer.enabled = false;
                 return true;
             }
         }
         return false;
     }
 
-    private void Jump()
+    private void Jump(bool item)
     {
         if (currentState == PlayerStates.Grounded)
         {
             currentState = PlayerStates.Jumping;
             airborne = Mathf.PI;
-            Physics2D.IgnoreLayerCollision(3, 6, true);
+            gameObject.layer = 8;
+            sr.sortingLayerID = SortingLayer.NameToID("Foreground");
+        } else if (currentState == PlayerStates.Jumping && item)
+        {
+            airborne += Mathf.PI;
         }
     }
 
@@ -493,27 +540,77 @@ public class MultiplayerController : FSM
     {
         GameObject reb = Instantiate(rebounderPrefab, pos, Quaternion.identity);
         reb.GetComponent<Rebounder>().InitializeRebounder(initialVelocity, state, airborne);
+        reb.transform.position = pos;
         NetworkServer.Spawn(reb);
     }
 
-    private void Laser()
-    {
+    #region LASER
 
+    [Command]
+    private void CmdLaser()
+    {
+        laserCountdown = (float)NetworkTime.time + 0.5f;
+        firingLaser = true;
     }
 
-    private void Hit(float damage)
+    [Command]
+    private void CmdLaserHit(Vector3 pos, Vector2 dir)
+    {
+        RaycastHit2D hit = Physics2D.Raycast(pos, dir, 1000, ~6);
+        if (hit != null && hit.collider.tag == "Player")
+        {
+            GameObject las = Instantiate(laserHit, hit.point, Quaternion.identity);
+            NetworkServer.Spawn(las);
+            Debug.Log("Hit");
+        }
+        firingLaser = false;
+    }
+
+    private void LaserUpdate()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position + new Vector3(direction.x, direction.y, 0) * 2, direction, 1000, layerMask);
+        Vector2 position;
+        if (hit.collider != null)
+        {
+            lineRenderer.startColor = firingLaser ? Color.cyan : Color.green;
+            position = hit.point;
+            CmdSpawnLaserPointer(position);
+        }
+        else
+        {
+            lineRenderer.startColor = firingLaser ? Color.cyan : Color.red;
+            position = transform.position + new Vector3(direction.x, direction.y, 0) * 1000;
+        }
+        lineRenderer.SetPosition(0, transform.position);
+        lineRenderer.SetPosition(1, position);
+    }
+
+    [Command]
+    private void CmdSpawnLaserPointer(Vector2 pos)
+    {
+        GameObject point = Instantiate(laserPoint, pos, Quaternion.Euler(0, 0, Time.time * 100));
+        NetworkServer.Spawn(point);
+    }
+
+    #endregion
+
+    public void Hit(float damage)
     {
         if (shielded > Time.time) { return; }
         CmdChangeHealth(health - damage);
     }
 
-    private void Hit(float damage, float slow, float duration)
+    public void Hit(float damage, float slow, float duration)
     {
         if (shielded > Time.time) { return; }
         Hit(damage);
         currentMaxSpeed -= slow;
+        if (currentMaxSpeed < 10)
+        {
+            currentMaxSpeed = 10;
+        }
         slowTimer = Time.time + duration;
-        rb.AddForce(-rb.velocity);
+        rb.velocity /= 3;
     }
 
     [Command]
@@ -535,7 +632,7 @@ public class MultiplayerController : FSM
                 break;
 
             case Items.Jump:
-                Jump();
+                Jump(true);
                 break;
 
             case Items.Trap:
@@ -551,13 +648,13 @@ public class MultiplayerController : FSM
                 break;
 
             case Items.Rebounder:
-                itemPosition = transform.position + new Vector3(direction.x, direction.y, 0) * ((rb.velocity.magnitude / 5) + 1);
+                itemPosition = transform.position + new Vector3(direction.x, direction.y, 0) * 2 + new Vector3(rb.velocity.normalized.x, rb.velocity.normalized.y, 1) * 2;
                 Rebounder(itemPosition, direction * 30 + rb.velocity, currentState, airborne);
                 break;
 
             case Items.Laser:
-
-                break;
+                CmdLaser();
+                return;
         }
         currentItem = Items.None;
         itemSprite.sprite = none;
@@ -604,7 +701,7 @@ public class MultiplayerController : FSM
         itemSprite.sprite = none;
     }
 
-    [Command]
+    [Command(requiresAuthority = false)]
     private void CmdChangeHealth(float newHealth)
     {
         if (newHealth > 100) { newHealth = 100; }
@@ -636,26 +733,33 @@ public class MultiplayerController : FSM
         }
         else if (collision.collider.tag == "Player")
         {
-            if (currentState == collision.gameObject.GetComponent<MultiplayerController>().currentState)
+            if (currentState == PlayerStates.Jumping)
             {
                 bounceTime = Time.time + bounceDuration;
-                rb.AddForce(collision.contacts[0].normal * 500);
-                CmdChangeHealth(health - 5);
+                rb.AddForce(collision.contacts[0].normal * 800);
+                CmdChangeHealth(health - 10);
             } else if (currentState == PlayerStates.Grounded)
             {
                 bounceTime = Time.time + bounceDuration;
                 rb.AddForce(collision.contacts[0].normal * 500);
-                CmdChangeHealth(health - 15);
+                CmdChangeHealth(health - 5);
             }
         }
         else if (collision.collider.tag == "Rebounder")
         {
-            if (currentState == collision.gameObject.GetComponent<Rebounder>().currentState)
+            if (currentState == PlayerStates.Jumping)
             {
                 CmdRemoveItem(collision.gameObject);
                 bounceTime = Time.time + bounceDuration;
-                rb.AddForce(collision.contacts[0].normal * 1000);
+                rb.AddForce(collision.contacts[0].normal * 1400);
                 Hit(40, 10, 5);
+            }
+            else if (currentState == PlayerStates.Grounded)
+            {
+                CmdRemoveItem(collision.gameObject);
+                bounceTime = Time.time + bounceDuration;
+                Hit(40, 10, 5);
+                rb.AddForce(collision.contacts[0].normal * 1000);
             }
         }
     }
@@ -664,7 +768,7 @@ public class MultiplayerController : FSM
     {
         if (collision.tag == "Ramp")
         {
-            Jump();
+            Jump(false);
         }
         else if (collision.tag == "Item")
         {
@@ -675,6 +779,11 @@ public class MultiplayerController : FSM
             if (currentState == PlayerStates.Jumping) { return; }
             NetworkServer.Destroy(collision.gameObject);
             Hit(20, 30, 6);
+        }
+        else if (collision.tag == "Laser")
+        {
+            NetworkServer.Destroy(collision.gameObject);
+            Hit(90, 40, 6);
         }
     }
 

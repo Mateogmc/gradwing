@@ -431,7 +431,7 @@ Transform:
   m_Children:
   - {fileID: 558368229902114060}
   - {fileID: 6605100579797402365}
-  - {fileID: 61714685799585997}
+  - {fileID: 3235571465377859859}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -470,6 +470,7 @@ MonoBehaviour:
   strafingAngle: 20
   shieldDuration: 0.75
   bounceTime: 0
+  direction: {x: 0, y: 0}
   lastSpeed: {x: 0, y: 0}
   rotatingRight: 0
   rotatingLeft: 0
@@ -490,6 +491,12 @@ MonoBehaviour:
   itemSprite: {fileID: 3988453696973906781}
   trapPrefab: {fileID: 2569642400525965653, guid: 03bba0db883071e4a9490bd44fb2de5e, type: 3}
   rebounderPrefab: {fileID: 7649947786167149707, guid: 1882db442850a854797aba1a48a99068, type: 3}
+  laserHit: {fileID: 1997929668473104987, guid: e8503a79da8f8984db96bf37e565bb1b, type: 3}
+  lineRenderer: {fileID: 6746375051190086774}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  laserPoint: {fileID: 5067478851653884306, guid: e30a9f1a134f93249ba1647223871c86, type: 3}
   currentItem: 0
 --- !u!114 &-4068535861449994930
 MonoBehaviour:
@@ -825,7 +832,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!1 &4402073830101165032
+--- !u!1 &4915911173026981084
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -833,38 +840,38 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 61714685799585997}
-  - component: {fileID: 280612240393874095}
-  m_Layer: 6
+  - component: {fileID: 3235571465377859859}
+  - component: {fileID: 6746375051190086774}
+  m_Layer: 0
   m_Name: Laser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &61714685799585997
+--- !u!4 &3235571465377859859
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4402073830101165032}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.285, y: -0.003, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_GameObject: {fileID: 4915911173026981084}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.33312073, y: 0.1032116, z: 0.0018506149}
+  m_LocalScale: {x: 0.20724432, y: 0.19891998, z: 0.13651878}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3526559983992224355}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!120 &280612240393874095
+--- !u!120 &6746375051190086774
 LineRenderer:
   serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4402073830101165032}
+  m_GameObject: {fileID: 4915911173026981084}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -878,7 +885,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -910,7 +917,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
+        value: 0.26470566
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -922,8 +929,8 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 1, b: 1, a: 1}
-      key1: {r: 1, g: 1, b: 1, a: 1}
+      key0: {r: 1, g: 0, b: 0, a: 1}
+      key1: {r: 0.36555114, g: 0.9528302, b: 0.68131423, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
