@@ -41,6 +41,7 @@ public class MultiplayerController : FSM
     [SyncVar(hook = nameof(OnAirborneChange))] float currentScale = 1;
     public Vector2 direction;
     [HideInInspector] public Vector2 lastSpeed;
+    Vector2 spawnPos = Vector2.zero;
 
     [HideInInspector]  bool accelerating = false;
     [HideInInspector] bool braking = false;
@@ -92,6 +93,8 @@ public class MultiplayerController : FSM
         username.text = usernameText;
         CmdSetName(usernameText);
         currentState = PlayerStates.Grounded;
+        spawnPos = transform.position;
+        rb.rotation = 90;
         GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraMovement>().Initialize(gameObject);
     }
 
@@ -127,7 +130,7 @@ public class MultiplayerController : FSM
         {
             username.text = usernameText;
         }
-        if (currentState == PlayerStates.Jumping && airborne <= 0 && !CheckOffRoad(new Vector2(transform.position.x, transform.position.y), 0))
+        if (currentState == PlayerStates.Jumping && airborne <= 0 && !CheckOffRoadUp(new Vector2(transform.position.x, transform.position.y), 0))
         {
             currentState = PlayerStates.Grounded;
         }
@@ -175,12 +178,12 @@ public class MultiplayerController : FSM
 
     private void Restart()
     {
-        transform.position = new Vector3(75, -40, 2);
+        transform.position = spawnPos;
         health = 100f;
         CmdChangeHealth(100);
         healthBar.value = 0f;
         rb.velocity = Vector3.zero;
-        rb.rotation = 0;
+        rb.rotation = 90;
         currentState = PlayerStates.Grounded;
         sr.transform.localScale = Vector3.one;
         CmdSetScale(sr.transform.localScale.x);
@@ -485,7 +488,7 @@ public class MultiplayerController : FSM
         }
     }
 
-    private bool CheckOffRoad(Vector2 start, int iterations)
+    private bool CheckOffRoadUp(Vector2 start, int iterations)
     {
         GetComponent<Collider2D>().enabled = false;
         RaycastHit2D onRoad = Physics2D.Raycast(start, Vector2.up, 10000f, ~3);
@@ -493,8 +496,32 @@ public class MultiplayerController : FSM
         if (onRoad.collider != null && iterations < 41)
         {
             iterations++;
-            CheckOffRoad(onRoad.point + new Vector2(0, 0.01f), iterations);
+            CheckOffRoadUp(onRoad.point + new Vector2(0, 0.01f), iterations);
         } else
+        {
+            if (iterations % 2 == 0)
+            {
+                health = 0;
+                currentItem = Items.None;
+                itemSprite.sprite = none;
+                lineRenderer.enabled = false;
+                return true;
+            }
+        }
+        return CheckOffRoadRight(transform.position, 0);
+    }
+
+    private bool CheckOffRoadRight(Vector2 start, int iterations)
+    {
+        GetComponent<Collider2D>().enabled = false;
+        RaycastHit2D onRoad = Physics2D.Raycast(start, Vector2.right, 10000f, ~3);
+        GetComponent<Collider2D>().enabled = true;
+        if (onRoad.collider != null && iterations < 41)
+        {
+            iterations++;
+            CheckOffRoadRight(onRoad.point + new Vector2(0, 0.01f), iterations);
+        }
+        else
         {
             if (iterations % 2 == 0)
             {
@@ -556,7 +583,7 @@ public class MultiplayerController : FSM
     [Command]
     private void CmdLaserHit(Vector3 pos, Vector2 dir)
     {
-        RaycastHit2D hit = Physics2D.Raycast(pos, dir, 1000, ~6);
+        RaycastHit2D hit = Physics2D.Raycast(pos, dir, 10000, ~6);
         if (hit != null && hit.collider.tag == "Player")
         {
             GameObject las = Instantiate(laserHit, hit.point, Quaternion.identity);
@@ -568,7 +595,7 @@ public class MultiplayerController : FSM
 
     private void LaserUpdate()
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position + new Vector3(direction.x, direction.y, 0) * 2, direction, 1000, layerMask);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position + new Vector3(direction.x, direction.y, 0) * 2, direction, 10000, layerMask);
         Vector2 position;
         if (hit.collider != null)
         {
@@ -766,11 +793,7 @@ public class MultiplayerController : FSM
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Ramp")
-        {
-            Jump(false);
-        }
-        else if (collision.tag == "Item")
+        if (collision.tag == "Item")
         {
             collision.gameObject.GetComponent<ItemBox>().Use(this);
         }
@@ -785,13 +808,40 @@ public class MultiplayerController : FSM
             NetworkServer.Destroy(collision.gameObject);
             Hit(90, 40, 6);
         }
+        else if (collision.tag == "Booster")
+        {
+            rb.rotation = Mathf.Asin(collision.gameObject.transform.rotation.z) * Mathf.Rad2Deg * 2 * Mathf.Sign(collision.gameObject.transform.rotation.w);
+            rb.velocity = new Vector2(collision.gameObject.transform.rotation.w, collision.gameObject.transform.rotation.z) * 20 + new Vector2(collision.gameObject.transform.rotation.w, collision.gameObject.transform.rotation.z) * rb.velocity.magnitude;
+            Debug.Log(collision.gameObject.transform.rotation.z);
+            Debug.Log(collision.gameObject.transform.rotation.w);
+        }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.tag == "Heal" && currentState == PlayerStates.Grounded)
+        if (collision.tag == "Ramp")
+        {
+            Jump(false);
+            Debug.Log("Jump");
+        } else if (collision.tag == "Heal" && currentState == PlayerStates.Grounded)
         {
             CmdChangeHealth(health + 0.1f * rb.velocity.magnitude / 3);
+        }
+        else if (collision.tag == "Booster")
+        {
+            rb.rotation = Mathf.Asin(collision.gameObject.transform.rotation.z) * Mathf.Rad2Deg * 2 * Mathf.Sign(collision.gameObject.transform.rotation.w);
+            rb.velocity = new Vector2(collision.gameObject.transform.rotation.w, collision.gameObject.transform.rotation.z) * rb.velocity.magnitude;
+        }
+        else if (collision.tag == "Gravel")
+        {
+            if (rb.velocity.magnitude > currentMaxSpeed / 2)
+            {
+                rb.AddForce(rb.velocity.normalized * -(drag * 6));
+            }
+        }
+        else if (collision.tag == "Blaster" && currentState == PlayerStates.Grounded)
+        {
+            CmdChangeHealth(health - 0.3f);
         }
     }
 }

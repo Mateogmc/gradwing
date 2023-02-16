@@ -25,3 +25,9 @@
 
 *Version 0.6.1*
 - Added _Laser_ item
+
+*Version 0.7*
+- Created sample level
+- Added boosters
+- Added gravel
+- Added damaging floor

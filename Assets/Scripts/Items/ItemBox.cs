@@ -23,7 +23,7 @@ public class ItemBox : NetworkBehaviour
 
     private string[] items = { "Shield", "Jump", "Trap", "Rebounder", "Laser" };
 
-    private float[] itemWeights = { 0.2f, 0.15f, 0.3f, 0.3f, 0.05f };
+    private float[] itemWeights = { 0.2f, 0.15f, 0.3f, 0.2f, 0.15f };
 
     private void Update()
     {
@@ -45,8 +45,7 @@ public class ItemBox : NetworkBehaviour
                 random -= item;
                 if (random <= 0)
                 {
-                    player.CmdGetItem("Laser");
-                    //player.CmdGetItem(items[i]);
+                    player.CmdGetItem(items[i]);
                     break;
                 }
                 i++;

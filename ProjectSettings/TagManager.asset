@@ -10,6 +10,8 @@ TagManager:
   - Item
   - Trap
   - Rebounder
+  - Laser
+  - Gravel
   layers:
   - Default
   - TransparentFX
@@ -22,7 +24,7 @@ TagManager:
   - PlayerJump
   - RebounderJump
   - PlayerDead
-  - 
+  - GroundedElements
   - 
   - 
   - 
