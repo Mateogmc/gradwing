@@ -38,6 +38,7 @@ public class MultiplayerController : FSM
     float bounceDuration = 0.5f;
     [HideInInspector] public float bounceTime = 0f;
     float airborne = 0f;
+    bool grounded = true;
     [SyncVar(hook = nameof(OnAirborneChange))] float currentScale = 1;
     public Vector2 direction;
     [HideInInspector] public Vector2 lastSpeed;
@@ -94,8 +95,10 @@ public class MultiplayerController : FSM
         CmdSetName(usernameText);
         currentState = PlayerStates.Grounded;
         spawnPos = transform.position;
+        grounded = true;
         rb.rotation = 90;
         GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraMovement>().Initialize(gameObject);
+        Restart();
     }
 
     protected override void FSMUpdate()
@@ -122,6 +125,17 @@ public class MultiplayerController : FSM
 
     private void CheckState()
     {
+        if (currentState == PlayerStates.Jumping && airborne <= 0/* && !CheckOffRoadUp(new Vector2(transform.position.x, transform.position.y), 0)*/)
+        {
+            if (grounded)
+            {
+                currentState = PlayerStates.Grounded;
+            }
+            else
+            {
+                CmdChangeHealth(0);
+            }
+        }
         if (health <= 0f)
         {
             currentState = PlayerStates.Dead;
@@ -129,10 +143,6 @@ public class MultiplayerController : FSM
         if (username.text != usernameText)
         {
             username.text = usernameText;
-        }
-        if (currentState == PlayerStates.Jumping && airborne <= 0 && !CheckOffRoadUp(new Vector2(transform.position.x, transform.position.y), 0))
-        {
-            currentState = PlayerStates.Grounded;
         }
         if (currentMaxSpeed < maxSpeed && slowTimer < Time.time)
         {
@@ -496,7 +506,15 @@ public class MultiplayerController : FSM
         if (onRoad.collider != null && iterations < 41)
         {
             iterations++;
-            CheckOffRoadUp(onRoad.point + new Vector2(0, 0.01f), iterations);
+            if (iterations % 2 != 0)
+            {
+                Debug.DrawLine(start, onRoad.point, Color.green, 100);
+            } else
+            {
+                Debug.DrawLine(start, onRoad.point, Color.red, 100);
+            }
+            Debug.Log(onRoad.collider);
+            CheckOffRoadUp(onRoad.point, iterations);
         } else
         {
             if (iterations % 2 == 0)
@@ -508,7 +526,8 @@ public class MultiplayerController : FSM
                 return true;
             }
         }
-        return CheckOffRoadRight(transform.position, 0);
+        return false;
+        //return CheckOffRoadRight(transform.position, 0);
     }
 
     private bool CheckOffRoadRight(Vector2 start, int iterations)
@@ -519,11 +538,11 @@ public class MultiplayerController : FSM
         if (onRoad.collider != null && iterations < 41)
         {
             iterations++;
-            CheckOffRoadRight(onRoad.point + new Vector2(0, 0.01f), iterations);
+            CheckOffRoadRight(onRoad.point, iterations);
         }
         else
         {
-            if (iterations % 2 == 0)
+            if (iterations % 2 != 0)
             {
                 health = 0;
                 currentItem = Items.None;
@@ -558,17 +577,26 @@ public class MultiplayerController : FSM
     [Command]
     private void CmdTrap(Vector2 pos)
     {
+        RpcTrap(pos);
+    }
+
+    [ClientRpc]
+    private void RpcTrap(Vector2 pos)
+    {
         GameObject trp = Instantiate(trapPrefab, pos, Quaternion.identity);
-        NetworkServer.Spawn(trp);
     }
 
     [Command]
-    private void Rebounder(Vector3 pos, Vector2 initialVelocity, PlayerStates state, float airborne)
+    private void CmdRebounder(Vector3 pos, Vector2 initialVelocity, PlayerStates state, float airborne)
+    {
+        RpcRebounder(pos, initialVelocity, state, airborne);
+    }
+
+    [ClientRpc]
+    private void RpcRebounder(Vector3 pos, Vector2 initialVelocity, PlayerStates state, float airborne)
     {
         GameObject reb = Instantiate(rebounderPrefab, pos, Quaternion.identity);
         reb.GetComponent<Rebounder>().InitializeRebounder(initialVelocity, state, airborne);
-        reb.transform.position = pos;
-        NetworkServer.Spawn(reb);
     }
 
     #region LASER
@@ -586,11 +614,15 @@ public class MultiplayerController : FSM
         RaycastHit2D hit = Physics2D.Raycast(pos, dir, 10000, ~6);
         if (hit != null && hit.collider.tag == "Player")
         {
-            GameObject las = Instantiate(laserHit, hit.point, Quaternion.identity);
-            NetworkServer.Spawn(las);
-            Debug.Log("Hit");
+            RpcLaserHit(hit.point);
         }
         firingLaser = false;
+    }
+
+    [ClientRpc]
+    private void RpcLaserHit(Vector2 hitPoint)
+    {
+        GameObject las = Instantiate(laserHit, hitPoint, Quaternion.identity);
     }
 
     private void LaserUpdate()
@@ -615,8 +647,13 @@ public class MultiplayerController : FSM
     [Command]
     private void CmdSpawnLaserPointer(Vector2 pos)
     {
-        GameObject point = Instantiate(laserPoint, pos, Quaternion.Euler(0, 0, Time.time * 100));
-        NetworkServer.Spawn(point);
+        RpcSpawnLaserPointer(pos);
+    }
+
+    [ClientRpc]
+    private void RpcSpawnLaserPointer(Vector2 pos)
+    {
+        Instantiate(laserPoint, pos, Quaternion.Euler(0, 0, Time.time * 100));
     }
 
     #endregion
@@ -676,7 +713,7 @@ public class MultiplayerController : FSM
 
             case Items.Rebounder:
                 itemPosition = transform.position + new Vector3(direction.x, direction.y, 0) * 2 + new Vector3(rb.velocity.normalized.x, rb.velocity.normalized.y, 1) * 2;
-                Rebounder(itemPosition, direction * 30 + rb.velocity, currentState, airborne);
+                CmdRebounder(itemPosition, direction * 30 + rb.velocity, currentState, airborne);
                 break;
 
             case Items.Laser:
@@ -776,14 +813,14 @@ public class MultiplayerController : FSM
         {
             if (currentState == PlayerStates.Jumping)
             {
-                CmdRemoveItem(collision.gameObject);
+                //CmdRemoveItem(collision.gameObject);
                 bounceTime = Time.time + bounceDuration;
                 rb.AddForce(collision.contacts[0].normal * 1400);
                 Hit(40, 10, 5);
             }
             else if (currentState == PlayerStates.Grounded)
             {
-                CmdRemoveItem(collision.gameObject);
+                //CmdRemoveItem(collision.gameObject);
                 bounceTime = Time.time + bounceDuration;
                 Hit(40, 10, 5);
                 rb.AddForce(collision.contacts[0].normal * 1000);
@@ -815,6 +852,10 @@ public class MultiplayerController : FSM
             Debug.Log(collision.gameObject.transform.rotation.z);
             Debug.Log(collision.gameObject.transform.rotation.w);
         }
+        else if (collision.tag == "Ground")
+        {
+            grounded = true;
+        }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -842,6 +883,18 @@ public class MultiplayerController : FSM
         else if (collision.tag == "Blaster" && currentState == PlayerStates.Grounded)
         {
             CmdChangeHealth(health - 0.3f);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag == "Ground")
+        {
+            grounded = false;
+            if (currentState == PlayerStates.Grounded)
+            {
+                CmdChangeHealth(0);
+            }
         }
     }
 }

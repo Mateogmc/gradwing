@@ -1943,11 +1943,7 @@ MonoBehaviour:
   playerPrefab: {fileID: 3526559983992224352, guid: 106c7e8294da13646a164832df160be3, type: 3}
   autoCreatePlayer: 1
   playerSpawnMethod: 1
-  spawnPrefabs:
-  - {fileID: 2569642400525965653, guid: 03bba0db883071e4a9490bd44fb2de5e, type: 3}
-  - {fileID: 7649947786167149707, guid: 1882db442850a854797aba1a48a99068, type: 3}
-  - {fileID: 1997929668473104987, guid: e8503a79da8f8984db96bf37e565bb1b, type: 3}
-  - {fileID: 5067478851653884306, guid: e30a9f1a134f93249ba1647223871c86, type: 3}
+  spawnPrefabs: []
   timeInterpolationGui: 0
 --- !u!4 &2010516647
 Transform:

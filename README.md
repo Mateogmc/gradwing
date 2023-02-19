@@ -31,3 +31,7 @@
 - Added boosters
 - Added gravel
 - Added damaging floor
+
+*Version 0.8*
+- Now out of bounds is checked with a floor texture
+- Changed object synchronization system to client-sided simulations

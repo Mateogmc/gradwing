@@ -1,17 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Mirror;
 
-public class Rebounder : NetworkBehaviour
+public class Rebounder : MonoBehaviour
 {
     Vector2 lastSpeed;
     public PlayerStates currentState;
     float airborne;
+    bool grounded = true;
     [SerializeField] int bouncesLeft;
     [SerializeField] Rigidbody2D rb;
     [SerializeField] SpriteRenderer sr;
-    [SyncVar(hook = nameof(OnAirborneChange))] float currentScale = 1;
+    float currentScale = 1;
 
     public void InitializeRebounder(Vector2 velocity, PlayerStates playerState, float airborne)
     {
@@ -20,7 +20,6 @@ public class Rebounder : NetworkBehaviour
         if (playerState == PlayerStates.Jumping)
         {
             this.airborne = airborne;
-            currentScale = 1 + Mathf.Sin(airborne);
             gameObject.layer = 9;
         }
     }
@@ -43,6 +42,7 @@ public class Rebounder : NetworkBehaviour
             if (sr.transform.localScale.x > 0)
             {
                 currentScale -= 0.05f;
+                transform.localScale = new Vector3(currentScale, currentScale, currentScale);
             } else
             {
                 Destroy(gameObject);
@@ -53,10 +53,11 @@ public class Rebounder : NetworkBehaviour
             {
                 airborne -= 0.05f;
                 currentScale = 1 + Mathf.Sin(airborne);
+                transform.localScale = new Vector3(currentScale, currentScale, currentScale);
             }
             else
             {
-                if (CheckOffRoad(transform.position, 0))
+                if (!grounded)
                 {
                     currentState = PlayerStates.Dead;
                 }
@@ -71,31 +72,6 @@ public class Rebounder : NetworkBehaviour
         }
     }
 
-    private void OnAirborneChange(float oldAir, float newAir)
-    {
-        sr.transform.localScale = new Vector3(newAir, newAir, newAir);
-    }
-
-    private bool CheckOffRoad(Vector2 start, int iterations)
-    {
-        GetComponent<Collider2D>().enabled = false;
-        RaycastHit2D onRoad = Physics2D.Raycast(start, Vector2.up, 10000f, ~3);
-        GetComponent<Collider2D>().enabled = true;
-        if (onRoad.collider != null && iterations < 41)
-        {
-            iterations++;
-            CheckOffRoad(onRoad.point + new Vector2(0, 0.01f), iterations);
-        }
-        else
-        {
-            if (iterations % 2 == 0)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
     private void Jump()
     {
         if (currentState == PlayerStates.Grounded)
@@ -105,12 +81,6 @@ public class Rebounder : NetworkBehaviour
             airborne = Mathf.PI;
             gameObject.layer = 9;
         }
-    }
-
-    [Command]
-    private void CmdSetScale(float scale)
-    {
-        currentScale = scale;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -132,6 +102,10 @@ public class Rebounder : NetworkBehaviour
         {
             Destroy(gameObject);
         }
+        else if (collision.gameObject.tag == "Player")
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -144,6 +118,30 @@ public class Rebounder : NetworkBehaviour
         else if (collision.tag == "Ramp")
         {
             Jump();
+        }
+        else if (collision.tag == "Ground")
+        {
+            grounded = true;
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.tag == "Ground" && !grounded)
+        {
+            grounded = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag == "Ground")
+        {
+            grounded = false;
+            if (currentState == PlayerStates.Grounded)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }

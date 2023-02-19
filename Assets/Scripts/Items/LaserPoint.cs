@@ -1,15 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Mirror;
 
-public class LaserPoint : NetworkBehaviour
+public class LaserPoint : MonoBehaviour
 {
     private float startTime;
 
     private void Start()
     {
-        startTime = Time.time + 0.05f;
+        startTime = Time.time + 0.03f;
     }
 
     private void Update()
