@@ -35,3 +35,8 @@
 *Version 0.8*
 - Now out of bounds is checked with a floor texture
 - Changed object synchronization system to client-sided simulations
+
+*Version 0.9*
+- Added checkpoint system
+- Added lap system
+- Added user interface ingame

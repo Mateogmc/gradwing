@@ -42,7 +42,7 @@ public class MultiplayerController : FSM
     [SyncVar(hook = nameof(OnAirborneChange))] float currentScale = 1;
     public Vector2 direction;
     [HideInInspector] public Vector2 lastSpeed;
-    Vector2 spawnPos = Vector2.zero;
+    [SyncVar(hook = nameof(OnLayerChange))]int currentLayer = 6;
 
     [HideInInspector]  bool accelerating = false;
     [HideInInspector] bool braking = false;
@@ -87,6 +87,14 @@ public class MultiplayerController : FSM
 
     [SyncVar(hook = nameof(OnUsernameChange))] string usernameText;
 
+    // Lap Manager
+    int currentLap = 1;
+    [SerializeField] TextMeshProUGUI lapRenderer;
+    LapManager lapManager;
+    int checkpointCount = 0;
+    Vector2 spawnPos = Vector2.zero;
+    float spawnRotation = 0;
+
     protected override void Initialize()
     {
         if (!isLocalPlayer) { return; }
@@ -98,6 +106,7 @@ public class MultiplayerController : FSM
         grounded = true;
         rb.rotation = 90;
         GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraMovement>().Initialize(gameObject);
+        lapManager = GameObject.FindGameObjectWithTag("LapManager").GetComponent<LapManager>();
         Restart();
     }
 
@@ -150,7 +159,7 @@ public class MultiplayerController : FSM
         }
         if (currentState == PlayerStates.Dead)
         {
-            gameObject.layer = 10;
+            currentLayer = 10;
         }
         if (firingLaser && laserCountdown < Time.time)
         {
@@ -184,11 +193,13 @@ public class MultiplayerController : FSM
         {
             lineRenderer.enabled = false;
         }
+        SetLap();
     }
 
     private void Restart()
     {
         transform.position = spawnPos;
+        transform.eulerAngles = new Vector3(0, 0, spawnRotation);
         health = 100f;
         CmdChangeHealth(100);
         healthBar.value = 0f;
@@ -197,7 +208,7 @@ public class MultiplayerController : FSM
         currentState = PlayerStates.Grounded;
         sr.transform.localScale = Vector3.one;
         CmdSetScale(sr.transform.localScale.x);
-        gameObject.layer = 6;
+        currentLayer = 6;
     }
 
     private void OnHealthChange(float oldHealth, float newHealth)
@@ -228,6 +239,11 @@ public class MultiplayerController : FSM
     private void OnLaserCountdownChange(float oldCountdown, float newCountdown)
     {
         laserCountdown = Time.time + 0.5f;
+    }
+
+    private void OnLayerChange(int oldLayer, int newLayer)
+    {
+        gameObject.layer = newLayer;
     }
 
     private void OnItemChange(Items oldItem, Items newItem)
@@ -360,7 +376,7 @@ public class MultiplayerController : FSM
                 break;
 
             case PlayerStates.Grounded:
-                gameObject.layer = 6;
+                currentLayer = 6;
                 sr.sortingLayerID = SortingLayer.NameToID("Players");
                 direction = new Vector2(Mathf.Cos(rb.rotation * Mathf.Deg2Rad), Mathf.Sin(rb.rotation * Mathf.Deg2Rad));
                 if (rolling)
@@ -491,76 +507,25 @@ public class MultiplayerController : FSM
                     sr.transform.localScale -= new Vector3(0.05f, 0.05f, 0);
                     CmdSetScale(sr.transform.localScale.x);
                 }
-                gameObject.layer = 10;
+                currentLayer = 10;
                 CmdChangeHealth(health);
                 rb.velocity = Vector3.zero;
                 break;
         }
     }
 
-    private bool CheckOffRoadUp(Vector2 start, int iterations)
+    private void SetLap()
     {
-        GetComponent<Collider2D>().enabled = false;
-        RaycastHit2D onRoad = Physics2D.Raycast(start, Vector2.up, 10000f, ~3);
-        GetComponent<Collider2D>().enabled = true;
-        if (onRoad.collider != null && iterations < 41)
-        {
-            iterations++;
-            if (iterations % 2 != 0)
-            {
-                Debug.DrawLine(start, onRoad.point, Color.green, 100);
-            } else
-            {
-                Debug.DrawLine(start, onRoad.point, Color.red, 100);
-            }
-            Debug.Log(onRoad.collider);
-            CheckOffRoadUp(onRoad.point, iterations);
-        } else
-        {
-            if (iterations % 2 == 0)
-            {
-                health = 0;
-                currentItem = Items.None;
-                itemSprite.sprite = none;
-                lineRenderer.enabled = false;
-                return true;
-            }
-        }
-        return false;
-        //return CheckOffRoadRight(transform.position, 0);
+        lapRenderer.text = string.Format("{0}/{1}", currentLap, lapManager.lapCount);
     }
-
-    private bool CheckOffRoadRight(Vector2 start, int iterations)
-    {
-        GetComponent<Collider2D>().enabled = false;
-        RaycastHit2D onRoad = Physics2D.Raycast(start, Vector2.right, 10000f, ~3);
-        GetComponent<Collider2D>().enabled = true;
-        if (onRoad.collider != null && iterations < 41)
-        {
-            iterations++;
-            CheckOffRoadRight(onRoad.point, iterations);
-        }
-        else
-        {
-            if (iterations % 2 != 0)
-            {
-                health = 0;
-                currentItem = Items.None;
-                itemSprite.sprite = none;
-                lineRenderer.enabled = false;
-                return true;
-            }
-        }
-        return false;
-    }
-
+    
     private void Jump(bool item)
     {
         if (currentState == PlayerStates.Grounded)
         {
             currentState = PlayerStates.Jumping;
             airborne = Mathf.PI;
-            gameObject.layer = 8;
+            currentLayer = 8;
             sr.sortingLayerID = SortingLayer.NameToID("Foreground");
         } else if (currentState == PlayerStates.Jumping && item)
         {
@@ -852,9 +817,26 @@ public class MultiplayerController : FSM
             Debug.Log(collision.gameObject.transform.rotation.z);
             Debug.Log(collision.gameObject.transform.rotation.w);
         }
-        else if (collision.tag == "Ground")
+        else if (collision.tag == "Checkpoint" || collision.tag == "FinishLine")
         {
-            grounded = true;
+            spawnPos = collision.transform.position;
+            spawnRotation = collision.transform.eulerAngles.z;
+            if (collision.tag == "FinishLine")
+            {
+                Vector2 collisionNormal = (new Vector2(transform.position.x, transform.position.y) - collision.ClosestPoint(transform.position)).normalized;
+                if (lapManager.CheckNextLap(checkpointCount))
+                {
+                    if (collision.transform.eulerAngles.z == Mathf.Round(Vector2.SignedAngle(collisionNormal, Vector2.right)))
+                    {
+                        currentLap++;
+                    }
+                }
+                checkpointCount = 0;
+            } else
+            {
+                collision.gameObject.SetActive(false);
+                checkpointCount++;
+            }
         }
     }
 
@@ -884,17 +866,21 @@ public class MultiplayerController : FSM
         {
             CmdChangeHealth(health - 0.3f);
         }
+        else if (collision.tag == "Ground")
+        {
+            grounded = true;
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.tag == "Ground")
         {
-            grounded = false;
-            if (currentState == PlayerStates.Grounded)
+            if (currentState == PlayerStates.Grounded && !grounded)
             {
                 CmdChangeHealth(0);
             }
+            grounded = false;
         }
     }
 }

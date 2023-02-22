@@ -17,8 +17,10 @@ public enum Items
 public class ItemBox : NetworkBehaviour
 {
     [SerializeField] SpriteRenderer sr;
-    [SerializeField] BoxCollider2D bc;
+    [SerializeField] CircleCollider2D cc;
     [SerializeField] float respawnDelay;
+    [SerializeField] Transform icon;
+    [SerializeField] SpriteRenderer iconRenderer;
     float respawnTimer = 0f;
 
     private string[] items = { "Shield", "Jump", "Trap", "Rebounder", "Laser" };
@@ -30,8 +32,16 @@ public class ItemBox : NetworkBehaviour
         if (respawnTimer < Time.time && !sr.enabled)
         {
             sr.enabled = true;
-            bc.enabled = true;
+            cc.enabled = true;
+            iconRenderer.enabled = true;
         }
+        Rotate();
+    }
+
+    private void Rotate()
+    {
+        transform.rotation = Quaternion.Euler(0, 0, Time.time * 100);
+        icon.rotation = Quaternion.Euler(0, 0, Time.time * -60);
     }
 
     private void GiveItem(MultiplayerController player)
@@ -45,8 +55,7 @@ public class ItemBox : NetworkBehaviour
                 random -= item;
                 if (random <= 0)
                 {
-                    player.CmdGetItem("Trap");
-                    //player.CmdGetItem(items[i]);
+                    player.CmdGetItem(items[i]);
                     break;
                 }
                 i++;
@@ -59,6 +68,7 @@ public class ItemBox : NetworkBehaviour
         GiveItem(player);
         respawnTimer = Time.time + respawnDelay;
         sr.enabled = false;
-        bc.enabled = false;
+        cc.enabled = false;
+        iconRenderer.enabled = false;
     }
 }
