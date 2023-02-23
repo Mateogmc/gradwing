@@ -40,3 +40,7 @@
 - Added checkpoint system
 - Added lap system
 - Added user interface ingame
+
+*Version 0.9.1*
+- Fixed checkpoint functionality
+- Added HP and current object to interface

@@ -54,10 +54,6 @@ public class MultiplayerController : FSM
 
 
     [SerializeField] [SyncVar(hook = nameof(OnHealthChange))] float health;
-    [SerializeField] Slider healthBar;
-    [SerializeField] Canvas ui;
-    [SerializeField] TextMeshProUGUI username;
-    [SerializeField] SpriteRenderer shieldRenderer;
 
     [Header("Item Sprites")]
     [SerializeField] Sprite none;
@@ -89,11 +85,21 @@ public class MultiplayerController : FSM
 
     // Lap Manager
     int currentLap = 1;
-    [SerializeField] TextMeshProUGUI lapRenderer;
     LapManager lapManager;
     int checkpointCount = 0;
     Vector2 spawnPos = Vector2.zero;
     float spawnRotation = 0;
+
+    // Interface
+    [SerializeField] TextMeshProUGUI lapRenderer;
+    [SerializeField] Canvas playerInterface;
+    [SerializeField] Canvas enemyInterface;
+    [SerializeField] Slider healthBar;
+    [SerializeField] Slider playerHealthBar;
+    [SerializeField] Image playerItemSprite;
+    [SerializeField] Canvas ui;
+    [SerializeField] TextMeshProUGUI username;
+    [SerializeField] SpriteRenderer shieldRenderer;
 
     protected override void Initialize()
     {
@@ -193,7 +199,15 @@ public class MultiplayerController : FSM
         {
             lineRenderer.enabled = false;
         }
-        SetLap();
+        if (isLocalPlayer)
+        {
+            SetLap();
+            enemyInterface.enabled = false;
+        }
+        else
+        {
+            playerInterface.enabled = false;
+        }
     }
 
     private void Restart()
@@ -214,6 +228,7 @@ public class MultiplayerController : FSM
     private void OnHealthChange(float oldHealth, float newHealth)
     {
         healthBar.value = 100 - newHealth;
+        playerHealthBar.value = 100 - newHealth;
     }
 
     private void OnUsernameChange(string oldName, string newName)
@@ -252,31 +267,37 @@ public class MultiplayerController : FSM
         {
             case Items.None:
                 itemSprite.sprite = none;
+                playerItemSprite.sprite = none;
                 currentItem = Items.None;
                 break;
 
             case Items.Shield:
                 itemSprite.sprite = shield;
+                playerItemSprite.sprite = shield;
                 currentItem = Items.Shield;
                 break;
 
             case Items.Jump:
                 itemSprite.sprite = jump;
+                playerItemSprite.sprite = jump;
                 currentItem = Items.Jump;
                 break;
 
             case Items.Trap:
                 itemSprite.sprite = trap;
+                playerItemSprite.sprite = trap;
                 currentItem = Items.Trap;
                 break;
 
             case Items.Rebounder:
                 itemSprite.sprite = rebounder;
+                playerItemSprite.sprite = rebounder;
                 currentItem = Items.Rebounder;
                 break;
 
             case Items.Laser:
                 itemSprite.sprite = laser;
+                playerItemSprite.sprite = laser;
                 currentItem = Items.Laser;
                 break;
         }
@@ -677,8 +698,8 @@ public class MultiplayerController : FSM
                 break;
 
             case Items.Rebounder:
-                itemPosition = transform.position + new Vector3(direction.x, direction.y, 0) * 2 + new Vector3(rb.velocity.normalized.x, rb.velocity.normalized.y, 1) * 2;
-                CmdRebounder(itemPosition, direction * 30 + rb.velocity, currentState, airborne);
+                itemPosition = transform.position + new Vector3(direction.x, direction.y, 0) * 5;
+                CmdRebounder(itemPosition, direction * 40 + rb.velocity, currentState, airborne);
                 break;
 
             case Items.Laser:
@@ -687,6 +708,7 @@ public class MultiplayerController : FSM
         }
         currentItem = Items.None;
         itemSprite.sprite = none;
+        playerItemSprite.sprite = none;
         CmdUseItem();
     }
 
@@ -699,26 +721,31 @@ public class MultiplayerController : FSM
             case "Shield":
                 currentItem = Items.Shield;
                 itemSprite.sprite = shield;
+                playerItemSprite.sprite = shield;
                 break;
 
             case "Jump":
                 currentItem = Items.Jump;
                 itemSprite.sprite = jump;
+                playerItemSprite.sprite = jump;
                 break;
 
             case "Trap":
                 currentItem = Items.Trap;
                 itemSprite.sprite = trap;
+                playerItemSprite.sprite = trap;
                 break;
 
             case "Rebounder":
                 currentItem = Items.Rebounder;
                 itemSprite.sprite = rebounder;
+                playerItemSprite.sprite = rebounder;
                 break;
 
             case "Laser":
                 currentItem = Items.Laser;
                 itemSprite.sprite = laser;
+                playerItemSprite.sprite = laser;
                 break;
         }
     }
@@ -728,6 +755,7 @@ public class MultiplayerController : FSM
     {
         currentItem = Items.None;
         itemSprite.sprite = none;
+        playerItemSprite.sprite = none;
     }
 
     [Command(requiresAuthority = false)]
@@ -812,12 +840,13 @@ public class MultiplayerController : FSM
         }
         else if (collision.tag == "Booster")
         {
+            bounceTime = Time.time;
             rb.rotation = Mathf.Asin(collision.gameObject.transform.rotation.z) * Mathf.Rad2Deg * 2 * Mathf.Sign(collision.gameObject.transform.rotation.w);
             rb.velocity = new Vector2(collision.gameObject.transform.rotation.w, collision.gameObject.transform.rotation.z) * 20 + new Vector2(collision.gameObject.transform.rotation.w, collision.gameObject.transform.rotation.z) * rb.velocity.magnitude;
             Debug.Log(collision.gameObject.transform.rotation.z);
             Debug.Log(collision.gameObject.transform.rotation.w);
         }
-        else if (collision.tag == "Checkpoint" || collision.tag == "FinishLine")
+        else if ((collision.tag == "Checkpoint" || collision.tag == "FinishLine") && isLocalPlayer)
         {
             spawnPos = collision.transform.position;
             spawnRotation = collision.transform.eulerAngles.z;
