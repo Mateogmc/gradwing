@@ -21,6 +21,10 @@ public class DataManager : MonoBehaviour
 
     [SerializeField] private Button host;
     [SerializeField] private Button connect;
+    [SerializeField] private Button exit;
+    [SerializeField] private Button controller;
+    [SerializeField] private Sprite xbox; 
+    [SerializeField] private Sprite ps4;
     [SerializeField] private NetworkManager networkManager;
     [SerializeField] private TextMeshProUGUI connectionDisplay;
 
@@ -49,6 +53,8 @@ public class DataManager : MonoBehaviour
         DontDestroyOnLoad(this);
         host.onClick.AddListener(Host);
         connect.onClick.AddListener(Connect);
+        exit.onClick.AddListener(Exit);
+        controller.onClick.AddListener(ChangeController);
 
         using (StreamReader sr = new StreamReader(Application.streamingAssetsPath + "/stats.dat"))
         {
@@ -65,7 +71,14 @@ public class DataManager : MonoBehaviour
                 levelList.Add(sr.ReadLine());
             }
         }
-
+        if (xboxController)
+        {
+            controller.GetComponent<Image>().sprite = xbox;
+        }
+        else
+        {
+            controller.GetComponent<Image>().sprite = ps4;
+        }
         instance = this;
     }
 
@@ -95,6 +108,25 @@ public class DataManager : MonoBehaviour
         networkManager.networkAddress = ipAddress;
     }
 
+    private void Exit()
+    {
+        Application.Quit();
+    }
+
+    private void ChangeController()
+    {
+        xboxController = !xboxController;
+        if (xboxController)
+        {
+            controller.GetComponent<Image>().sprite = xbox;
+        }
+        else
+        {
+            controller.GetComponent<Image>().sprite = ps4;
+        }
+        SetStats();
+    }
+
     public void UsernameEdit(string username)
     {
         DataManager.username = username;
@@ -103,6 +135,18 @@ public class DataManager : MonoBehaviour
     public void IpAddressEdit(string ipAddress)
     {
         DataManager.ipAddress = ipAddress;
+    }
+
+    public void SetStats()
+    {
+        using (StreamWriter sw = new StreamWriter(Application.streamingAssetsPath + "/stats.dat"))
+        {
+            sw.WriteLine(speed);
+            sw.WriteLine(acceleration);
+            sw.WriteLine(weight);
+            sw.WriteLine(handling);
+            sw.WriteLine(xboxController ? 1 : 0);
+        }
     }
 
     public void SetStats(float speed, float acceleration, float weight, float handling)

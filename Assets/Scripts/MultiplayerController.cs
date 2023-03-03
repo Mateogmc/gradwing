@@ -254,6 +254,7 @@ public class MultiplayerController : FSM
         currentState = PlayerStates.Grounded;
         sr.transform.localScale = Vector3.one;
         CmdSetScale(sr.transform.localScale.x);
+        xboxController = DataManager.GetInstance().xboxController;
         SetLayer(6);
     }
 
@@ -447,7 +448,81 @@ public class MultiplayerController : FSM
         }
         else
         {
+            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Joystick1Button7))
+            {
+                Application.Quit();
+            }
+            if (Input.GetKeyDown(KeyCode.Joystick1Button6))
+            {
+                Restart();
+            }
+            if (Input.GetKey(KeyCode.X) || Input.GetButton("Accel"))
+            {
+                accelerating = true;
+            }
+            else
+            {
+                accelerating = false;
+            }
 
+            if (Input.GetKey(KeyCode.C) || Input.GetKey(KeyCode.JoystickButton1))
+            {
+                braking = true;
+            }
+            else
+            {
+                braking = false;
+            }
+
+            if (accelerating && braking)
+            {
+                rolling = true;
+            }
+            else
+            {
+                rolling = false;
+            }
+
+            if (Input.GetKey(KeyCode.LeftArrow) || Input.GetAxis("Horizontal1") < -0.2)
+            {
+                rotatingLeft = true;
+            }
+            else
+            {
+                rotatingLeft = false;
+            }
+
+            if (Input.GetKey(KeyCode.RightArrow) || Input.GetAxis("Horizontal1") > 0.2)
+            {
+                rotatingRight = true;
+            }
+            else
+            {
+                rotatingRight = false;
+            }
+
+            strafeValue = Input.GetAxis("StrafeR") - Input.GetAxis("StrafeL");
+
+            if (strafeValue < -0.1f)
+            {
+                strafingLeft = true;
+                strafingRight = false;
+            } 
+            else if (strafeValue > 0.1f)
+            {
+                strafingLeft = false;
+                strafingRight = true;
+            }
+            else
+            {
+                strafingLeft = false;
+                strafingRight = false;
+            }
+
+            if (Input.GetKeyDown(KeyCode.Joystick1Button4))
+            {
+                UseItem();
+            }
         }
     }
 
@@ -884,8 +959,11 @@ public class MultiplayerController : FSM
             {
                 bounceTime = Time.time + bounceDuration;
             }
-            rb.velocity = Vector2.Reflect(lastSpeed, collision.contacts[0].normal);
-            rb.AddForce(collision.contacts[0].normal * 500);
+            rb.velocity = Vector2.Reflect(lastSpeed * 0.75f, collision.contacts[0].normal);
+            if (rb.velocity.magnitude < 10)
+            {
+                rb.AddForce(collision.contacts[0].normal * 500);
+            }
             CmdChangeHealth(health - 10);
             //rb.rotation = Vector2.SignedAngle(Vector2.right, rb.velocity);
         }
@@ -989,6 +1067,7 @@ public class MultiplayerController : FSM
         }
         else if (collision.tag == "Ground")
         {
+            Debug.Log("Enter");
             grounded++;
         }
     }
@@ -1020,6 +1099,10 @@ public class MultiplayerController : FSM
         {
             health = health - 0.3f;
             CmdChangeHealth(health);
+        }
+        else if (collision.tag == "Ground")
+        {
+
         }
     }
 

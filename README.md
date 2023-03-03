@@ -64,3 +64,6 @@
 *Version 0.10.1*
 - Added level vote system for lobby
 - Minor upgrades in interface
+
+*Version 0.10.2*
+- Added support for Playstation controller
