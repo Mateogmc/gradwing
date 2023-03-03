@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LapManager : MonoBehaviour
 {
@@ -9,12 +10,15 @@ public class LapManager : MonoBehaviour
     int checkpointCount;
     public int minimumCheckpoints;
     GameObject[] checkpoints;
+    public Button exitToLobby;
 
     private void Start()
     {
+        GameStateManager.GetInstance().gameState = GameStateManager.GameState.Running;
         checkpoints = GameObject.FindGameObjectsWithTag("Checkpoint");
         checkpointCount = checkpoints.Length;
         minimumCheckpoints = (int) (checkpointCount * checkpointTolerance);
+        exitToLobby.onClick.AddListener(() => ExitToLobby());
     }
 
     public bool CheckNextLap(int checkpoints)
@@ -33,5 +37,10 @@ public class LapManager : MonoBehaviour
         {
             checkpoint.SetActive(true);
         }
+    }
+
+    private void ExitToLobby()
+    {
+
     }
 }

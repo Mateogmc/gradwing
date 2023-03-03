@@ -4,17 +4,44 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Mirror;
+using System.IO;
 
 
 public class DataManager : MonoBehaviour
 {
+    private static DataManager instance;
+
+    public static DataManager GetInstance() { return instance; }
+
     public static string username;
     public static string ipAddress;
+
+    public static List<string> levelList = new List<string>();
+    public List<Sprite> levelSprites = new List<Sprite>();
 
     [SerializeField] private Button host;
     [SerializeField] private Button connect;
     [SerializeField] private NetworkManager networkManager;
     [SerializeField] private TextMeshProUGUI connectionDisplay;
+
+    public const float MAX_SPEED = 45;
+    public const float ACCELERATION = 10;
+    public const float WEIGHT = 1;
+    public const float HANDLING = 0.5f;
+
+    public float initSpeed;
+    public float initAcceleration;
+    public float initWeight;
+    public float initHandling;
+
+    public float speed = MAX_SPEED;
+    public float acceleration = ACCELERATION;
+    public float weight = WEIGHT;
+    public float handling = HANDLING;
+
+    public bool xboxController;
+
+    public static int maxPoints = 24;
 
 
     void Start()
@@ -22,6 +49,24 @@ public class DataManager : MonoBehaviour
         DontDestroyOnLoad(this);
         host.onClick.AddListener(Host);
         connect.onClick.AddListener(Connect);
+
+        using (StreamReader sr = new StreamReader(Application.streamingAssetsPath + "/stats.dat"))
+        {
+            initSpeed = float.Parse(sr.ReadLine());
+            initAcceleration = float.Parse(sr.ReadLine());
+            initWeight = float.Parse(sr.ReadLine());
+            initHandling = float.Parse(sr.ReadLine());
+            xboxController = sr.ReadLine() == "1";
+        }
+        using (StreamReader sr = new StreamReader(Application.streamingAssetsPath + "/levels.dat"))
+        {
+            while (sr.Peek() >= 0)
+            {
+                levelList.Add(sr.ReadLine());
+            }
+        }
+
+        instance = this;
     }
 
     private void Update()
@@ -58,5 +103,22 @@ public class DataManager : MonoBehaviour
     public void IpAddressEdit(string ipAddress)
     {
         DataManager.ipAddress = ipAddress;
+    }
+
+    public void SetStats(float speed, float acceleration, float weight, float handling)
+    {
+        this.speed = speed;
+        this.acceleration = acceleration;
+        this.weight = weight / 5;
+        this.handling = handling / 10;
+
+        using (StreamWriter sw = new StreamWriter(Application.streamingAssetsPath + "/stats.dat"))
+        {
+            sw.WriteLine(this.speed);
+            sw.WriteLine(this.acceleration);
+            sw.WriteLine(this.weight);
+            sw.WriteLine(this.handling);
+            sw.WriteLine(xboxController ? 1 : 0);
+        }
     }
 }

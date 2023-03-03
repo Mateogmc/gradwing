@@ -44,3 +44,23 @@
 *Version 0.9.1*
 - Fixed checkpoint functionality
 - Added HP and current object to interface
+
+*Version 0.10*
+- Added statistic system:
+	- Velocity increments max speed
+	- Acceleration increments vehicle acceleration
+	- Weight:
+		- Increased max HP
+		- Increased contact damage against players
+		- Increased knockback against players
+		- Reduced self damage from contact with players
+		- Reduced self knockback from contact with players
+	- Handling:
+		- Increased rotation speed
+		- Increased max speed limit break while drifting
+		- Increased air handling
+- Added Lobby
+
+*Version 0.10.1*
+- Added level vote system for lobby
+- Minor upgrades in interface

@@ -21,24 +21,30 @@ public class MultiplayerController : FSM
     [SerializeField] BoxCollider2D bc;
     [SerializeField] LayerMask wallLayer;
     [SerializeField] LayerMask playerLayer;
+    DataManager dataManager;
+    bool xboxController = true;
 
 
     [Header("Player variables")]
-    [SerializeField] float maxSpeed;
-    [SerializeField] float currentMaxSpeed;
-    [SerializeField] float acceleration;
-    [SerializeField] float weight;
+    [SerializeField] [SyncVar(hook = nameof(OnMaxSpeedChange))] float maxSpeed;
+    float currentMaxSpeed;
+    [SerializeField] [SyncVar(hook = nameof(OnAccelerationChange))] float acceleration;
+    [SerializeField] [SyncVar(hook = nameof(OnWeightChange))] float weight;
     [SerializeField] float turnSpeed;
     [SerializeField] float drag;
-    [SerializeField] float rotationSpeed;
+    float currentDrag;
+    [SerializeField] [SyncVar(hook = nameof(OnHandlingChange))] float rotationSpeed;
+    float currentRotationSpeed;
     [SerializeField] float strafingAngle;
     [SerializeField] float shieldDuration;
+    [SerializeField] float deathTimer;
 
+    float dead;
     float currentSpeed = 0;
     float bounceDuration = 0.5f;
     [HideInInspector] public float bounceTime = 0f;
     float airborne = 0f;
-    bool grounded = true;
+    int grounded = 1;
     [SyncVar(hook = nameof(OnAirborneChange))] float currentScale = 1;
     public Vector2 direction;
     [HideInInspector] public Vector2 lastSpeed;
@@ -50,9 +56,10 @@ public class MultiplayerController : FSM
     [HideInInspector] public bool rotatingLeft = false;
     [HideInInspector] public bool strafingRight = false;
     [HideInInspector] public bool strafingLeft = false;
+    [HideInInspector] public float strafeValue;
     [HideInInspector] public bool rolling;
 
-
+    [SerializeField][SyncVar(hook = nameof(OnMaxHealthChange))] float maxHealth;
     [SerializeField] [SyncVar(hook = nameof(OnHealthChange))] float health;
 
     [Header("Item Sprites")]
@@ -84,6 +91,7 @@ public class MultiplayerController : FSM
     [SyncVar(hook = nameof(OnUsernameChange))] string usernameText;
 
     // Lap Manager
+    [SerializeField] GameObject lapTextRenderer;
     int currentLap = 1;
     LapManager lapManager;
     int checkpointCount = 0;
@@ -101,18 +109,29 @@ public class MultiplayerController : FSM
     [SerializeField] TextMeshProUGUI username;
     [SerializeField] SpriteRenderer shieldRenderer;
 
+    public override void OnStartLocalPlayer()
+    {
+        if (LobbyManager.GetInstance().localPlayer == null)
+        {
+            LobbyManager.GetInstance().localPlayer = this;
+        }
+    }
+
     protected override void Initialize()
     {
         if (!isLocalPlayer) { return; }
         usernameText = DataManager.username;
         username.text = usernameText;
         CmdSetName(usernameText);
+        playerInterface.gameObject.SetActive(true);
         currentState = PlayerStates.Grounded;
         spawnPos = transform.position;
-        grounded = true;
+        grounded = 0;
         rb.rotation = 90;
+        currentRotationSpeed = rotationSpeed;
+        currentDrag = drag;
+        dataManager = GameObject.FindGameObjectWithTag("DataManager").GetComponent<DataManager>();
         GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraMovement>().Initialize(gameObject);
-        lapManager = GameObject.FindGameObjectWithTag("LapManager").GetComponent<LapManager>();
         Restart();
     }
 
@@ -142,7 +161,7 @@ public class MultiplayerController : FSM
     {
         if (currentState == PlayerStates.Jumping && airborne <= 0/* && !CheckOffRoadUp(new Vector2(transform.position.x, transform.position.y), 0)*/)
         {
-            if (grounded)
+            if (grounded > 0)
             {
                 currentState = PlayerStates.Grounded;
             }
@@ -151,9 +170,14 @@ public class MultiplayerController : FSM
                 CmdChangeHealth(0);
             }
         }
-        if (health <= 0f)
+        if (health <= 0f && currentState != PlayerStates.Dead)
         {
             currentState = PlayerStates.Dead;
+            dead = Time.time + deathTimer;
+        }
+        if (currentState == PlayerStates.Dead && dead < Time.time)
+        {
+            Restart();
         }
         if (username.text != usernameText)
         {
@@ -165,7 +189,7 @@ public class MultiplayerController : FSM
         }
         if (currentState == PlayerStates.Dead)
         {
-            currentLayer = 10;
+            SetLayer(10);
         }
         if (firingLaser && laserCountdown < Time.time)
         {
@@ -199,36 +223,51 @@ public class MultiplayerController : FSM
         {
             lineRenderer.enabled = false;
         }
-        if (isLocalPlayer)
+        if (isLocalPlayer && GameStateManager.GetInstance().gameState == GameStateManager.GameState.Running)
         {
             SetLap();
+            if (!lapTextRenderer.activeSelf)
+            {
+                lapTextRenderer.SetActive(true);
+            }
             enemyInterface.enabled = false;
         }
-        else
+        if (isLocalPlayer && GameStateManager.GetInstance().gameState != GameStateManager.GameState.Running)
         {
-            playerInterface.enabled = false;
+            if (lapTextRenderer.activeSelf)
+            {
+                lapTextRenderer.SetActive(false);
+            }
+            enemyInterface.enabled = false;
         }
     }
 
-    private void Restart()
+    public void Restart()
     {
         transform.position = spawnPos;
         transform.eulerAngles = new Vector3(0, 0, spawnRotation);
-        health = 100f;
-        CmdChangeHealth(100);
+        CmdSetStats(DataManager.MAX_SPEED + dataManager.speed, DataManager.ACCELERATION + dataManager.acceleration, DataManager.WEIGHT + dataManager.weight, DataManager.HANDLING + dataManager.handling);
         healthBar.value = 0f;
+        playerHealthBar.value = 0f;
         rb.velocity = Vector3.zero;
         rb.rotation = 90;
         currentState = PlayerStates.Grounded;
         sr.transform.localScale = Vector3.one;
         CmdSetScale(sr.transform.localScale.x);
-        currentLayer = 6;
+        SetLayer(6);
     }
 
     private void OnHealthChange(float oldHealth, float newHealth)
     {
-        healthBar.value = 100 - newHealth;
-        playerHealthBar.value = 100 - newHealth;
+        healthBar.value = maxHealth - newHealth;
+        playerHealthBar.value = maxHealth - newHealth;
+    }
+
+    private void OnMaxHealthChange(float oldHealth, float newHealth)
+    {
+        maxHealth = newHealth;
+        playerHealthBar.maxValue = maxHealth;
+        healthBar.maxValue = maxHealth;
     }
 
     private void OnUsernameChange(string oldName, string newName)
@@ -259,6 +298,26 @@ public class MultiplayerController : FSM
     private void OnLayerChange(int oldLayer, int newLayer)
     {
         gameObject.layer = newLayer;
+    }
+
+    private void OnMaxSpeedChange(float oldSpeed, float newSpeed)
+    {
+        maxSpeed = newSpeed;
+    }
+
+    private void OnAccelerationChange(float oldAccel, float newAccel)
+    {
+        acceleration = newAccel;
+    }
+
+    private void OnWeightChange(float oldWeight, float newWeight)
+    {
+        weight = newWeight;
+    }
+
+    private void OnHandlingChange(float oldHandling, float newHandling)
+    {
+        rotationSpeed = newHandling;
     }
 
     private void OnItemChange(Items oldItem, Items newItem)
@@ -305,86 +364,90 @@ public class MultiplayerController : FSM
 
     private void CheckInput()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Joystick1Button7))
+        if (xboxController)
         {
-            if (currentState == PlayerStates.Dead)
-            {
-                Restart();
-            } else
+
+            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Joystick1Button7))
             {
                 Application.Quit();
             }
-        }
-        if (Input.GetKeyDown(KeyCode.Joystick1Button6))
-        {
-            Restart();
-        }
-        if (Input.GetKey(KeyCode.X) || Input.GetButton("Accel"))
-        {
-            accelerating = true;
+            if (Input.GetKeyDown(KeyCode.Joystick1Button6))
+            {
+                Restart();
+            }
+            if (Input.GetKey(KeyCode.X) || Input.GetButton("Accel"))
+            {
+                accelerating = true;
+            }
+            else
+            {
+                accelerating = false;
+            }
+
+            if (Input.GetKey(KeyCode.C) || Input.GetKey(KeyCode.JoystickButton1))
+            {
+                braking = true;
+            }
+            else
+            {
+                braking = false;
+            }
+
+            if (accelerating && braking)
+            {
+                rolling = true;
+            }
+            else
+            {
+                rolling = false;
+            }
+
+            if (Input.GetKey(KeyCode.LeftArrow) || Input.GetAxis("Horizontal1") < -0.2)
+            {
+                rotatingLeft = true;
+            }
+            else
+            {
+                rotatingLeft = false;
+            }
+
+            if (Input.GetKey(KeyCode.RightArrow) || Input.GetAxis("Horizontal1") > 0.2)
+            {
+                rotatingRight = true;
+            }
+            else
+            {
+                rotatingRight = false;
+            }
+
+            if (Input.GetKey(KeyCode.S) || Input.GetAxis("Strafe1") < -0.1)
+            {
+                strafingLeft = true;
+                strafeValue = Input.GetAxis("Strafe1");
+            }
+            else
+            {
+                strafingLeft = false;
+            }
+
+            if (Input.GetKey(KeyCode.D) || Input.GetAxis("Strafe1") > 0.1)
+            {
+                strafingRight = true;
+                strafeValue = Input.GetAxis("Strafe1");
+            }
+            else
+            {
+                strafingRight = false;
+            }
+
+            if (Input.GetKeyDown(KeyCode.Joystick1Button4))
+            {
+                UseItem();
+            }
         }
         else
         {
-            accelerating = false;
-        }
 
-        if (Input.GetKey(KeyCode.C) || Input.GetKey(KeyCode.JoystickButton1))
-        {
-            braking = true;
-        }
-        else
-        {
-            braking = false;
-        }
-
-        if (accelerating && braking)
-        {
-            rolling = true;
-        }
-        else
-        {
-            rolling = false;
-        }
-
-        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetAxis("Horizontal1") < -0.2)
-        {
-            rotatingLeft = true;
-        }
-        else
-        {
-            rotatingLeft = false;
-        }
-
-        if (Input.GetKey(KeyCode.RightArrow) || Input.GetAxis("Horizontal1") > 0.2)
-        {
-            rotatingRight = true;
-        }
-        else
-        {
-            rotatingRight = false;
-        }
-
-        if (Input.GetKey(KeyCode.S) || Input.GetAxis("Strafe1") < -0.1)
-        {
-            strafingLeft = true;
-        }
-        else
-        {
-            strafingLeft = false;
-        }
-
-        if (Input.GetKey(KeyCode.D) || Input.GetAxis("Strafe1") > 0.1)
-        {
-            strafingRight = true;
-        }
-        else
-        {
-            strafingRight = false;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Joystick1Button4))
-        {
-            UseItem();
         }
     }
 
@@ -397,14 +460,14 @@ public class MultiplayerController : FSM
                 break;
 
             case PlayerStates.Grounded:
-                currentLayer = 6;
+                SetLayer(6);
                 sr.sortingLayerID = SortingLayer.NameToID("Players");
                 direction = new Vector2(Mathf.Cos(rb.rotation * Mathf.Deg2Rad), Mathf.Sin(rb.rotation * Mathf.Deg2Rad));
                 if (rolling)
                 {
                     if (currentSpeed > 1)
                     {
-                        rb.AddForce(rb.velocity.normalized * -(drag));
+                        rb.AddForce(rb.velocity.normalized * -(currentDrag));
                     }
                     else
                     {
@@ -418,14 +481,14 @@ public class MultiplayerController : FSM
                         rb.AddForce(direction * acceleration);
                     } else
                     {
-                        rb.AddForce(rb.velocity.normalized * -(drag / 3));
+                        rb.AddForce(rb.velocity.normalized * -(currentDrag / 3));
                     }
                 }
                 else if (braking)
                 {
                     if (currentSpeed > 0.05)
                     {
-                        rb.AddForce(rb.velocity.normalized * -(drag * 3));
+                        rb.AddForce(rb.velocity.normalized * -(currentDrag * 3));
                     }
                     else
                     {
@@ -436,13 +499,13 @@ public class MultiplayerController : FSM
                 {
                     if (currentSpeed > 0.05)
                     {
-                        rb.AddForce(rb.velocity.normalized * -drag);
+                        rb.AddForce(rb.velocity.normalized * -currentDrag);
                     }
                 }
 
                 if (currentMaxSpeed < maxSpeed)
                 {
-                    rb.AddForce(rb.velocity.normalized * -(drag * 5));
+                    rb.AddForce(rb.velocity.normalized * -(currentDrag * 5));
                 }
 
                 if (!rolling && bounceTime < Time.time)
@@ -450,15 +513,15 @@ public class MultiplayerController : FSM
 
                     if (strafingLeft && !strafingRight)
                     {
-                        currentMaxSpeed = maxSpeed + 30;
-                        float newAngle = rb.rotation - (strafingAngle * Input.GetAxis("Strafe1"));
+                        currentMaxSpeed = maxSpeed + (15 * rotationSpeed);
+                        float newAngle = rb.rotation - (strafingAngle * strafeValue);
                         Vector2 tempDirection = new Vector2(Mathf.Cos(newAngle * Mathf.Deg2Rad), Mathf.Sin(newAngle * Mathf.Deg2Rad));
                         rb.velocity = tempDirection * rb.velocity.magnitude;
                     }
                     else if (strafingRight && !strafingLeft)
                     {
-                        currentMaxSpeed = maxSpeed + 30;
-                        float newAngle = rb.rotation - (strafingAngle * Input.GetAxis("Strafe1"));
+                        currentMaxSpeed = maxSpeed + (15 * rotationSpeed);
+                        float newAngle = rb.rotation - (strafingAngle * strafeValue);
                         Vector2 tempDirection = new Vector2(Mathf.Cos(newAngle * Mathf.Deg2Rad), Mathf.Sin(newAngle * Mathf.Deg2Rad));
                         rb.velocity = tempDirection * rb.velocity.magnitude;
                     }
@@ -472,24 +535,24 @@ public class MultiplayerController : FSM
                 {
                     if (currentSpeed > 1)
                     {
-                        rb.AddForce(rb.velocity.normalized * -drag * 4);
+                        rb.AddForce(rb.velocity.normalized * -currentDrag * 4);
                     }
                 }
 
                 if (rotatingLeft && !rotatingRight)
                 {
-                    rb.rotation += (rolling ? 6f : (3f - Input.GetAxis("Strafe1") * 2f)) * rotationSpeed * Mathf.Abs(Input.GetAxis("Horizontal1"));
+                    rb.rotation += (rolling ? 6f : (3f - strafeValue * 2f)) * currentRotationSpeed * Mathf.Abs(Input.GetAxis("Horizontal1"));
                 }
                 else if (rotatingRight && !rotatingLeft)
                 {
-                    rb.rotation -= (rolling ? 6f : (3f + Input.GetAxis("Strafe1") * 2f)) * rotationSpeed * Mathf.Abs(Input.GetAxis("Horizontal1"));
+                    rb.rotation -= (rolling ? 6f : (3f + strafeValue * 2f)) * currentRotationSpeed * Mathf.Abs(Input.GetAxis("Horizontal1"));
                 }
                 break;
 
             case PlayerStates.Jumping:
                 if (airborne > 0)
                 {
-                    airborne -= 0.05f;
+                    airborne -= (braking ? 0.1f : 0.05f);
                     sr.transform.localScale = new Vector3(1 + Mathf.Abs(Mathf.Sin(airborne)), 1 + Mathf.Abs(Mathf.Sin(airborne)), 1);
                     CmdSetScale(sr.transform.localScale.x);
                     //CmdSetScale(sr.transform.localScale);
@@ -500,25 +563,25 @@ public class MultiplayerController : FSM
                 }
                 if (rotatingLeft && !rotatingRight)
                 {
-                    rb.rotation += (rolling ? 4f : (3f - Input.GetAxis("Strafe1") * 2f)) * rotationSpeed * Mathf.Abs(Input.GetAxis("Horizontal1"));
+                    rb.rotation += (rolling ? 4f : (3f - strafeValue * 2f)) * currentRotationSpeed * Mathf.Abs(Input.GetAxis("Horizontal1"));
                 }
                 else if (rotatingRight && !rotatingLeft)
                 {
-                    rb.rotation -= (rolling ? 4f : (3f + Input.GetAxis("Strafe1") * 2f)) * rotationSpeed * Mathf.Abs(Input.GetAxis("Horizontal1"));
+                    rb.rotation -= (rolling ? 4f : (3f + strafeValue * 2f)) * currentRotationSpeed * Mathf.Abs(Input.GetAxis("Horizontal1"));
                 }
                 if (strafingLeft && !strafingRight)
                 {
-                    float newAngle = rb.rotation + (60 * Input.GetAxis("Strafe1"));
+                    float newAngle = rb.rotation + (60 * strafeValue);
                     Vector2 tempDirection = new Vector2(Mathf.Cos(newAngle * Mathf.Deg2Rad), Mathf.Sin(newAngle * Mathf.Deg2Rad));
                     //rb.velocity = tempDirection * rb.velocity.magnitude;
-                    rb.AddForce(tempDirection * rb.velocity.magnitude * Input.GetAxis("Strafe1"));
+                    rb.AddForce(tempDirection * (10 + rb.velocity.magnitude / 5) * strafeValue * rotationSpeed);
                 }
                 else if (strafingRight && !strafingLeft)
                 {
-                    float newAngle = rb.rotation - (60 * Input.GetAxis("Strafe1"));
+                    float newAngle = rb.rotation - (60 * strafeValue);
                     Vector2 tempDirection = new Vector2(Mathf.Cos(newAngle * Mathf.Deg2Rad), Mathf.Sin(newAngle * Mathf.Deg2Rad));
                     //rb.velocity = tempDirection * rb.velocity.magnitude;
-                    rb.AddForce(tempDirection * (10 + rb.velocity.magnitude / 5) * Input.GetAxis("Strafe1"));
+                    rb.AddForce(tempDirection * (10 + rb.velocity.magnitude / 5) * strafeValue * rotationSpeed);
                 }
                 break;
 
@@ -528,7 +591,7 @@ public class MultiplayerController : FSM
                     sr.transform.localScale -= new Vector3(0.05f, 0.05f, 0);
                     CmdSetScale(sr.transform.localScale.x);
                 }
-                currentLayer = 10;
+                SetLayer(10);
                 CmdChangeHealth(health);
                 rb.velocity = Vector3.zero;
                 break;
@@ -537,6 +600,10 @@ public class MultiplayerController : FSM
 
     private void SetLap()
     {
+        if (lapManager == null)
+        {
+            lapManager = GameObject.FindGameObjectWithTag("LapManager").GetComponent<LapManager>();
+        }
         lapRenderer.text = string.Format("{0}/{1}", currentLap, lapManager.lapCount);
     }
     
@@ -546,12 +613,26 @@ public class MultiplayerController : FSM
         {
             currentState = PlayerStates.Jumping;
             airborne = Mathf.PI;
-            currentLayer = 8;
+            SetLayer(8);
             sr.sortingLayerID = SortingLayer.NameToID("Foreground");
         } else if (currentState == PlayerStates.Jumping && item)
         {
             airborne += Mathf.PI;
         }
+    }
+
+    [Command]
+    private void CmdSetStats(float speed, float accel, float weight, float handling)
+    {
+        this.maxSpeed = (speed * 1.5f);
+        this.acceleration = accel;
+        this.weight = weight;
+        this.rotationSpeed = handling;
+
+        maxHealth = 20 + weight * 40;
+
+        health = maxHealth;
+        CmdChangeHealth(maxHealth);
     }
 
     [Command]
@@ -761,7 +842,7 @@ public class MultiplayerController : FSM
     [Command(requiresAuthority = false)]
     private void CmdChangeHealth(float newHealth)
     {
-        if (newHealth > 100) { newHealth = 100; }
+        if (newHealth > maxHealth) { newHealth = maxHealth; }
         if (newHealth < 0) { newHealth = 0; }
         health = newHealth;
     }
@@ -778,28 +859,53 @@ public class MultiplayerController : FSM
         currentScale = scale;
     }
 
+    private void SetLayer(int layer)
+    {
+        gameObject.layer = layer;
+        CmdSetLayer(layer);
+    }
+
+    [Command]
+    private void CmdSetLayer(int layer)
+    {
+       currentLayer = layer;
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (!isLocalPlayer) { return; }
         if (collision.collider.tag == "Wall")
         {
-            bounceTime = Time.time + bounceDuration;
+            if (bounceTime > Time.time)
+            {
+                bounceTime = Time.time + bounceDuration / 2;
+            }
+            else
+            {
+                bounceTime = Time.time + bounceDuration;
+            }
             rb.velocity = Vector2.Reflect(lastSpeed, collision.contacts[0].normal);
+            rb.AddForce(collision.contacts[0].normal * 500);
             CmdChangeHealth(health - 10);
             //rb.rotation = Vector2.SignedAngle(Vector2.right, rb.velocity);
         }
         else if (collision.collider.tag == "Player")
         {
+            float weightDifference = collision.gameObject.GetComponent<MultiplayerController>().weight - weight;
+            if (weightDifference < 0.5f)
+            {
+                weightDifference = 0.5f;
+            }
             if (currentState == PlayerStates.Jumping)
             {
                 bounceTime = Time.time + bounceDuration;
-                rb.AddForce(collision.contacts[0].normal * 800);
-                CmdChangeHealth(health - 10);
+                rb.AddForce(collision.contacts[0].normal * 800 * weightDifference);
+                CmdChangeHealth(health - 10 - (6 * weightDifference));
             } else if (currentState == PlayerStates.Grounded)
             {
                 bounceTime = Time.time + bounceDuration;
-                rb.AddForce(collision.contacts[0].normal * 500);
-                CmdChangeHealth(health - 5);
+                rb.AddForce(collision.contacts[0].normal * 500 * weightDifference);
+                CmdChangeHealth(health - 5 - (3 * weightDifference));
             }
         }
         else if (collision.collider.tag == "Rebounder")
@@ -843,19 +949,25 @@ public class MultiplayerController : FSM
             bounceTime = Time.time;
             rb.rotation = Mathf.Asin(collision.gameObject.transform.rotation.z) * Mathf.Rad2Deg * 2 * Mathf.Sign(collision.gameObject.transform.rotation.w);
             rb.velocity = new Vector2(collision.gameObject.transform.rotation.w, collision.gameObject.transform.rotation.z) * 20 + new Vector2(collision.gameObject.transform.rotation.w, collision.gameObject.transform.rotation.z) * rb.velocity.magnitude;
-            Debug.Log(collision.gameObject.transform.rotation.z);
-            Debug.Log(collision.gameObject.transform.rotation.w);
         }
         else if ((collision.tag == "Checkpoint" || collision.tag == "FinishLine") && isLocalPlayer)
         {
             spawnPos = collision.transform.position;
             spawnRotation = collision.transform.eulerAngles.z;
+
+            Vector2 collisionNormal = (collision.ClosestPoint(transform.position) - new Vector2(transform.position.x, transform.position.y)).normalized;
+            collisionNormal = Vector2.Reflect(collisionNormal, Vector2.up);
+            float normalFloat = Mathf.Round(Vector2.SignedAngle(collisionNormal, Vector2.right));
+            if (normalFloat < 0)
+            {
+                normalFloat += 360;
+            }
+
             if (collision.tag == "FinishLine")
             {
-                Vector2 collisionNormal = (new Vector2(transform.position.x, transform.position.y) - collision.ClosestPoint(transform.position)).normalized;
                 if (lapManager.CheckNextLap(checkpointCount))
                 {
-                    if (collision.transform.eulerAngles.z == Mathf.Round(Vector2.SignedAngle(collisionNormal, Vector2.right)))
+                    if (collision.transform.eulerAngles.z == normalFloat)
                     {
                         currentLap++;
                     }
@@ -864,8 +976,20 @@ public class MultiplayerController : FSM
             } else
             {
                 collision.gameObject.SetActive(false);
-                checkpointCount++;
+                if (Mathf.Round(collision.transform.eulerAngles.z) == normalFloat)
+                {
+                    checkpointCount++;
+                }
             }
+        }
+        else if (collision.tag == "Ice")
+        {
+            currentDrag = 0;
+            currentRotationSpeed = rotationSpeed + 1;
+        }
+        else if (collision.tag == "Ground")
+        {
+            grounded++;
         }
     }
 
@@ -877,7 +1001,8 @@ public class MultiplayerController : FSM
             Debug.Log("Jump");
         } else if (collision.tag == "Heal" && currentState == PlayerStates.Grounded)
         {
-            CmdChangeHealth(health + 0.1f * rb.velocity.magnitude / 3);
+            health = health + 0.1f * rb.velocity.magnitude / 3;
+            CmdChangeHealth(health);
         }
         else if (collision.tag == "Booster")
         {
@@ -888,16 +1013,13 @@ public class MultiplayerController : FSM
         {
             if (rb.velocity.magnitude > currentMaxSpeed / 2)
             {
-                rb.AddForce(rb.velocity.normalized * -(drag * 6));
+                rb.AddForce(rb.velocity.normalized * -(currentDrag * 6));
             }
         }
         else if (collision.tag == "Blaster" && currentState == PlayerStates.Grounded)
         {
-            CmdChangeHealth(health - 0.3f);
-        }
-        else if (collision.tag == "Ground")
-        {
-            grounded = true;
+            health = health - 0.3f;
+            CmdChangeHealth(health);
         }
     }
 
@@ -905,11 +1027,16 @@ public class MultiplayerController : FSM
     {
         if (collision.tag == "Ground")
         {
-            if (currentState == PlayerStates.Grounded && !grounded)
+            grounded--;
+            if (currentState == PlayerStates.Grounded && grounded <= 0 && airborne <= 0)
             {
                 CmdChangeHealth(0);
             }
-            grounded = false;
+        }
+        else if (collision.tag == "Ice")
+        {
+            currentDrag = drag;
+            currentRotationSpeed = rotationSpeed;
         }
     }
 }
