@@ -23,6 +23,7 @@ public class DataManager : MonoBehaviour
     [SerializeField] private Button connect;
     [SerializeField] private Button exit;
     [SerializeField] private Button controller;
+    [SerializeField] private Button strafe;
     [SerializeField] private Sprite xbox; 
     [SerializeField] private Sprite ps4;
     [SerializeField] private NetworkManager networkManager;
@@ -44,6 +45,7 @@ public class DataManager : MonoBehaviour
     public float handling = HANDLING;
 
     public bool xboxController;
+    public bool strafeMode;
 
     public static int maxPoints = 24;
 
@@ -55,6 +57,8 @@ public class DataManager : MonoBehaviour
         connect.onClick.AddListener(Connect);
         exit.onClick.AddListener(Exit);
         controller.onClick.AddListener(ChangeController);
+        strafe.onClick.AddListener(ChangeStrafeMode);
+
 
         using (StreamReader sr = new StreamReader(Application.streamingAssetsPath + "/stats.dat"))
         {
@@ -63,6 +67,7 @@ public class DataManager : MonoBehaviour
             initWeight = float.Parse(sr.ReadLine());
             initHandling = float.Parse(sr.ReadLine());
             xboxController = sr.ReadLine() == "1";
+            strafeMode = sr.ReadLine() == "1";
         }
         using (StreamReader sr = new StreamReader(Application.streamingAssetsPath + "/levels.dat"))
         {
@@ -78,6 +83,14 @@ public class DataManager : MonoBehaviour
         else
         {
             controller.GetComponent<Image>().sprite = ps4;
+        }
+        if (strafeMode)
+        {
+            strafe.GetComponent<TextMeshProUGUI>().text = "Alternative Strafing";
+        }
+        else
+        {
+            strafe.GetComponent<TextMeshProUGUI>().text = "Classic Strafing";
         }
         instance = this;
     }
@@ -124,7 +137,21 @@ public class DataManager : MonoBehaviour
         {
             controller.GetComponent<Image>().sprite = ps4;
         }
-        SetStats();
+        WriteStats();
+    }
+
+    private void ChangeStrafeMode()
+    {
+        strafeMode = !strafeMode;
+        if (strafeMode)
+        {
+            strafe.GetComponent<TextMeshProUGUI>().text = "Alternative Strafing";
+        }
+        else
+        {
+            strafe.GetComponent<TextMeshProUGUI>().text = "Classic Strafing";
+        }
+        WriteStats();
     }
 
     public void UsernameEdit(string username)
@@ -137,25 +164,16 @@ public class DataManager : MonoBehaviour
         DataManager.ipAddress = ipAddress;
     }
 
-    public void SetStats()
-    {
-        using (StreamWriter sw = new StreamWriter(Application.streamingAssetsPath + "/stats.dat"))
-        {
-            sw.WriteLine(speed);
-            sw.WriteLine(acceleration);
-            sw.WriteLine(weight);
-            sw.WriteLine(handling);
-            sw.WriteLine(xboxController ? 1 : 0);
-        }
-    }
-
     public void SetStats(float speed, float acceleration, float weight, float handling)
     {
         this.speed = speed;
         this.acceleration = acceleration;
         this.weight = weight / 5;
         this.handling = handling / 10;
+    }
 
+    public void WriteStats()
+    {
         using (StreamWriter sw = new StreamWriter(Application.streamingAssetsPath + "/stats.dat"))
         {
             sw.WriteLine(this.speed);
@@ -163,6 +181,7 @@ public class DataManager : MonoBehaviour
             sw.WriteLine(this.weight);
             sw.WriteLine(this.handling);
             sw.WriteLine(xboxController ? 1 : 0);
+            sw.Write(strafeMode ? 1 : 0);
         }
     }
 }

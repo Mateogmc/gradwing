@@ -55,6 +55,17 @@ public class LobbyUIManager : MonoBehaviour
         startGame.gameObject.SetActive(NetworkServer.active);
     }
 
+    private void Update()
+    {
+        if (LobbyManager.GetInstance().gameReady)
+        {
+            startGame.gameObject.SetActive(true);
+        } else
+        {
+            startGame.gameObject.SetActive(false);
+        }
+    }
+
     private void SliderChange(int stat)
     {
         if (velocity.value + acceleration.value + weight.value + handling.value > DataManager.maxPoints)
@@ -93,6 +104,7 @@ public class LobbyUIManager : MonoBehaviour
     private void SetStats()
     {
         EditStats();
+        DataManager.GetInstance().WriteStats();
         NetworkClient.localPlayer.gameObject.GetComponent<MultiplayerController>().Restart();
     }
 

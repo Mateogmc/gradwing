@@ -11,7 +11,9 @@ public enum Items
     Jump,
     Trap,
     Rebounder,
-    Laser
+    Laser,
+    Boost,
+    Missile
 }
 
 public class ItemBox : NetworkBehaviour
@@ -23,9 +25,21 @@ public class ItemBox : NetworkBehaviour
     [SerializeField] SpriteRenderer iconRenderer;
     float respawnTimer = 0f;
 
-    private string[] items = { "Shield", "Jump", "Trap", "Rebounder", "Laser" };
+    private string[] items = { "Shield", "Jump", "Trap", "Rebounder", "Laser", "Boost", "Missile"};
 
-    private float[] itemWeights = { 0.2f, 0.15f, 0.3f, 0.2f, 0.15f };
+    private float[] itemWeights = { 0.2f, 0.1f, 0.15f, 0.15f, 0.10f, 0.2f, 0.1f };
+
+    /*private float[,] itemWeights = new float[,] 
+    {
+        { 0.2f, 0.15f, 0.3f, 0.2f, 0.15f },
+        { 0.2f, 0.15f, 0.3f, 0.2f, 0.15f },
+        { 0.2f, 0.15f, 0.3f, 0.2f, 0.15f },
+        { 0.2f, 0.15f, 0.3f, 0.2f, 0.15f },
+        { 0.2f, 0.15f, 0.3f, 0.2f, 0.15f },
+        { 0.2f, 0.15f, 0.3f, 0.2f, 0.15f },
+        { 0.2f, 0.15f, 0.3f, 0.2f, 0.15f },
+        { 0.2f, 0.15f, 0.3f, 0.2f, 0.15f }
+    };*/
 
     private void Update()
     {

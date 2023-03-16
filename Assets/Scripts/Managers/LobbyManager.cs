@@ -24,6 +24,8 @@ public class LobbyManager : NetworkBehaviour
 
     private List<int> levels = new List<int>();
 
+    public bool gameReady = false;
+
     [SyncVar(hook = nameof(Level1Change))] private int level1;
     [SyncVar(hook = nameof(Level2Change))] private int level2;
     [SyncVar(hook = nameof(Level3Change))] private int level3;
@@ -64,7 +66,7 @@ public class LobbyManager : NetworkBehaviour
 
         if (level1 + level2 + level3 >= playerCount)
         {
-
+            gameReady = true;
         }
     }
 

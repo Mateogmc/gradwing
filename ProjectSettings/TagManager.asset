@@ -12,6 +12,8 @@ TagManager:
   - Rebounder
   - Laser
   - Gravel
+  - DataManager
+  - Missile
   layers:
   - Default
   - TransparentFX
@@ -25,7 +27,7 @@ TagManager:
   - RebounderJump
   - PlayerDead
   - GroundedElements
-  - 
+  - Missile
   - 
   - 
   - 

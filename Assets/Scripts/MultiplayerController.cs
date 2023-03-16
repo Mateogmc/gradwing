@@ -69,14 +69,16 @@ public class MultiplayerController : FSM
     [SerializeField] Sprite trap;
     [SerializeField] Sprite rebounder;
     [SerializeField] Sprite laser;
+    [SerializeField] Sprite boost;
+    [SerializeField] Sprite missile;
     [SerializeField] Image itemSprite;
 
     [SyncVar(hook = nameof(OnShieldChange))] float shielded = 0f;
     float slowTimer = 0f;
 
     [SerializeField] GameObject trapPrefab;
-
     [SerializeField] GameObject rebounderPrefab;
+    [SerializeField] GameObject missilePrefab;
     Vector3 itemPosition;
 
     [SerializeField] GameObject laserHit;
@@ -92,11 +94,13 @@ public class MultiplayerController : FSM
 
     // Lap Manager
     [SerializeField] GameObject lapTextRenderer;
-    int currentLap = 1;
+    [SyncVar(hook = nameof(OnLapChange))] int currentLap = 0;
+    [SyncVar(hook = nameof(OnCheckpointChange))] int currentCheckpoint;
     LapManager lapManager;
     int checkpointCount = 0;
     Vector2 spawnPos = Vector2.zero;
     float spawnRotation = 0;
+    public int placement;
 
     // Interface
     [SerializeField] TextMeshProUGUI lapRenderer;
@@ -108,6 +112,7 @@ public class MultiplayerController : FSM
     [SerializeField] Canvas ui;
     [SerializeField] TextMeshProUGUI username;
     [SerializeField] SpriteRenderer shieldRenderer;
+    [SerializeField] Image placementNumber;
 
     public override void OnStartLocalPlayer()
     {
@@ -130,6 +135,7 @@ public class MultiplayerController : FSM
         rb.rotation = 90;
         currentRotationSpeed = rotationSpeed;
         currentDrag = drag;
+        currentCheckpoint = 0;
         dataManager = GameObject.FindGameObjectWithTag("DataManager").GetComponent<DataManager>();
         GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraMovement>().Initialize(gameObject);
         Restart();
@@ -175,6 +181,10 @@ public class MultiplayerController : FSM
             currentState = PlayerStates.Dead;
             dead = Time.time + deathTimer;
         }
+        else if (health > 0f && currentState == PlayerStates.Dead)
+        {
+            currentState = PlayerStates.Grounded;
+        }
         if (currentState == PlayerStates.Dead && dead < Time.time)
         {
             Restart();
@@ -196,9 +206,9 @@ public class MultiplayerController : FSM
             CmdLaserHit(transform.position + new Vector3(direction.x, direction.y, 0) * 2, direction);
             firingLaser = false;
             lineRenderer.enabled = false;
+            CmdUseItem();
             currentItem = Items.None;
             itemSprite.sprite = none;
-            CmdUseItem();
         }
     }
 
@@ -225,10 +235,13 @@ public class MultiplayerController : FSM
         }
         if (isLocalPlayer && GameStateManager.GetInstance().gameState == GameStateManager.GameState.Running)
         {
-            SetLap();
             if (!lapTextRenderer.activeSelf)
             {
                 lapTextRenderer.SetActive(true);
+            }
+            if (!placementNumber.gameObject.activeSelf)
+            {
+                placementNumber.gameObject.SetActive(true);
             }
             enemyInterface.enabled = false;
         }
@@ -238,8 +251,17 @@ public class MultiplayerController : FSM
             {
                 lapTextRenderer.SetActive(false);
             }
+            if (placementNumber.gameObject.activeSelf)
+            {
+                placementNumber.gameObject.SetActive(false);
+            }
             enemyInterface.enabled = false;
         }
+    }
+
+    private void SetPlacementImage()
+    {
+        placementNumber.sprite = Resources.Load<Sprite>("UI/placement" + placement);
     }
 
     public void Restart()
@@ -247,14 +269,15 @@ public class MultiplayerController : FSM
         transform.position = spawnPos;
         transform.eulerAngles = new Vector3(0, 0, spawnRotation);
         CmdSetStats(DataManager.MAX_SPEED + dataManager.speed, DataManager.ACCELERATION + dataManager.acceleration, DataManager.WEIGHT + dataManager.weight, DataManager.HANDLING + dataManager.handling);
+        CmdChangeHealth(maxHealth);
         healthBar.value = 0f;
         playerHealthBar.value = 0f;
         rb.velocity = Vector3.zero;
         rb.rotation = 90;
-        currentState = PlayerStates.Grounded;
         sr.transform.localScale = Vector3.one;
         CmdSetScale(sr.transform.localScale.x);
         xboxController = DataManager.GetInstance().xboxController;
+        SetPlacementImage();
         SetLayer(6);
     }
 
@@ -321,6 +344,15 @@ public class MultiplayerController : FSM
         rotationSpeed = newHandling;
     }
 
+    private void OnLapChange(int oldLap, int newLap)
+    {
+        currentLap = newLap;
+    }
+    private void OnCheckpointChange(int oldCheckpoint, int newCheckpoint)
+    {
+        currentLap = newCheckpoint;
+    }
+
     private void OnItemChange(Items oldItem, Items newItem)
     {
         switch (newItem)
@@ -359,6 +391,18 @@ public class MultiplayerController : FSM
                 itemSprite.sprite = laser;
                 playerItemSprite.sprite = laser;
                 currentItem = Items.Laser;
+                break;
+
+            case Items.Boost:
+                currentItem = Items.Boost;
+                itemSprite.sprite = boost;
+                playerItemSprite.sprite = boost;
+                break;
+
+            case Items.Missile:
+                currentItem = Items.Missile;
+                itemSprite.sprite = missile;
+                playerItemSprite.sprite = missile;
                 break;
         }
     }
@@ -586,19 +630,29 @@ public class MultiplayerController : FSM
                 if (!rolling && bounceTime < Time.time)
                 {
 
-                    if (strafingLeft && !strafingRight)
+                    if (!DataManager.GetInstance().strafeMode && (strafingLeft || strafingRight))
                     {
                         currentMaxSpeed = maxSpeed + (15 * rotationSpeed);
                         float newAngle = rb.rotation - (strafingAngle * strafeValue);
                         Vector2 tempDirection = new Vector2(Mathf.Cos(newAngle * Mathf.Deg2Rad), Mathf.Sin(newAngle * Mathf.Deg2Rad));
                         rb.velocity = tempDirection * rb.velocity.magnitude;
                     }
-                    else if (strafingRight && !strafingLeft)
+                    else if (DataManager.GetInstance().strafeMode)
                     {
-                        currentMaxSpeed = maxSpeed + (15 * rotationSpeed);
-                        float newAngle = rb.rotation - (strafingAngle * strafeValue);
-                        Vector2 tempDirection = new Vector2(Mathf.Cos(newAngle * Mathf.Deg2Rad), Mathf.Sin(newAngle * Mathf.Deg2Rad));
-                        rb.velocity = tempDirection * rb.velocity.magnitude;
+                        if (rotatingLeft)
+                        {
+                            currentMaxSpeed = maxSpeed + (15 * rotationSpeed);
+                            float newAngle = rb.rotation + (strafingAngle * strafeValue);
+                            Vector2 tempDirection = new Vector2(Mathf.Cos(newAngle * Mathf.Deg2Rad), Mathf.Sin(newAngle * Mathf.Deg2Rad));
+                            rb.velocity = tempDirection * rb.velocity.magnitude;
+                        }
+                        else if (DataManager.GetInstance().strafeMode && rotatingRight)
+                        {
+                            currentMaxSpeed = maxSpeed + (15 * rotationSpeed);
+                            float newAngle = rb.rotation - (strafingAngle * strafeValue);
+                            Vector2 tempDirection = new Vector2(Mathf.Cos(newAngle * Mathf.Deg2Rad), Mathf.Sin(newAngle * Mathf.Deg2Rad));
+                            rb.velocity = tempDirection * rb.velocity.magnitude;
+                        }
                     }
                     else
                     {
@@ -616,7 +670,7 @@ public class MultiplayerController : FSM
 
                 if (rotatingLeft && !rotatingRight)
                 {
-                    rb.rotation += (rolling ? 6f : (3f - strafeValue * 2f)) * currentRotationSpeed * Mathf.Abs(Input.GetAxis("Horizontal1"));
+                    rb.rotation += (rolling ? 6f : (3f + (DataManager.GetInstance().strafeMode ? strafeValue : - strafeValue) * 2f)) * currentRotationSpeed * Mathf.Abs(Input.GetAxis("Horizontal1"));
                 }
                 else if (rotatingRight && !rotatingLeft)
                 {
@@ -646,17 +700,17 @@ public class MultiplayerController : FSM
                 }
                 if (strafingLeft && !strafingRight)
                 {
-                    float newAngle = rb.rotation + (60 * strafeValue);
+                    float newAngle = rb.rotation - (30 * strafeValue);
                     Vector2 tempDirection = new Vector2(Mathf.Cos(newAngle * Mathf.Deg2Rad), Mathf.Sin(newAngle * Mathf.Deg2Rad));
-                    //rb.velocity = tempDirection * rb.velocity.magnitude;
-                    rb.AddForce(tempDirection * (10 + rb.velocity.magnitude / 5) * strafeValue * rotationSpeed);
+                    rb.velocity = tempDirection * rb.velocity.magnitude;
+                    //rb.AddForce(tempDirection * 30 * strafeValue * rotationSpeed);
                 }
                 else if (strafingRight && !strafingLeft)
                 {
-                    float newAngle = rb.rotation - (60 * strafeValue);
+                    float newAngle = rb.rotation - (30 * strafeValue);
                     Vector2 tempDirection = new Vector2(Mathf.Cos(newAngle * Mathf.Deg2Rad), Mathf.Sin(newAngle * Mathf.Deg2Rad));
-                    //rb.velocity = tempDirection * rb.velocity.magnitude;
-                    rb.AddForce(tempDirection * (10 + rb.velocity.magnitude / 5) * strafeValue * rotationSpeed);
+                    rb.velocity = tempDirection * rb.velocity.magnitude;
+                    //rb.AddForce(tempDirection * 30 * strafeValue * rotationSpeed);
                 }
                 break;
 
@@ -696,9 +750,16 @@ public class MultiplayerController : FSM
         }
     }
 
+    private void Boost(Vector2 direction, float force)
+    {
+        bounceTime = Time.time;
+        rb.velocity = direction * force + rb.velocity;
+    }
+
     [Command]
     private void CmdSetStats(float speed, float accel, float weight, float handling)
     {
+        currentState = PlayerStates.Grounded;
         this.maxSpeed = (speed * 1.5f);
         this.acceleration = accel;
         this.weight = weight;
@@ -798,6 +859,13 @@ public class MultiplayerController : FSM
         Instantiate(laserPoint, pos, Quaternion.Euler(0, 0, Time.time * 100));
     }
 
+    [Command]
+    private void CmdMissile(Vector2 pos)
+    {
+        GameObject mis = Instantiate(missilePrefab, pos, Quaternion.identity);
+        NetworkServer.Spawn(mis);
+    }
+
     #endregion
 
     public void Hit(float damage)
@@ -860,7 +928,16 @@ public class MultiplayerController : FSM
 
             case Items.Laser:
                 CmdLaser();
-                return;
+                break;
+
+            case Items.Boost:
+                Boost(direction, 30);
+                break;
+
+            case Items.Missile:
+                itemPosition = transform.position + new Vector3(direction.x, direction.y, 0) * 5;
+                CmdMissile(itemPosition);
+                break;
         }
         currentItem = Items.None;
         itemSprite.sprite = none;
@@ -903,6 +980,18 @@ public class MultiplayerController : FSM
                 itemSprite.sprite = laser;
                 playerItemSprite.sprite = laser;
                 break;
+
+            case "Boost":
+                currentItem = Items.Boost;
+                itemSprite.sprite = boost;
+                playerItemSprite.sprite = boost;
+                break;
+
+            case "Missile":
+                currentItem = Items.Missile;
+                itemSprite.sprite = missile;
+                playerItemSprite.sprite = missile;
+                break;
         }
     }
 
@@ -944,6 +1033,47 @@ public class MultiplayerController : FSM
     private void CmdSetLayer(int layer)
     {
        currentLayer = layer;
+    }
+
+    [Command]
+    private void CmdSetState(PlayerStates state)
+    {
+        currentState = state;
+    }
+
+    [Command]
+    private void CmdSetCheckpoint(int checkpoint)
+    {
+        currentCheckpoint = checkpoint;
+        RpcCheckPosition();
+    }
+
+    [ClientRpc]
+    private void RpcCheckPosition()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        placement = 1;
+
+        foreach (GameObject player in players)
+        {
+            if (player != gameObject)
+            {
+                MultiplayerController controller = player.GetComponent<MultiplayerController>();
+                if (controller.currentLap == currentLap)
+                {
+                    if (controller.currentCheckpoint >= currentCheckpoint)
+                    {
+                        placement++;
+                    }
+                }
+                else if (controller.currentLap > currentLap)
+                {
+                    placement++;
+                }
+            }
+        }
+        SetPlacementImage();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -1003,6 +1133,23 @@ public class MultiplayerController : FSM
                 rb.AddForce(collision.contacts[0].normal * 1000);
             }
         }
+        else if (collision.collider.tag == "Missile")
+        {
+            if (currentState == PlayerStates.Jumping)
+            {
+                CmdRemoveItem(collision.gameObject);
+                bounceTime = Time.time + bounceDuration;
+                rb.AddForce(collision.contacts[0].normal * 1400);
+                Hit(80, 40, 10);
+            }
+            else if (currentState == PlayerStates.Grounded)
+            {
+                CmdRemoveItem(collision.gameObject);
+                bounceTime = Time.time + bounceDuration;
+                Hit(80, 40, 10);
+                rb.AddForce(collision.contacts[0].normal * 1000);
+            }
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -1024,9 +1171,8 @@ public class MultiplayerController : FSM
         }
         else if (collision.tag == "Booster")
         {
-            bounceTime = Time.time;
             rb.rotation = Mathf.Asin(collision.gameObject.transform.rotation.z) * Mathf.Rad2Deg * 2 * Mathf.Sign(collision.gameObject.transform.rotation.w);
-            rb.velocity = new Vector2(collision.gameObject.transform.rotation.w, collision.gameObject.transform.rotation.z) * 20 + new Vector2(collision.gameObject.transform.rotation.w, collision.gameObject.transform.rotation.z) * rb.velocity.magnitude;
+            Boost(new Vector2(collision.gameObject.transform.rotation.w, collision.gameObject.transform.rotation.z), 20);
         }
         else if ((collision.tag == "Checkpoint" || collision.tag == "FinishLine") && isLocalPlayer)
         {
@@ -1043,21 +1189,27 @@ public class MultiplayerController : FSM
 
             if (collision.tag == "FinishLine")
             {
-                if (lapManager.CheckNextLap(checkpointCount))
+                if (lapManager == null)
                 {
-                    if (collision.transform.eulerAngles.z == normalFloat)
-                    {
-                        currentLap++;
-                    }
+                    lapManager = GameObject.FindGameObjectWithTag("LapManager").GetComponent<LapManager>();
                 }
-                checkpointCount = 0;
+                if (collision.transform.eulerAngles.z == normalFloat && lapManager.CheckNextLap(checkpointCount))
+                {
+                    currentLap++;
+                    SetLap();
+                    checkpointCount = 0;
+                }
+                Debug.Log(currentLap);
+                CmdSetCheckpoint(0);
             } else
             {
-                collision.gameObject.SetActive(false);
                 if (Mathf.Round(collision.transform.eulerAngles.z) == normalFloat)
                 {
                     checkpointCount++;
+                    currentCheckpoint = (collision.gameObject.GetComponent<CheckpointValue>().checkpointNumber > currentCheckpoint ? collision.gameObject.GetComponent<CheckpointValue>().checkpointNumber : currentCheckpoint);
+                    CmdSetCheckpoint(currentCheckpoint);
                 }
+                collision.gameObject.SetActive(false);
             }
         }
         else if (collision.tag == "Ice")
@@ -1065,10 +1217,15 @@ public class MultiplayerController : FSM
             currentDrag = 0;
             currentRotationSpeed = rotationSpeed + 1;
         }
-        else if (collision.tag == "Ground")
+        else if (collision.tag == "Ground" || collision.tag == "Ramp")
         {
-            Debug.Log("Enter");
             grounded++;
+        }
+        else if (collision.tag == "StartPosition")
+        {
+            placement = collision.GetComponent<StartPosition>().GetPosition();
+            SetPlacementImage();
+            CmdSetCheckpoint(-placement);
         }
     }
 
@@ -1080,7 +1237,9 @@ public class MultiplayerController : FSM
             Debug.Log("Jump");
         } else if (collision.tag == "Heal" && currentState == PlayerStates.Grounded)
         {
-            health = health + 0.1f * rb.velocity.magnitude / 3;
+            health = health + 0.25f;
+            playerHealthBar.value = maxHealth - health;
+            healthBar.value = maxHealth - health;
             CmdChangeHealth(health);
         }
         else if (collision.tag == "Booster")
@@ -1097,18 +1256,21 @@ public class MultiplayerController : FSM
         }
         else if (collision.tag == "Blaster" && currentState == PlayerStates.Grounded)
         {
+            if (shielded > Time.time) { return; }
             health = health - 0.3f;
+            playerHealthBar.value = maxHealth - health;
+            healthBar.value = maxHealth - health;
             CmdChangeHealth(health);
         }
-        else if (collision.tag == "Ground")
+        else if (collision.tag == "Magnet" && currentState == PlayerStates.Jumping)
         {
-
+            airborne -= 0.05f;
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag == "Ground")
+        if (collision.tag == "Ground" || collision.tag == "Ramp")
         {
             grounded--;
             if (currentState == PlayerStates.Grounded && grounded <= 0 && airborne <= 0)

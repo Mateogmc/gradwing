@@ -67,3 +67,14 @@
 
 *Version 0.10.2*
 - Added support for Playstation controller
+
+*Version 0.10.3*
+- Added different control system:
+	- Classic mode: Right trigger aims wing to the right, left trigger aims wing to the left
+	- Alternative mode: Right trigger closes curves, left trigger opens them
+	
+*Version 0.11*
+- Added rudimentary lap and placement system
+- Added new items:
+	- Boost
+	- Missile
