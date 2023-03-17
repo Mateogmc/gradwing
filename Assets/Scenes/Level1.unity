@@ -128,7 +128,6 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2222177984277078000, guid: 1b91b242f69f85e42a3ea754c35b7c13, type: 3}
@@ -192,14 +191,12 @@ PrefabInstance:
       value: Booster (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 1b91b242f69f85e42a3ea754c35b7c13, type: 3}
 --- !u!1001 &52578908
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 2051942306}
     m_Modifications:
     - target: {fileID: 387093962733669579, guid: bfa5a415858b9004885fa182fb0d49ea, type: 3}
@@ -208,7 +205,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8571678843599151708, guid: bfa5a415858b9004885fa182fb0d49ea, type: 3}
       propertyPath: m_RootOrder
-      value: -1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8571678843599151708, guid: bfa5a415858b9004885fa182fb0d49ea, type: 3}
       propertyPath: m_LocalPosition.x
@@ -259,7 +256,6 @@ PrefabInstance:
       value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: bfa5a415858b9004885fa182fb0d49ea, type: 3}
 --- !u!4 &52578909 stripped
 Transform:
@@ -271,7 +267,6 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 740248484}
     m_Modifications:
     - target: {fileID: 3191525679973500698, guid: a4f2d7eeb923dfa4d943516534dbcade, type: 3}
@@ -327,7 +322,6 @@ PrefabInstance:
       value: 220016342
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: a4f2d7eeb923dfa4d943516534dbcade, type: 3}
 --- !u!4 &73839128 stripped
 Transform:
@@ -339,12 +333,11 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 1745514951}
     m_Modifications:
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_RootOrder
-      value: 18
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_LocalScale.x
@@ -396,14 +389,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3627761119804828845, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: checkpointNumber
-      value: 17
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 6405409393819173757, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_Name
       value: Checkpoint (18)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
 --- !u!4 &76970564 stripped
 Transform:
@@ -415,7 +407,6 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 740248484}
     m_Modifications:
     - target: {fileID: 3191525679973500698, guid: a4f2d7eeb923dfa4d943516534dbcade, type: 3}
@@ -471,7 +462,6 @@ PrefabInstance:
       value: 2336298069
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: a4f2d7eeb923dfa4d943516534dbcade, type: 3}
 --- !u!4 &109253033 stripped
 Transform:
@@ -483,7 +473,6 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2895820984366022359, guid: 30a50ac2a940b074b8eb1c5d8c8d5a7c, type: 3}
@@ -555,7 +544,6 @@ PrefabInstance:
       value: JumpPad (2)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 30a50ac2a940b074b8eb1c5d8c8d5a7c, type: 3}
 --- !u!1 &155069805
 GameObject:
@@ -596,6 +584,8 @@ MonoBehaviour:
       rightTangent: {x: 0.029182434, y: 0.028076172, z: 0}
       mode: 1
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -604,6 +594,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -612,6 +604,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -620,6 +614,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -628,6 +624,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -636,6 +634,8 @@ MonoBehaviour:
       rightTangent: {x: -15.525932, y: 4.3862457, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -644,6 +644,8 @@ MonoBehaviour:
       rightTangent: {x: -9.171753, y: 10.798828, z: 0}
       mode: 1
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -652,6 +654,8 @@ MonoBehaviour:
       rightTangent: {x: -0.9768677, y: 15.133663, z: 0}
       mode: 1
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -660,6 +664,8 @@ MonoBehaviour:
       rightTangent: {x: 9.652344, y: 16.259354, z: 0}
       mode: 1
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -668,6 +674,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -676,6 +684,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -695,8 +705,6 @@ MonoBehaviour:
   m_EnableTangents: 0
   m_GeometryCached: 0
   m_UTess2D: 0
-  m_Creator: {fileID: 0}
-  m_Modifiers: []
 --- !u!1971053207 &155069807
 SpriteShapeRenderer:
   m_ObjectHideFlags: 0
@@ -755,7 +763,6 @@ SpriteShapeRenderer:
   m_LocalAABB:
     m_Center: {x: -35.9195, y: -73.39337, z: 0}
     m_Extent: {x: 58.433872, y: 74.44328, z: 0}
-  m_SpriteSortPoint: 0
 --- !u!4 &155069808
 Transform:
   m_ObjectHideFlags: 0
@@ -769,7 +776,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 723986718}
-  m_RootOrder: -1
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!68 &155069809
 EdgeCollider2D:
@@ -868,7 +875,6 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 2051942306}
     m_Modifications:
     - target: {fileID: 387093962733669579, guid: bfa5a415858b9004885fa182fb0d49ea, type: 3}
@@ -877,7 +883,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8571678843599151708, guid: bfa5a415858b9004885fa182fb0d49ea, type: 3}
       propertyPath: m_RootOrder
-      value: -1
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8571678843599151708, guid: bfa5a415858b9004885fa182fb0d49ea, type: 3}
       propertyPath: m_LocalPosition.x
@@ -928,7 +934,6 @@ PrefabInstance:
       value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: bfa5a415858b9004885fa182fb0d49ea, type: 3}
 --- !u!4 &201643489 stripped
 Transform:
@@ -940,7 +945,6 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2412888915518166861, guid: 20df7219e9fa54e49ac52c113510ed39, type: 3}
@@ -996,19 +1000,17 @@ PrefabInstance:
       value: RaceManager
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 20df7219e9fa54e49ac52c113510ed39, type: 3}
 --- !u!1001 &319980254
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 1745514951}
     m_Modifications:
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_RootOrder
-      value: 18
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_LocalScale.x
@@ -1020,11 +1022,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -23.1
+      value: -23.099998
       objectReference: {fileID: 0}
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -127.5
+      value: -127.50001
       objectReference: {fileID: 0}
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1036,11 +1038,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_LocalRotation.z
@@ -1060,14 +1062,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3627761119804828845, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: checkpointNumber
-      value: 19
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 6405409393819173757, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_Name
       value: Checkpoint (20)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
 --- !u!4 &319980255 stripped
 Transform:
@@ -1079,7 +1080,6 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2222177984277078000, guid: 1b91b242f69f85e42a3ea754c35b7c13, type: 3}
@@ -1143,14 +1143,12 @@ PrefabInstance:
       value: Booster (2)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 1b91b242f69f85e42a3ea754c35b7c13, type: 3}
 --- !u!1001 &364876128
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 740248484}
     m_Modifications:
     - target: {fileID: 3191525679973500698, guid: a4f2d7eeb923dfa4d943516534dbcade, type: 3}
@@ -1206,7 +1204,6 @@ PrefabInstance:
       value: 4105322659
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: a4f2d7eeb923dfa4d943516534dbcade, type: 3}
 --- !u!4 &364876129 stripped
 Transform:
@@ -1218,7 +1215,6 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 740248484}
     m_Modifications:
     - target: {fileID: 3191525679973500698, guid: a4f2d7eeb923dfa4d943516534dbcade, type: 3}
@@ -1274,7 +1270,6 @@ PrefabInstance:
       value: 4195769082
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: a4f2d7eeb923dfa4d943516534dbcade, type: 3}
 --- !u!4 &370211585 stripped
 Transform:
@@ -1286,7 +1281,6 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 740248484}
     m_Modifications:
     - target: {fileID: 3191525679973500698, guid: a4f2d7eeb923dfa4d943516534dbcade, type: 3}
@@ -1342,7 +1336,6 @@ PrefabInstance:
       value: 4240926662
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: a4f2d7eeb923dfa4d943516534dbcade, type: 3}
 --- !u!4 &391989973 stripped
 Transform:
@@ -1354,12 +1347,11 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 1745514951}
     m_Modifications:
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_RootOrder
-      value: 18
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_LocalScale.x
@@ -1418,7 +1410,6 @@ PrefabInstance:
       value: Checkpoint (5)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
 --- !u!4 &409036528 stripped
 Transform:
@@ -1430,7 +1421,6 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 740248484}
     m_Modifications:
     - target: {fileID: 3191525679973500698, guid: a4f2d7eeb923dfa4d943516534dbcade, type: 3}
@@ -1486,7 +1476,6 @@ PrefabInstance:
       value: 2141550657
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: a4f2d7eeb923dfa4d943516534dbcade, type: 3}
 --- !u!4 &444006049 stripped
 Transform:
@@ -1498,12 +1487,11 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 1745514951}
     m_Modifications:
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_RootOrder
-      value: 18
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_LocalScale.x
@@ -1562,7 +1550,6 @@ PrefabInstance:
       value: Checkpoint (7)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
 --- !u!4 &472954141 stripped
 Transform:
@@ -1574,7 +1561,6 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 1745514951}
     m_Modifications:
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
@@ -1631,14 +1617,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3627761119804828845, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: checkpointNumber
-      value: 18
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 6405409393819173757, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_Name
       value: Checkpoint (19)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
 --- !u!4 &506618071 stripped
 Transform:
@@ -1650,7 +1635,6 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 740248484}
     m_Modifications:
     - target: {fileID: 3191525679973500698, guid: a4f2d7eeb923dfa4d943516534dbcade, type: 3}
@@ -1706,7 +1690,6 @@ PrefabInstance:
       value: 1408176422
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: a4f2d7eeb923dfa4d943516534dbcade, type: 3}
 --- !u!4 &564250708 stripped
 Transform:
@@ -1718,12 +1701,11 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 1745514951}
     m_Modifications:
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_RootOrder
-      value: 18
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_LocalScale.x
@@ -1782,7 +1764,6 @@ PrefabInstance:
       value: Checkpoint
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
 --- !u!4 &589383994 stripped
 Transform:
@@ -1794,7 +1775,6 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 740248484}
     m_Modifications:
     - target: {fileID: 3191525679973500698, guid: a4f2d7eeb923dfa4d943516534dbcade, type: 3}
@@ -1850,7 +1830,6 @@ PrefabInstance:
       value: 2318029232
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: a4f2d7eeb923dfa4d943516534dbcade, type: 3}
 --- !u!4 &639284259 stripped
 Transform:
@@ -1862,7 +1841,6 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 2051942306}
     m_Modifications:
     - target: {fileID: 387093962733669579, guid: bfa5a415858b9004885fa182fb0d49ea, type: 3}
@@ -1871,7 +1849,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8571678843599151708, guid: bfa5a415858b9004885fa182fb0d49ea, type: 3}
       propertyPath: m_RootOrder
-      value: -1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8571678843599151708, guid: bfa5a415858b9004885fa182fb0d49ea, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1922,7 +1900,6 @@ PrefabInstance:
       value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: bfa5a415858b9004885fa182fb0d49ea, type: 3}
 --- !u!4 &690172238 stripped
 Transform:
@@ -1934,7 +1911,6 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2895820984366022359, guid: 30a50ac2a940b074b8eb1c5d8c8d5a7c, type: 3}
@@ -2006,7 +1982,6 @@ PrefabInstance:
       value: JumpPad (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 30a50ac2a940b074b8eb1c5d8c8d5a7c, type: 3}
 --- !u!1 &723986717
 GameObject:
@@ -2074,16 +2049,16 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 391989973}
-  - {fileID: 989016277}
+  - {fileID: 109253033}
   - {fileID: 364876129}
-  - {fileID: 73839128}
+  - {fileID: 370211585}
+  - {fileID: 391989973}
   - {fileID: 444006049}
   - {fileID: 564250708}
-  - {fileID: 370211585}
-  - {fileID: 109253033}
-  - {fileID: 1608287754}
   - {fileID: 639284259}
+  - {fileID: 989016277}
+  - {fileID: 1608287754}
+  - {fileID: 73839128}
   m_Father: {fileID: 0}
   m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2092,7 +2067,6 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2895820984366022359, guid: 30a50ac2a940b074b8eb1c5d8c8d5a7c, type: 3}
@@ -2164,7 +2138,6 @@ PrefabInstance:
       value: JumpPad
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 30a50ac2a940b074b8eb1c5d8c8d5a7c, type: 3}
 --- !u!1 &759488738
 GameObject:
@@ -2198,7 +2171,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1420149827}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &759488740
 MonoBehaviour:
@@ -2220,6 +2193,8 @@ MonoBehaviour:
       rightTangent: {x: -0.14637756, y: 0.0001296997, z: 0}
       mode: 1
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -2228,6 +2203,8 @@ MonoBehaviour:
       rightTangent: {x: 10.100281, y: 19.871967, z: 0}
       mode: 1
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -2236,6 +2213,8 @@ MonoBehaviour:
       rightTangent: {x: 15.920471, y: 13.181625, z: 0}
       mode: 1
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -2244,6 +2223,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -2252,6 +2233,8 @@ MonoBehaviour:
       rightTangent: {x: 1.0005798, y: 0.0016937256, z: 0}
       mode: 1
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -2260,6 +2243,8 @@ MonoBehaviour:
       rightTangent: {x: -2.200348, y: 0.124816895, z: 0}
       mode: 1
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -2268,6 +2253,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -2276,6 +2263,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -2284,6 +2273,8 @@ MonoBehaviour:
       rightTangent: {x: -0.66638184, y: 1.2672768, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -2292,6 +2283,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -2300,6 +2293,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -2308,6 +2303,8 @@ MonoBehaviour:
       rightTangent: {x: 1.1486206, y: -1.6675415, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -2316,6 +2313,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -2324,6 +2323,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -2332,6 +2333,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -2340,6 +2343,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -2348,6 +2353,8 @@ MonoBehaviour:
       rightTangent: {x: -0.6317444, y: -1.4208069, z: 0}
       mode: 1
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -2356,6 +2363,8 @@ MonoBehaviour:
       rightTangent: {x: -24.057907, y: 4.287781, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -2364,6 +2373,8 @@ MonoBehaviour:
       rightTangent: {x: -16.533875, y: 22.716171, z: 0}
       mode: 1
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -2383,8 +2394,6 @@ MonoBehaviour:
   m_EnableTangents: 0
   m_GeometryCached: 0
   m_UTess2D: 0
-  m_Creator: {fileID: 0}
-  m_Modifiers: []
 --- !u!1971053207 &759488741
 SpriteShapeRenderer:
   m_ObjectHideFlags: 0
@@ -2443,7 +2452,6 @@ SpriteShapeRenderer:
   m_LocalAABB:
     m_Center: {x: 68.76462, y: -67.78516, z: 0}
     m_Extent: {x: 64.3825, y: 83.27872, z: 0}
-  m_SpriteSortPoint: 0
 --- !u!60 &759488742
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -2638,18 +2646,16 @@ PolygonCollider2D:
       - {x: 4.4536877, y: -68.551865}
       - {x: 4.4250154, y: -67.54848}
       - {x: 4.6557693, y: -67.44111}
-  m_UseDelaunayMesh: 0
 --- !u!1001 &927952714
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 1745514951}
     m_Modifications:
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_RootOrder
-      value: 18
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_LocalScale.x
@@ -2701,14 +2707,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3627761119804828845, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: checkpointNumber
-      value: 12
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 6405409393819173757, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_Name
       value: Checkpoint (13)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
 --- !u!4 &927952715 stripped
 Transform:
@@ -2720,7 +2725,6 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 740248484}
     m_Modifications:
     - target: {fileID: 3191525679973500698, guid: a4f2d7eeb923dfa4d943516534dbcade, type: 3}
@@ -2776,7 +2780,6 @@ PrefabInstance:
       value: 4190173166
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: a4f2d7eeb923dfa4d943516534dbcade, type: 3}
 --- !u!4 &989016277 stripped
 Transform:
@@ -2788,7 +2791,6 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 4471672309222496776, guid: 54af6cdb7709dc84292b5c10361ee3f0, type: 3}
@@ -2840,14 +2842,12 @@ PrefabInstance:
       value: Main Camera
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 54af6cdb7709dc84292b5c10361ee3f0, type: 3}
 --- !u!1001 &994186924
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 2051942306}
     m_Modifications:
     - target: {fileID: 387093962733669579, guid: bfa5a415858b9004885fa182fb0d49ea, type: 3}
@@ -2856,7 +2856,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8571678843599151708, guid: bfa5a415858b9004885fa182fb0d49ea, type: 3}
       propertyPath: m_RootOrder
-      value: -1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8571678843599151708, guid: bfa5a415858b9004885fa182fb0d49ea, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2907,7 +2907,6 @@ PrefabInstance:
       value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: bfa5a415858b9004885fa182fb0d49ea, type: 3}
 --- !u!4 &994186925 stripped
 Transform:
@@ -2919,7 +2918,6 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 2051942306}
     m_Modifications:
     - target: {fileID: 387093962733669579, guid: bfa5a415858b9004885fa182fb0d49ea, type: 3}
@@ -2928,7 +2926,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8571678843599151708, guid: bfa5a415858b9004885fa182fb0d49ea, type: 3}
       propertyPath: m_RootOrder
-      value: -1
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8571678843599151708, guid: bfa5a415858b9004885fa182fb0d49ea, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2979,7 +2977,6 @@ PrefabInstance:
       value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: bfa5a415858b9004885fa182fb0d49ea, type: 3}
 --- !u!4 &1107155289 stripped
 Transform:
@@ -2991,12 +2988,11 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 1745514951}
     m_Modifications:
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_RootOrder
-      value: 18
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_LocalScale.x
@@ -3055,7 +3051,6 @@ PrefabInstance:
       value: Checkpoint (6)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
 --- !u!4 &1130003280 stripped
 Transform:
@@ -3067,7 +3062,6 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 2051942306}
     m_Modifications:
     - target: {fileID: 387093962733669579, guid: bfa5a415858b9004885fa182fb0d49ea, type: 3}
@@ -3076,7 +3070,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8571678843599151708, guid: bfa5a415858b9004885fa182fb0d49ea, type: 3}
       propertyPath: m_RootOrder
-      value: -1
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8571678843599151708, guid: bfa5a415858b9004885fa182fb0d49ea, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3127,7 +3121,6 @@ PrefabInstance:
       value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: bfa5a415858b9004885fa182fb0d49ea, type: 3}
 --- !u!4 &1158002301 stripped
 Transform:
@@ -3139,7 +3132,6 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 7858080927206975652, guid: 86e9d4a60e487a94d86833eb9e485b9f, type: 3}
@@ -3195,7 +3187,6 @@ PrefabInstance:
       value: 0.3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 86e9d4a60e487a94d86833eb9e485b9f, type: 3}
 --- !u!1 &1258386491
 GameObject:
@@ -3227,6 +3218,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit
@@ -3269,12 +3261,11 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 1745514951}
     m_Modifications:
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_RootOrder
-      value: 18
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_LocalScale.x
@@ -3326,14 +3317,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3627761119804828845, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: checkpointNumber
-      value: 13
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 6405409393819173757, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_Name
       value: Checkpoint (14)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
 --- !u!4 &1308157097 stripped
 Transform:
@@ -3345,7 +3335,6 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2222177984277078000, guid: 1b91b242f69f85e42a3ea754c35b7c13, type: 3}
@@ -3409,19 +3398,17 @@ PrefabInstance:
       value: Booster
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 1b91b242f69f85e42a3ea754c35b7c13, type: 3}
 --- !u!1001 &1361188332
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 1745514951}
     m_Modifications:
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_RootOrder
-      value: 18
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_LocalScale.x
@@ -3473,14 +3460,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3627761119804828845, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: checkpointNumber
-      value: 11
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 6405409393819173757, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_Name
       value: Checkpoint (12)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
 --- !u!4 &1361188333 stripped
 Transform:
@@ -3526,6 +3512,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3534,6 +3522,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3542,6 +3532,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3550,6 +3542,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3558,6 +3552,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3566,6 +3562,8 @@ MonoBehaviour:
       rightTangent: {x: 0.6651764, y: -0.6383629, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3585,8 +3583,6 @@ MonoBehaviour:
   m_EnableTangents: 0
   m_GeometryCached: 0
   m_UTess2D: 0
-  m_Creator: {fileID: 0}
-  m_Modifiers: []
 --- !u!1971053207 &1366577344
 SpriteShapeRenderer:
   m_ObjectHideFlags: 0
@@ -3645,7 +3641,6 @@ SpriteShapeRenderer:
   m_LocalAABB:
     m_Center: {x: -56.7582, y: -2.4298935, z: 0}
     m_Extent: {x: 5.9337025, y: 16.835466, z: 0}
-  m_SpriteSortPoint: 0
 --- !u!4 &1366577345
 Transform:
   m_ObjectHideFlags: 0
@@ -3659,7 +3654,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 723986718}
-  m_RootOrder: -1
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!68 &1366577346
 EdgeCollider2D:
@@ -3729,6 +3724,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3737,6 +3734,8 @@ MonoBehaviour:
       rightTangent: {x: 0.19648743, y: -0.00065612793, z: 0}
       mode: 1
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3745,6 +3744,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3753,6 +3754,8 @@ MonoBehaviour:
       rightTangent: {x: -0.57470703, y: 1.0196228, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3761,6 +3764,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3769,6 +3774,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3777,6 +3784,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3785,6 +3794,8 @@ MonoBehaviour:
       rightTangent: {x: -11.493927, y: -1.448761, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3793,6 +3804,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3801,6 +3814,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3809,6 +3824,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3817,6 +3834,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3825,6 +3844,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3833,6 +3854,8 @@ MonoBehaviour:
       rightTangent: {x: 0.122680664, y: -3.134964, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3841,6 +3864,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3849,6 +3874,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3857,6 +3884,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3865,6 +3894,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3873,6 +3904,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3881,6 +3914,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3889,6 +3924,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3897,6 +3934,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3905,6 +3944,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3913,6 +3954,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3921,6 +3964,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3929,6 +3974,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3937,6 +3984,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3945,6 +3994,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3953,6 +4004,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3961,6 +4014,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3969,6 +4024,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3977,6 +4034,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3985,6 +4044,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -3993,6 +4054,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -4001,6 +4064,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -4009,6 +4074,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -4017,6 +4084,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -4025,6 +4094,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -4033,6 +4104,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -4041,6 +4114,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -4049,6 +4124,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -4057,6 +4134,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -4065,6 +4144,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -4073,6 +4154,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -4081,6 +4164,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -4089,6 +4174,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -4108,8 +4195,6 @@ MonoBehaviour:
   m_EnableTangents: 0
   m_GeometryCached: 0
   m_UTess2D: 0
-  m_Creator: {fileID: 0}
-  m_Modifiers: []
 --- !u!1971053207 &1399855290
 SpriteShapeRenderer:
   m_ObjectHideFlags: 0
@@ -4168,7 +4253,6 @@ SpriteShapeRenderer:
   m_LocalAABB:
     m_Center: {x: -58.668, y: -82.169464, z: 0}
     m_Extent: {x: 143.62434, y: 139.19376, z: 0}
-  m_SpriteSortPoint: 0
 --- !u!4 &1399855291
 Transform:
   m_ObjectHideFlags: 0
@@ -4182,7 +4266,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 723986718}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!68 &1399855292
 EdgeCollider2D:
@@ -4817,7 +4901,6 @@ PolygonCollider2D:
       - {x: -51.948532, y: -288.17474}
       - {x: -52.031578, y: -285.72412}
       - {x: -52.0486, y: -285.21307}
-  m_UseDelaunayMesh: 0
 --- !u!114 &1420149825
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4838,6 +4921,8 @@ MonoBehaviour:
       rightTangent: {x: 0.024658203, y: 2.418457, z: 0}
       mode: 1
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -4846,6 +4931,8 @@ MonoBehaviour:
       rightTangent: {x: -0.21871948, y: 7.209503, z: 0}
       mode: 1
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -4854,6 +4941,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -4862,6 +4951,8 @@ MonoBehaviour:
       rightTangent: {x: 6.749115, y: 0.17781067, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -4870,6 +4961,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -4878,6 +4971,8 @@ MonoBehaviour:
       rightTangent: {x: -0.23181152, y: -3.1024323, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -4886,6 +4981,8 @@ MonoBehaviour:
       rightTangent: {x: -3.3036804, y: -1.1357155, z: 0}
       mode: 1
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -4894,6 +4991,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -4902,6 +5001,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -4910,6 +5011,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -4918,6 +5021,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -4926,6 +5031,8 @@ MonoBehaviour:
       rightTangent: {x: 0.6636658, y: 2.5219116, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -4934,6 +5041,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -4942,6 +5051,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -4950,6 +5061,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -4958,6 +5071,8 @@ MonoBehaviour:
       rightTangent: {x: -14.288788, y: -0.63668823, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -4966,6 +5081,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -4974,6 +5091,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -4982,6 +5101,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -4990,6 +5111,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -4998,6 +5121,8 @@ MonoBehaviour:
       rightTangent: {x: -0.27311707, y: -46.169952, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5006,6 +5131,8 @@ MonoBehaviour:
       rightTangent: {x: -0.22618103, y: -5.446045, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5014,6 +5141,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5022,6 +5151,8 @@ MonoBehaviour:
       rightTangent: {x: -0.98550415, y: -0.6655884, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5030,6 +5161,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5038,6 +5171,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5046,6 +5181,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5054,6 +5191,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5062,6 +5201,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5070,6 +5211,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5078,6 +5221,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5086,6 +5231,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5094,6 +5241,8 @@ MonoBehaviour:
       rightTangent: {x: 0.5520325, y: 0.58807373, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5102,6 +5251,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5110,6 +5261,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5118,6 +5271,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5126,6 +5281,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5134,6 +5291,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5142,6 +5301,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5150,6 +5311,8 @@ MonoBehaviour:
       rightTangent: {x: -0.08666992, y: 2.084198, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5158,6 +5321,8 @@ MonoBehaviour:
       rightTangent: {x: 1.0535889, y: -0.97824097, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5166,6 +5331,8 @@ MonoBehaviour:
       rightTangent: {x: -3.128479, y: -2.0904236, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5174,6 +5341,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5182,6 +5351,8 @@ MonoBehaviour:
       rightTangent: {x: -1.5292511, y: -3.18602, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5190,6 +5361,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5198,6 +5371,8 @@ MonoBehaviour:
       rightTangent: {x: -0.2008667, y: 0.8577881, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5206,6 +5381,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5214,6 +5391,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5222,6 +5401,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5230,6 +5411,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5238,6 +5421,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5246,6 +5431,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5254,6 +5441,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5262,6 +5451,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5270,6 +5461,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5278,6 +5471,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5286,6 +5481,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5294,6 +5491,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5302,6 +5501,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5310,6 +5511,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5318,6 +5521,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5326,6 +5531,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5334,6 +5541,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5342,6 +5551,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5350,6 +5561,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5358,6 +5571,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5366,6 +5581,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5374,6 +5591,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5382,6 +5601,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5390,6 +5611,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5398,6 +5621,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5406,6 +5631,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5414,6 +5641,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5422,6 +5651,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5430,6 +5661,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5438,6 +5671,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5446,6 +5681,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5454,6 +5691,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5462,6 +5701,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5470,6 +5711,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5478,6 +5721,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5486,6 +5731,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5494,6 +5741,8 @@ MonoBehaviour:
       rightTangent: {x: 0.09933472, y: 1.1066589, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5502,6 +5751,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5510,6 +5761,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5518,6 +5771,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5526,6 +5781,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5534,6 +5791,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5542,6 +5801,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5550,6 +5811,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5558,6 +5821,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5566,6 +5831,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5574,6 +5841,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5582,6 +5851,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5590,6 +5861,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5598,6 +5871,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5606,6 +5881,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5614,6 +5891,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5622,6 +5901,8 @@ MonoBehaviour:
       rightTangent: {x: -21.51802, y: 6.6698303, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5641,8 +5922,6 @@ MonoBehaviour:
   m_EnableTangents: 0
   m_GeometryCached: 0
   m_UTess2D: 0
-  m_Creator: {fileID: 0}
-  m_Modifiers: []
 --- !u!1971053207 &1420149826
 SpriteShapeRenderer:
   m_ObjectHideFlags: 0
@@ -5701,7 +5980,6 @@ SpriteShapeRenderer:
   m_LocalAABB:
     m_Center: {x: 157.8589, y: -119.69978, z: 0}
     m_Extent: {x: 210.37009, y: 205.10051, z: 0}
-  m_SpriteSortPoint: 0
 --- !u!4 &1420149827
 Transform:
   m_ObjectHideFlags: 0
@@ -5716,7 +5994,7 @@ Transform:
   m_Children:
   - {fileID: 759488739}
   m_Father: {fileID: 723986718}
-  m_RootOrder: -1
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1474284865
 GameObject:
@@ -5757,6 +6035,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5765,6 +6045,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5773,6 +6055,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -5792,8 +6076,6 @@ MonoBehaviour:
   m_EnableTangents: 0
   m_GeometryCached: 0
   m_UTess2D: 0
-  m_Creator: {fileID: 0}
-  m_Modifiers: []
 --- !u!1971053207 &1474284867
 SpriteShapeRenderer:
   m_ObjectHideFlags: 0
@@ -5852,7 +6134,6 @@ SpriteShapeRenderer:
   m_LocalAABB:
     m_Center: {x: -47.098747, y: -2.1709528, z: 0}
     m_Extent: {x: 23.492434, y: 14.78943, z: 0}
-  m_SpriteSortPoint: 0
 --- !u!4 &1474284868
 Transform:
   m_ObjectHideFlags: 0
@@ -5866,7 +6147,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 723986718}
-  m_RootOrder: -1
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!68 &1474284869
 EdgeCollider2D:
@@ -5897,7 +6178,6 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2222177984277078000, guid: 1b91b242f69f85e42a3ea754c35b7c13, type: 3}
@@ -5961,14 +6241,12 @@ PrefabInstance:
       value: Booster (3)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 1b91b242f69f85e42a3ea754c35b7c13, type: 3}
 --- !u!1001 &1508761447
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2895820984366022359, guid: 30a50ac2a940b074b8eb1c5d8c8d5a7c, type: 3}
@@ -6040,14 +6318,98 @@ PrefabInstance:
       value: JumpPad (5)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 30a50ac2a940b074b8eb1c5d8c8d5a7c, type: 3}
+--- !u!1001 &1579992434
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1745514951}
+    m_Modifications:
+    - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
+      propertyPath: m_RootOrder
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -122.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 108.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 270
+      objectReference: {fileID: 0}
+    - target: {fileID: 3627761119804828845, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
+      propertyPath: checkpointNumber
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6405409393819173757, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
+      propertyPath: m_Name
+      value: Checkpoint (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7326203438535885643, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
+      propertyPath: m_Size.y
+      value: 1.0541443
+      objectReference: {fileID: 0}
+    - target: {fileID: 7326203438535885643, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
+      propertyPath: m_Offset.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7326203438535885643, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.027072147
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
+--- !u!4 &1579992435 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
+  m_PrefabInstance: {fileID: 1579992434}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1581607830
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2895820984366022359, guid: 30a50ac2a940b074b8eb1c5d8c8d5a7c, type: 3}
@@ -6119,14 +6481,12 @@ PrefabInstance:
       value: JumpPad (4)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 30a50ac2a940b074b8eb1c5d8c8d5a7c, type: 3}
 --- !u!1001 &1608287753
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 740248484}
     m_Modifications:
     - target: {fileID: 3191525679973500698, guid: a4f2d7eeb923dfa4d943516534dbcade, type: 3}
@@ -6182,7 +6542,6 @@ PrefabInstance:
       value: 3807221246
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: a4f2d7eeb923dfa4d943516534dbcade, type: 3}
 --- !u!4 &1608287754 stripped
 Transform:
@@ -6194,7 +6553,6 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3655520126772697731, guid: 0c7598ee385a1e4449603904d7e3ac89, type: 3}
@@ -6870,19 +7228,17 @@ PrefabInstance:
       value: 90
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 0c7598ee385a1e4449603904d7e3ac89, type: 3}
 --- !u!1001 &1654840885
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 1745514951}
     m_Modifications:
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_RootOrder
-      value: 18
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_LocalScale.x
@@ -6934,7 +7290,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3627761119804828845, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: checkpointNumber
-      value: 20
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 6405409393819173757, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_Name
@@ -6945,7 +7301,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
 --- !u!4 &1654840886 stripped
 Transform:
@@ -6991,6 +7346,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -6999,6 +7356,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -7007,6 +7366,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -7015,6 +7376,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -7023,6 +7386,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -7031,6 +7396,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -7050,8 +7417,6 @@ MonoBehaviour:
   m_EnableTangents: 0
   m_GeometryCached: 0
   m_UTess2D: 0
-  m_Creator: {fileID: 0}
-  m_Modifiers: []
 --- !u!1971053207 &1655969566
 SpriteShapeRenderer:
   m_ObjectHideFlags: 0
@@ -7110,7 +7475,6 @@ SpriteShapeRenderer:
   m_LocalAABB:
     m_Center: {x: -12.787182, y: -9.027567, z: 0}
     m_Extent: {x: 23.382801, y: 2.4000907, z: 0}
-  m_SpriteSortPoint: 0
 --- !u!4 &1655969567
 Transform:
   m_ObjectHideFlags: 0
@@ -7124,7 +7488,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 723986718}
-  m_RootOrder: -1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!68 &1655969568
 EdgeCollider2D:
@@ -7160,12 +7524,11 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 1745514951}
     m_Modifications:
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_RootOrder
-      value: 18
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_LocalScale.x
@@ -7224,7 +7587,6 @@ PrefabInstance:
       value: Checkpoint (4)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
 --- !u!4 &1699165495 stripped
 Transform:
@@ -7268,6 +7630,7 @@ Transform:
   - {fileID: 1130003280}
   - {fileID: 472954141}
   - {fileID: 1921117007}
+  - {fileID: 1579992435}
   - {fileID: 2134114366}
   - {fileID: 1361188333}
   - {fileID: 927952715}
@@ -7287,12 +7650,11 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 1745514951}
     m_Modifications:
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_RootOrder
-      value: 18
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_LocalScale.x
@@ -7351,7 +7713,6 @@ PrefabInstance:
       value: Checkpoint (2)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
 --- !u!4 &1817606148 stripped
 Transform:
@@ -7363,12 +7724,11 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 1745514951}
     m_Modifications:
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_RootOrder
-      value: 18
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_LocalScale.x
@@ -7420,14 +7780,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3627761119804828845, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: checkpointNumber
-      value: 16
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 6405409393819173757, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_Name
       value: Checkpoint (17)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
 --- !u!4 &1890672531 stripped
 Transform:
@@ -7439,12 +7798,11 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 1745514951}
     m_Modifications:
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_RootOrder
-      value: 18
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_LocalScale.x
@@ -7503,7 +7861,6 @@ PrefabInstance:
       value: Checkpoint (8)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
 --- !u!4 &1921117007 stripped
 Transform:
@@ -7515,7 +7872,6 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2895820984366022359, guid: 30a50ac2a940b074b8eb1c5d8c8d5a7c, type: 3}
@@ -7587,19 +7943,17 @@ PrefabInstance:
       value: JumpPad (3)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 30a50ac2a940b074b8eb1c5d8c8d5a7c, type: 3}
 --- !u!1001 &1999775528
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 1745514951}
     m_Modifications:
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_RootOrder
-      value: 18
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_LocalScale.x
@@ -7651,14 +8005,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3627761119804828845, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: checkpointNumber
-      value: 15
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 6405409393819173757, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_Name
       value: Checkpoint (16)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
 --- !u!4 &1999775529 stripped
 Transform:
@@ -7670,12 +8023,11 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 1745514951}
     m_Modifications:
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_RootOrder
-      value: 18
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_LocalScale.x
@@ -7727,14 +8079,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3627761119804828845, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: checkpointNumber
-      value: 14
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 6405409393819173757, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_Name
       value: Checkpoint (15)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
 --- !u!4 &2047598025 stripped
 Transform:
@@ -7785,7 +8136,6 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 2051942306}
     m_Modifications:
     - target: {fileID: 387093962733669579, guid: bfa5a415858b9004885fa182fb0d49ea, type: 3}
@@ -7794,7 +8144,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8571678843599151708, guid: bfa5a415858b9004885fa182fb0d49ea, type: 3}
       propertyPath: m_RootOrder
-      value: -1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8571678843599151708, guid: bfa5a415858b9004885fa182fb0d49ea, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7845,7 +8195,6 @@ PrefabInstance:
       value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: bfa5a415858b9004885fa182fb0d49ea, type: 3}
 --- !u!4 &2088276993 stripped
 Transform:
@@ -7857,12 +8206,11 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 1745514951}
     m_Modifications:
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_RootOrder
-      value: 18
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_LocalScale.x
@@ -7921,7 +8269,6 @@ PrefabInstance:
       value: Checkpoint (3)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
 --- !u!4 &2093413592 stripped
 Transform:
@@ -7967,6 +8314,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -7975,6 +8324,8 @@ MonoBehaviour:
       rightTangent: {x: 4.18602, y: 0.8184967, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -7983,6 +8334,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -7991,6 +8344,8 @@ MonoBehaviour:
       rightTangent: {x: -0.57470703, y: 1.0196228, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -7999,6 +8354,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8007,6 +8364,8 @@ MonoBehaviour:
       rightTangent: {x: -20.210144, y: -1.6196747, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8015,6 +8374,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8023,6 +8384,8 @@ MonoBehaviour:
       rightTangent: {x: -0.014923096, y: -7.263626, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8031,6 +8394,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8039,6 +8404,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8047,6 +8414,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8055,6 +8424,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8063,6 +8434,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8071,6 +8444,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8079,6 +8454,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8087,6 +8464,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8095,6 +8474,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8103,6 +8484,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8111,6 +8494,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8119,6 +8504,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8127,6 +8514,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8135,6 +8524,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8143,6 +8534,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8151,6 +8544,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8159,6 +8554,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8167,6 +8564,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8175,6 +8574,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8183,6 +8584,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8191,6 +8594,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8199,6 +8604,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8207,6 +8614,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8215,6 +8624,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8223,6 +8634,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8231,6 +8644,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8239,6 +8654,8 @@ MonoBehaviour:
       rightTangent: {x: 2.171997, y: 1.5510254, z: 0}
       mode: 2
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8247,6 +8664,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8255,6 +8674,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8263,6 +8684,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8271,6 +8694,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8279,6 +8704,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8287,6 +8714,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8295,6 +8724,8 @@ MonoBehaviour:
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -8314,8 +8745,6 @@ MonoBehaviour:
   m_EnableTangents: 0
   m_GeometryCached: 0
   m_UTess2D: 0
-  m_Creator: {fileID: 0}
-  m_Modifiers: []
 --- !u!1971053207 &2116757751
 SpriteShapeRenderer:
   m_ObjectHideFlags: 0
@@ -8374,7 +8803,6 @@ SpriteShapeRenderer:
   m_LocalAABB:
     m_Center: {x: -59.592865, y: -83.92612, z: 0}
     m_Extent: {x: 159.85951, y: 155.69073, z: 0}
-  m_SpriteSortPoint: 0
 --- !u!4 &2116757752
 Transform:
   m_ObjectHideFlags: 0
@@ -8388,7 +8816,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 723986718}
-  m_RootOrder: -1
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!68 &2116757753
 EdgeCollider2D:
@@ -8525,12 +8953,11 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 1745514951}
     m_Modifications:
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_RootOrder
-      value: 18
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_LocalScale.x
@@ -8582,14 +9009,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3627761119804828845, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: checkpointNumber
-      value: 10
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 6405409393819173757, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_Name
       value: Checkpoint (10)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
 --- !u!4 &2134114366 stripped
 Transform:
@@ -8601,12 +9027,11 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 1745514951}
     m_Modifications:
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_RootOrder
-      value: 18
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2314173723282272561, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
       propertyPath: m_LocalScale.x
@@ -8665,7 +9090,6 @@ PrefabInstance:
       value: Checkpoint (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e8a6f3b35a5ecc4e898e607afdcd53c, type: 3}
 --- !u!4 &2140355961 stripped
 Transform:
@@ -8677,7 +9101,6 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3328415562133441450, guid: 3e2fcc390e85dc542b0a339aefa75bb9, type: 3}
@@ -8913,14 +9336,12 @@ PrefabInstance:
       value: DamagingFloor
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 3e2fcc390e85dc542b0a339aefa75bb9, type: 3}
 --- !u!1001 &7711976896285197074
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 7711976896704374356, guid: 7f301ed63c2202e47bda575026b5b997, type: 3}
@@ -8980,14 +9401,12 @@ PrefabInstance:
       value: 90
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f301ed63c2202e47bda575026b5b997, type: 3}
 --- !u!1001 &8571678844011853738
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 2051942306}
     m_Modifications:
     - target: {fileID: 387093962733669579, guid: bfa5a415858b9004885fa182fb0d49ea, type: 3}
@@ -8996,7 +9415,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8571678843599151708, guid: bfa5a415858b9004885fa182fb0d49ea, type: 3}
       propertyPath: m_RootOrder
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8571678843599151708, guid: bfa5a415858b9004885fa182fb0d49ea, type: 3}
       propertyPath: m_LocalPosition.x
@@ -9047,7 +9466,6 @@ PrefabInstance:
       value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: bfa5a415858b9004885fa182fb0d49ea, type: 3}
 --- !u!4 &8571678844011853739 stripped
 Transform:

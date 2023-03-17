@@ -18,23 +18,34 @@ public class Missile : NetworkBehaviour
         cc = GetComponent<CapsuleCollider2D>();
         cc.enabled = false;
 
+        target = FindFirstPlayer();
+        
+        StartCoroutine(Activate());
+    }
+
+    private IEnumerator Activate()
+    {
+        yield return new WaitForSeconds(0.2f);
+        cc.enabled = true;
+        while (true)
+        {
+            target = FindFirstPlayer();
+            yield return new WaitForSeconds(3);
+        }
+    }
+
+    private GameObject FindFirstPlayer()
+    {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
         foreach (GameObject p in players)
         {
             if (p.GetComponent<MultiplayerController>().placement == 1)
             {
-                target = p;
-                break;
+                return p;
             }
         }
-        StartCoroutine(Activate());
-    }
-
-    private IEnumerator Activate()
-    {
-        yield return new WaitForSeconds(1);
-        cc.enabled = true;
+        return null;
     }
 
     private void FixedUpdate()

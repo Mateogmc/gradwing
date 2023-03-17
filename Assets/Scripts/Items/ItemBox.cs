@@ -27,19 +27,19 @@ public class ItemBox : NetworkBehaviour
 
     private string[] items = { "Shield", "Jump", "Trap", "Rebounder", "Laser", "Boost", "Missile"};
 
-    private float[] itemWeights = { 0.2f, 0.1f, 0.15f, 0.15f, 0.10f, 0.2f, 0.1f };
+    //private float[] itemWeights = { 0.2f, 0.1f, 0.15f, 0.15f, 0.10f, 0.2f, 0.1f };
 
-    /*private float[,] itemWeights = new float[,] 
+    private float[,] itemWeights = new float[,]
     {
-        { 0.2f, 0.15f, 0.3f, 0.2f, 0.15f },
-        { 0.2f, 0.15f, 0.3f, 0.2f, 0.15f },
-        { 0.2f, 0.15f, 0.3f, 0.2f, 0.15f },
-        { 0.2f, 0.15f, 0.3f, 0.2f, 0.15f },
-        { 0.2f, 0.15f, 0.3f, 0.2f, 0.15f },
-        { 0.2f, 0.15f, 0.3f, 0.2f, 0.15f },
-        { 0.2f, 0.15f, 0.3f, 0.2f, 0.15f },
-        { 0.2f, 0.15f, 0.3f, 0.2f, 0.15f }
-    };*/
+        { 0.25f, 0f, 0.45f, 0.2f, 0f, 0.1f, 0f },
+        { 0.2f, 0.05f, 0.3f, 0.25f, 0.1f, 0.1f, 0f },
+        { 0.3f, 0.05f, 0.2f, 0.2f, 0.1f, 0.15f, 0f },
+        { 0.3f, 0.1f, 0.1f, 0.2f, 0.1f, 0.15f, 0.05f },
+        { 0.1f, 0.15f, 0.1f, 0.2f, 0.2f, 0.2f, 0.05f },
+        { 0.1f, 0.20f, 0.1f, 0.15f, 0.2f, 0.2f, 0.05f },
+        { 0f, 0.25f, 0f, 0f, 0.30f, 0.2f, 0.1f },
+        { 0f, 0.30f, 0f, 0f, 0.30f, 0.2f, 0.05f }
+    };
 
     private void Update()
     {
@@ -58,28 +58,33 @@ public class ItemBox : NetworkBehaviour
         icon.rotation = Quaternion.Euler(0, 0, Time.time * -60);
     }
 
-    private void GiveItem(MultiplayerController player)
+    private void GiveItem(MultiplayerController player, int placement)
     {
         if (player != null)
         {
-            float random = Random.value;
-            int i = 0;
-            foreach (float item in itemWeights)
+            int playerCount = GameObject.FindGameObjectsWithTag("Player").Length;
+            if (playerCount <= 4 && placement != 1)
             {
-                random -= item;
+                placement *= 2;
+            }
+            placement--;
+
+            float random = Random.value;
+            for (int i = 0; i < items.Length; i++)
+            {
+                random -= itemWeights[placement, i];
                 if (random <= 0)
                 {
                     player.CmdGetItem(items[i]);
                     break;
                 }
-                i++;
             }
         }
     }
 
-    public void Use(MultiplayerController player)
+    public void Use(MultiplayerController player, int placement)
     {
-        GiveItem(player);
+        GiveItem(player, placement);
         respawnTimer = Time.time + respawnDelay;
         sr.enabled = false;
         cc.enabled = false;

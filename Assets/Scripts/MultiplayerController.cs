@@ -59,7 +59,7 @@ public class MultiplayerController : FSM
     [HideInInspector] public float strafeValue;
     [HideInInspector] public bool rolling;
 
-    [SerializeField][SyncVar(hook = nameof(OnMaxHealthChange))] float maxHealth;
+    [SerializeField] [SyncVar(hook = nameof(OnMaxHealthChange))] float maxHealth;
     [SerializeField] [SyncVar(hook = nameof(OnHealthChange))] float health;
 
     [Header("Item Sprites")]
@@ -94,7 +94,7 @@ public class MultiplayerController : FSM
 
     // Lap Manager
     [SerializeField] GameObject lapTextRenderer;
-    [SyncVar(hook = nameof(OnLapChange))] int currentLap = 0;
+    [SerializeField] [SyncVar(hook = nameof(OnLapChange))] int currentLap = 0;
     [SyncVar(hook = nameof(OnCheckpointChange))] int currentCheckpoint;
     LapManager lapManager;
     int checkpointCount = 0;
@@ -257,6 +257,10 @@ public class MultiplayerController : FSM
             }
             enemyInterface.enabled = false;
         }
+        if (currentItem == Items.None)
+        {
+            itemSprite.sprite = none;
+        }
     }
 
     private void SetPlacementImage()
@@ -350,7 +354,7 @@ public class MultiplayerController : FSM
     }
     private void OnCheckpointChange(int oldCheckpoint, int newCheckpoint)
     {
-        currentLap = newCheckpoint;
+        currentCheckpoint = newCheckpoint;
     }
 
     private void OnItemChange(Items oldItem, Items newItem)
@@ -912,7 +916,7 @@ public class MultiplayerController : FSM
             case Items.Trap:
                 if (currentSpeed > 1)
                 {
-                    itemPosition = transform.position - new Vector3(rb.velocity.normalized.x, rb.velocity.normalized.y, 1) * 4;
+                    itemPosition = transform.position - new Vector3(rb.velocity.normalized.x, rb.velocity.normalized.y, 1) * 5;
                 }
                 else
                 {
@@ -928,7 +932,7 @@ public class MultiplayerController : FSM
 
             case Items.Laser:
                 CmdLaser();
-                break;
+                return;
 
             case Items.Boost:
                 Boost(direction, 30);
@@ -1156,12 +1160,11 @@ public class MultiplayerController : FSM
     {
         if (collision.tag == "Item")
         {
-            collision.gameObject.GetComponent<ItemBox>().Use(this);
+            collision.gameObject.GetComponent<ItemBox>().Use(this, placement);
         }
         else if (collision.tag == "Trap")
         {
-            if (currentState == PlayerStates.Jumping) { return; }
-            NetworkServer.Destroy(collision.gameObject);
+            if (currentState == PlayerStates.Jumping || !isLocalPlayer) { return; }
             Hit(20, 30, 6);
         }
         else if (collision.tag == "Laser")
@@ -1197,9 +1200,8 @@ public class MultiplayerController : FSM
                 {
                     currentLap++;
                     SetLap();
-                    checkpointCount = 0;
                 }
-                Debug.Log(currentLap);
+                checkpointCount = 0;
                 CmdSetCheckpoint(0);
             } else
             {
@@ -1237,7 +1239,8 @@ public class MultiplayerController : FSM
             Debug.Log("Jump");
         } else if (collision.tag == "Heal" && currentState == PlayerStates.Grounded)
         {
-            health = health + 0.25f;
+            if (health <= 0) { return; }
+            health = health + 0.3f;
             playerHealthBar.value = maxHealth - health;
             healthBar.value = maxHealth - health;
             CmdChangeHealth(health);
