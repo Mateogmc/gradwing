@@ -45,6 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lapCount: 3
-  checkpointTolerance: 0.4
+  checkpointTolerance: 0.2
   minimumCheckpoints: 0
   exitToLobby: {fileID: 0}

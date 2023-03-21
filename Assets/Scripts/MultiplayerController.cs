@@ -26,7 +26,7 @@ public class MultiplayerController : FSM
 
 
     [Header("Player variables")]
-    [SerializeField] [SyncVar(hook = nameof(OnMaxSpeedChange))] float maxSpeed;
+    [SerializeField] [SyncVar(hook = nameof(OnMaxSpeedChange))] public float maxSpeed;
     float currentMaxSpeed;
     [SerializeField] [SyncVar(hook = nameof(OnAccelerationChange))] float acceleration;
     [SerializeField] [SyncVar(hook = nameof(OnWeightChange))] float weight;
@@ -43,11 +43,13 @@ public class MultiplayerController : FSM
     float currentSpeed = 0;
     float bounceDuration = 0.5f;
     [HideInInspector] public float bounceTime = 0f;
+    private GameObject explosion;
     float airborne = 0f;
     int grounded = 1;
     [SyncVar(hook = nameof(OnAirborneChange))] float currentScale = 1;
     public Vector2 direction;
     [HideInInspector] public Vector2 lastSpeed;
+    [SyncVar(hook = nameof(LastSpeedChange))] public float lastSpeedMagnitude;
     [SyncVar(hook = nameof(OnLayerChange))]int currentLayer = 6;
 
     [HideInInspector]  bool accelerating = false;
@@ -100,7 +102,7 @@ public class MultiplayerController : FSM
     int checkpointCount = 0;
     Vector2 spawnPos = Vector2.zero;
     float spawnRotation = 0;
-    public int placement;
+    [SyncVar(hook = nameof(OnPlacementChange))]public int placement;
 
     // Interface
     [SerializeField] TextMeshProUGUI lapRenderer;
@@ -138,6 +140,7 @@ public class MultiplayerController : FSM
         currentCheckpoint = 0;
         dataManager = GameObject.FindGameObjectWithTag("DataManager").GetComponent<DataManager>();
         GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraMovement>().Initialize(gameObject);
+        playerInterface.transform.parent = null;
         Restart();
     }
 
@@ -154,6 +157,8 @@ public class MultiplayerController : FSM
 
         currentSpeed = rb.velocity.magnitude;
         lastSpeed = rb.velocity;
+        lastSpeedMagnitude = lastSpeed.magnitude;
+        CmdSetSpeedMagnitude(lastSpeed.magnitude);
     }
 
     protected override void FSMFixedUpdate()
@@ -273,7 +278,6 @@ public class MultiplayerController : FSM
         transform.position = spawnPos;
         transform.eulerAngles = new Vector3(0, 0, spawnRotation);
         CmdSetStats(DataManager.MAX_SPEED + dataManager.speed, DataManager.ACCELERATION + dataManager.acceleration, DataManager.WEIGHT + dataManager.weight, DataManager.HANDLING + dataManager.handling);
-        CmdChangeHealth(maxHealth);
         healthBar.value = 0f;
         playerHealthBar.value = 0f;
         rb.velocity = Vector3.zero;
@@ -355,6 +359,16 @@ public class MultiplayerController : FSM
     private void OnCheckpointChange(int oldCheckpoint, int newCheckpoint)
     {
         currentCheckpoint = newCheckpoint;
+    }
+
+    private void OnPlacementChange(int oldPlacement, int newPlacement)
+    {
+        placement = newPlacement;
+    }
+
+    private void LastSpeedChange(float oldSpeed, float newSpeed)
+    {
+        lastSpeedMagnitude = newSpeed;
     }
 
     private void OnItemChange(Items oldItem, Items newItem)
@@ -469,10 +483,11 @@ public class MultiplayerController : FSM
                 rotatingRight = false;
             }
 
+            strafeValue = Input.GetAxis("Strafe1");
+
             if (Input.GetKey(KeyCode.S) || Input.GetAxis("Strafe1") < -0.1)
             {
                 strafingLeft = true;
-                strafeValue = Input.GetAxis("Strafe1");
             }
             else
             {
@@ -482,7 +497,6 @@ public class MultiplayerController : FSM
             if (Input.GetKey(KeyCode.D) || Input.GetAxis("Strafe1") > 0.1)
             {
                 strafingRight = true;
-                strafeValue = Input.GetAxis("Strafe1");
             }
             else
             {
@@ -636,7 +650,7 @@ public class MultiplayerController : FSM
 
                     if (!DataManager.GetInstance().strafeMode && (strafingLeft || strafingRight))
                     {
-                        currentMaxSpeed = maxSpeed + (15 * rotationSpeed);
+                        currentMaxSpeed = (rotatingLeft || rotatingRight ? maxSpeed + (15 * rotationSpeed) : maxSpeed);
                         float newAngle = rb.rotation - (strafingAngle * strafeValue);
                         Vector2 tempDirection = new Vector2(Mathf.Cos(newAngle * Mathf.Deg2Rad), Mathf.Sin(newAngle * Mathf.Deg2Rad));
                         rb.velocity = tempDirection * rb.velocity.magnitude;
@@ -645,14 +659,14 @@ public class MultiplayerController : FSM
                     {
                         if (rotatingLeft)
                         {
-                            currentMaxSpeed = maxSpeed + (15 * rotationSpeed);
+                            currentMaxSpeed = (rotatingLeft || rotatingRight ? maxSpeed + (15 * rotationSpeed) : maxSpeed);
                             float newAngle = rb.rotation + (strafingAngle * strafeValue);
                             Vector2 tempDirection = new Vector2(Mathf.Cos(newAngle * Mathf.Deg2Rad), Mathf.Sin(newAngle * Mathf.Deg2Rad));
                             rb.velocity = tempDirection * rb.velocity.magnitude;
                         }
                         else if (DataManager.GetInstance().strafeMode && rotatingRight)
                         {
-                            currentMaxSpeed = maxSpeed + (15 * rotationSpeed);
+                            currentMaxSpeed = (rotatingLeft || rotatingRight ? maxSpeed + (15 * rotationSpeed) : maxSpeed);
                             float newAngle = rb.rotation - (strafingAngle * strafeValue);
                             Vector2 tempDirection = new Vector2(Mathf.Cos(newAngle * Mathf.Deg2Rad), Mathf.Sin(newAngle * Mathf.Deg2Rad));
                             rb.velocity = tempDirection * rb.velocity.magnitude;
@@ -739,7 +753,20 @@ public class MultiplayerController : FSM
         }
         lapRenderer.text = string.Format("{0}/{1}", currentLap, lapManager.lapCount);
     }
-    
+
+    [Command]
+    private void CmdSetLap(int lap)
+    {
+        currentLap = lap;
+    }
+
+    [Command]
+    private void CmdSetSpeedMagnitude(float speed)
+    {
+        lastSpeedMagnitude = speed;
+    }
+
+
     private void Jump(bool item)
     {
         if (currentState == PlayerStates.Grounded)
@@ -874,13 +901,14 @@ public class MultiplayerController : FSM
 
     public void Hit(float damage)
     {
-        if (shielded > Time.time) { return; }
-        CmdChangeHealth(health - damage);
+        if (shielded > Time.time || !isLocalPlayer) { return; }
+        health = health - damage;
+        CmdChangeHealth(health);
     }
 
     public void Hit(float damage, float slow, float duration)
     {
-        if (shielded > Time.time) { return; }
+        if (shielded > Time.time || !isLocalPlayer) { return; }
         Hit(damage);
         currentMaxSpeed -= slow;
         if (currentMaxSpeed < 10)
@@ -1061,6 +1089,18 @@ public class MultiplayerController : FSM
 
         foreach (GameObject player in players)
         {
+            player.GetComponent<MultiplayerController>().CheckPosition();
+        }
+    }
+
+    public void CheckPosition()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        placement = 1;
+
+        foreach (GameObject player in players)
+        {
             if (player != gameObject)
             {
                 MultiplayerController controller = player.GetComponent<MultiplayerController>();
@@ -1137,23 +1177,6 @@ public class MultiplayerController : FSM
                 rb.AddForce(collision.contacts[0].normal * 1000);
             }
         }
-        else if (collision.collider.tag == "Missile")
-        {
-            if (currentState == PlayerStates.Jumping)
-            {
-                CmdRemoveItem(collision.gameObject);
-                bounceTime = Time.time + bounceDuration;
-                rb.AddForce(collision.contacts[0].normal * 1400);
-                Hit(80, 40, 10);
-            }
-            else if (currentState == PlayerStates.Grounded)
-            {
-                CmdRemoveItem(collision.gameObject);
-                bounceTime = Time.time + bounceDuration;
-                Hit(80, 40, 10);
-                rb.AddForce(collision.contacts[0].normal * 1000);
-            }
-        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -1175,7 +1198,12 @@ public class MultiplayerController : FSM
         else if (collision.tag == "Booster")
         {
             rb.rotation = Mathf.Asin(collision.gameObject.transform.rotation.z) * Mathf.Rad2Deg * 2 * Mathf.Sign(collision.gameObject.transform.rotation.w);
-            Boost(new Vector2(collision.gameObject.transform.rotation.w, collision.gameObject.transform.rotation.z), 20);
+            Boost(new Vector2(Mathf.Cos(rb.rotation * Mathf.Deg2Rad), Mathf.Sin(rb.rotation * Mathf.Deg2Rad)), 20);
+        }
+        else if (collision.tag == "FrontLine")
+        {
+            checkpointCount = 0;
+            lapManager.CheckNextLap(0);
         }
         else if ((collision.tag == "Checkpoint" || collision.tag == "FinishLine") && isLocalPlayer)
         {
@@ -1196,21 +1224,21 @@ public class MultiplayerController : FSM
                 {
                     lapManager = GameObject.FindGameObjectWithTag("LapManager").GetComponent<LapManager>();
                 }
-                if (collision.transform.eulerAngles.z == normalFloat && lapManager.CheckNextLap(checkpointCount))
+                if (lapManager.CheckNextLap(checkpointCount))
                 {
                     currentLap++;
+                    CmdSetLap(currentLap);
                     SetLap();
                 }
                 checkpointCount = 0;
                 CmdSetCheckpoint(0);
             } else
             {
-                if (Mathf.Round(collision.transform.eulerAngles.z) == normalFloat)
-                {
-                    checkpointCount++;
-                    currentCheckpoint = (collision.gameObject.GetComponent<CheckpointValue>().checkpointNumber > currentCheckpoint ? collision.gameObject.GetComponent<CheckpointValue>().checkpointNumber : currentCheckpoint);
-                    CmdSetCheckpoint(currentCheckpoint);
-                }
+                checkpointCount++;
+                Debug.Log(checkpointCount);
+                currentCheckpoint = collision.gameObject.GetComponent<CheckpointValue>().checkpointNumber;
+                CmdSetCheckpoint(currentCheckpoint);
+                lapManager.DisableCheckpoints(currentCheckpoint);
                 collision.gameObject.SetActive(false);
             }
         }
@@ -1229,6 +1257,23 @@ public class MultiplayerController : FSM
             SetPlacementImage();
             CmdSetCheckpoint(-placement);
         }
+        else if (collision.tag == "Missile")
+        {
+            if (!isLocalPlayer) { return; }
+            Hit(0, 80, 1);
+            collision.gameObject.GetComponent<Missile>().CmdExplode(new Vector3(collision.ClosestPoint(transform.position).x, collision.ClosestPoint(transform.position).y, transform.position.z));
+        }
+        else if (collision.tag == "Explosion")
+        {
+            if (!isLocalPlayer || collision.gameObject == explosion) { return; }
+            explosion = collision.gameObject;
+            Vector2 collisionNormal = (new Vector2(transform.position.x, transform.position.y) - (Vector2)collision.transform.position).normalized;
+            Debug.DrawRay(transform.position, collisionNormal * 30, Color.red, 10);
+            Debug.Log(collision.gameObject.GetComponentInParent<Explosion>().Damage());
+            Hit(Mathf.Lerp(20, 100, collision.gameObject.GetComponentInParent<Explosion>().Damage()), 40, 5);
+            rb.AddForce(collisionNormal * Mathf.Lerp(500, 3000, collision.gameObject.GetComponentInParent<Explosion>().Damage()));
+            bounceTime = Time.time + bounceDuration;
+        }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -1239,8 +1284,8 @@ public class MultiplayerController : FSM
             Debug.Log("Jump");
         } else if (collision.tag == "Heal" && currentState == PlayerStates.Grounded)
         {
-            if (health <= 0) { return; }
-            health = health + 0.3f;
+            if (health <= 0 || !isLocalPlayer || bounceTime > Time.time) { return; }
+            health = health + maxHealth / 200;
             playerHealthBar.value = maxHealth - health;
             healthBar.value = maxHealth - health;
             CmdChangeHealth(health);
@@ -1248,7 +1293,7 @@ public class MultiplayerController : FSM
         else if (collision.tag == "Booster")
         {
             rb.rotation = Mathf.Asin(collision.gameObject.transform.rotation.z) * Mathf.Rad2Deg * 2 * Mathf.Sign(collision.gameObject.transform.rotation.w);
-            rb.velocity = new Vector2(collision.gameObject.transform.rotation.w, collision.gameObject.transform.rotation.z) * rb.velocity.magnitude;
+            rb.velocity = new Vector2(Mathf.Cos(rb.rotation * Mathf.Deg2Rad), Mathf.Sin(rb.rotation * Mathf.Deg2Rad)) * rb.velocity.magnitude;
         }
         else if (collision.tag == "Gravel")
         {

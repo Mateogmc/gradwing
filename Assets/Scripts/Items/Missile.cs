@@ -9,8 +9,15 @@ public class Missile : NetworkBehaviour
 
     private Rigidbody2D rb;
     private CapsuleCollider2D cc;
-    [SerializeField] private float speed;
+    [SerializeField] private float minSpeed;
+    [SerializeField] private float maxExtraSpeed;
     [SerializeField] private float rotationSpeed;
+    [SerializeField] private float maxSpeedDistance;
+    [SerializeField] private GameObject explosion;
+    [SerializeField] private GameObject targetAim;
+    [SerializeField] private GameObject trail;
+
+    private GameObject sight;
 
     void Start()
     {
@@ -21,6 +28,8 @@ public class Missile : NetworkBehaviour
         target = FindFirstPlayer();
         
         StartCoroutine(Activate());
+        sight = Instantiate(targetAim);
+        sight.GetComponent<Sight>().missile = gameObject;
     }
 
     private IEnumerator Activate()
@@ -51,12 +60,23 @@ public class Missile : NetworkBehaviour
     private void FixedUpdate()
     {
         Vector2 vectorDirection = new Vector2(target.transform.position.x - transform.position.x, target.transform.position.y - transform.position.y).normalized;
-        float targetDirection = Vector2.SignedAngle(vectorDirection, Vector2.right);
-
         float rotateAmount = Vector3.Cross(vectorDirection, transform.up).z;
-
         rb.angularVelocity = -rotateAmount * rotationSpeed;
 
-        rb.velocity = transform.up * speed;
+        float distance = new Vector2(target.transform.position.x - transform.position.x, target.transform.position.y - transform.position.y).magnitude;
+        distance = distance / maxSpeedDistance;
+        if (distance > 1) { distance = 1; }
+        float currentSpeed = minSpeed + Mathf.Lerp(0, maxExtraSpeed, distance);
+        Debug.Log(currentSpeed);
+        rb.velocity = transform.up * (minSpeed + Mathf.Lerp(0, maxExtraSpeed, distance));
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CmdExplode(Vector3 pos)
+    {
+        NetworkServer.Spawn(Instantiate(explosion, pos, Quaternion.identity));
+        trail.transform.parent = null;
+        trail.GetComponent<DestroyDelay>().DestroyAfterDelay();
+        NetworkServer.Destroy(gameObject);
     }
 }

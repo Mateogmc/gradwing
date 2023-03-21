@@ -75,7 +75,8 @@ public class ItemBox : NetworkBehaviour
                 random -= itemWeights[placement, i];
                 if (random <= 0)
                 {
-                    player.CmdGetItem(items[i]);
+                    player.CmdGetItem("Missile");
+                    //player.CmdGetItem(items[i]);
                     break;
                 }
             }

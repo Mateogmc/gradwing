@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 9102458083638337284}
   - component: {fileID: 9102458083638337291}
   - component: {fileID: 9102458083638337285}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Ice
   m_TagString: Ice
   m_Icon: {fileID: 0}
@@ -32,7 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1971053207 &9102458083638337284
 SpriteShapeRenderer:
@@ -91,7 +91,6 @@ SpriteShapeRenderer:
   m_LocalAABB:
     m_Center: {x: 0.0002465248, y: -0.00016963482, z: 0}
     m_Extent: {x: 2.3399153, y: 1.0001695, z: 0}
-  m_SpriteSortPoint: 0
 --- !u!114 &9102458083638337291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,6 +111,8 @@ MonoBehaviour:
       rightTangent: {x: -0.53597367, y: 0.00048214197, z: 0}
       mode: 1
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -120,6 +121,8 @@ MonoBehaviour:
       rightTangent: {x: 1.0023332, y: -0.0010559559, z: -0}
       mode: 1
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -128,6 +131,8 @@ MonoBehaviour:
       rightTangent: {x: 1.0005913, y: 0.0016920567, z: 0}
       mode: 1
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -136,6 +141,8 @@ MonoBehaviour:
       rightTangent: {x: -0.54391515, y: -0.0004222989, z: -0}
       mode: 1
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -155,8 +162,6 @@ MonoBehaviour:
   m_EnableTangents: 0
   m_GeometryCached: 0
   m_UTess2D: 0
-  m_Creator: {fileID: 0}
-  m_Modifiers: []
 --- !u!60 &9102458083638337285
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -212,4 +217,3 @@ PolygonCollider2D:
       - {x: -0.7669255, y: -1.0001644}
       - {x: -0.8879087, y: -1.0000892}
       - {x: -1, y: -1}
-  m_UseDelaunayMesh: 0

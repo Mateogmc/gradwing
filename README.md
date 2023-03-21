@@ -92,3 +92,15 @@
 |6th      |10%   |20% |10% |15%      |20%  |20%  |5%     |
 |7th      |0%    |25% |0%  |30%      |30%  |20%  |10%    |
 |8th      |0%    |30% |0%  |30%      |30%  |20%  |5%     |
+
+*Version 0.12*
+- Added stylistic trails
+- Created new level: Figure ∞
+- Fixed camera movement in boost panels
+- Added magnetic ground
+- Added minimap system
+
+*Version 0.13*
+- Added bloom
+- Now player trails change colors depending on state and speed
+- Created new level: Volute

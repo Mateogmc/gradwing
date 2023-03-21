@@ -14,6 +14,17 @@ TagManager:
   - Gravel
   - DataManager
   - Missile
+  - Explosion
+  - Ground
+  - StartPosition
+  - Checkpoint
+  - Booster
+  - LapManager
+  - Blaster
+  - FinishLine
+  - Magnet
+  - Reference
+  - FrontLine
   layers:
   - Default
   - TransparentFX

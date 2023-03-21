@@ -39,6 +39,17 @@ public class LapManager : MonoBehaviour
         }
     }
 
+    public void DisableCheckpoints(int currentCheckpoint)
+    {
+        foreach(GameObject checkpoint in checkpoints)
+        {
+            if (checkpoint.GetComponent<CheckpointValue>().checkpointNumber <= currentCheckpoint)
+            {
+                checkpoint.SetActive(false);
+            }
+        }
+    }
+
     private void ExitToLobby()
     {
 

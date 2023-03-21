@@ -32,7 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 25
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1971053207 &3485663365188586705
 SpriteShapeRenderer:
@@ -54,8 +54,8 @@ SpriteShapeRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 5edc253775e0d534b8699e5611f02922, type: 2}
+  - {fileID: 2100000, guid: 5edc253775e0d534b8699e5611f02922, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -92,7 +92,6 @@ SpriteShapeRenderer:
   m_LocalAABB:
     m_Center: {x: -16.963345, y: 2.165145, z: 0}
     m_Extent: {x: 11.019086, y: 15.535958, z: 0}
-  m_SpriteSortPoint: 0
 --- !u!114 &3485663365188586704
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,6 +112,8 @@ MonoBehaviour:
       rightTangent: {x: -0.5359726, y: 0.00048828125, z: 0}
       mode: 1
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -121,6 +122,8 @@ MonoBehaviour:
       rightTangent: {x: 1.0023346, y: -0.0010681152, z: 0}
       mode: 1
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -129,6 +132,8 @@ MonoBehaviour:
       rightTangent: {x: 1.0005951, y: 0.0016784668, z: 0}
       mode: 1
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -137,6 +142,8 @@ MonoBehaviour:
       rightTangent: {x: -0.5439148, y: -0.0004272461, z: 0}
       mode: 1
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -156,8 +163,6 @@ MonoBehaviour:
   m_EnableTangents: 0
   m_GeometryCached: 0
   m_UTess2D: 0
-  m_Creator: {fileID: 0}
-  m_Modifiers: []
 --- !u!60 &3485663365188586707
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -225,4 +230,3 @@ PolygonCollider2D:
       - {x: -7.1511307, y: -13.370534}
       - {x: -26.673023, y: -13.370562}
       - {x: -27.016533, y: -13.37047}
-  m_UseDelaunayMesh: 0
