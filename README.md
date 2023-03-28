@@ -104,3 +104,7 @@
 - Added bloom
 - Now player trails change colors depending on state and speed
 - Created new level: Volute
+
+*Version 0.14*
+- Added treadmill
+- Added results screen and finished the game loop

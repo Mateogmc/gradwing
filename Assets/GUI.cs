@@ -10,12 +10,7 @@ public class GUI : MonoBehaviour
     void Start()
     {
         GetComponent<Canvas>().worldCamera = Camera.current;
-    }
 
-    public void ReturnToLobby()
-    {
-        Debug.Log("Click");
-        RaceManager.GetInstance().CmdReturnToLobby();
     }
 
     private void Update()
@@ -23,10 +18,16 @@ public class GUI : MonoBehaviour
         if (GameStateManager.GetInstance().gameState == GameStateManager.GameState.Running && NetworkServer.active)
         {
             returnToLobby.gameObject.SetActive(true);
-        } 
+        }
         else
         {
             returnToLobby.gameObject.SetActive(false);
         }
+    }
+
+    public void ReturnToLobby()
+    {
+        Debug.Log("Click");
+        RaceManager.GetInstance().CmdReturnToLobby();
     }
 }

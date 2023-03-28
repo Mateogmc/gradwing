@@ -2,18 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.VFX;
 using TMPro;
 using Mirror;
 
 public enum PlayerStates
 {
-    None, Grounded, Jumping, Dead
+    None, Grounded, Jumping, Dead, Finish
 }
 
 public class MultiplayerController : FSM
 {
 
-    public PlayerStates currentState = PlayerStates.Grounded;
+    [SyncVar(hook = nameof(OnStateChange))]public PlayerStates currentState = PlayerStates.Grounded;
 
     [Header("Inspector variables")]
     [SerializeField] SpriteRenderer sr;
@@ -46,7 +47,7 @@ public class MultiplayerController : FSM
     private GameObject explosion;
     float airborne = 0f;
     int grounded = 1;
-    [SyncVar(hook = nameof(OnAirborneChange))] float currentScale = 1;
+    [SyncVar(hook = nameof(OnAirborneChange))] public float currentScale = 1;
     public Vector2 direction;
     [HideInInspector] public Vector2 lastSpeed;
     [SyncVar(hook = nameof(LastSpeedChange))] public float lastSpeedMagnitude;
@@ -60,6 +61,7 @@ public class MultiplayerController : FSM
     [HideInInspector] public bool strafingLeft = false;
     [HideInInspector] public float strafeValue;
     [HideInInspector] public bool rolling;
+    [HideInInspector] [SyncVar(hook = nameof(OnRollingChange))] public bool rollingSync;
 
     [SerializeField] [SyncVar(hook = nameof(OnMaxHealthChange))] float maxHealth;
     [SerializeField] [SyncVar(hook = nameof(OnHealthChange))] float health;
@@ -83,12 +85,16 @@ public class MultiplayerController : FSM
     [SerializeField] GameObject missilePrefab;
     Vector3 itemPosition;
 
+    // Laser tools
     [SerializeField] GameObject laserHit;
     [SerializeField] LineRenderer lineRenderer;
     [SyncVar(hook = nameof(OnFiringLaserChange))] bool firingLaser = false;
     [SyncVar(hook = nameof(OnLaserCountdownChange))] float laserCountdown = 0f;
     [SerializeField] LayerMask layerMask;
     [SerializeField] GameObject laserPoint;
+    [SerializeField] Material laserMaterial;
+    [SerializeField] Transform laserPosition;
+    [SerializeField] GameObject laserVFX;
 
     [SerializeField] [SyncVar(hook = nameof(OnItemChange))] Items currentItem = Items.None;
 
@@ -96,13 +102,14 @@ public class MultiplayerController : FSM
 
     // Lap Manager
     [SerializeField] GameObject lapTextRenderer;
-    [SerializeField] [SyncVar(hook = nameof(OnLapChange))] int currentLap = 0;
+    [SerializeField] [SyncVar(hook = nameof(OnLapChange))] int currentLap = 1;
     [SyncVar(hook = nameof(OnCheckpointChange))] int currentCheckpoint;
     LapManager lapManager;
     int checkpointCount = 0;
     Vector2 spawnPos = Vector2.zero;
     float spawnRotation = 0;
     [SyncVar(hook = nameof(OnPlacementChange))]public int placement;
+    public EndgameManager endgameManager;
 
     // Interface
     [SerializeField] TextMeshProUGUI lapRenderer;
@@ -115,6 +122,8 @@ public class MultiplayerController : FSM
     [SerializeField] TextMeshProUGUI username;
     [SerializeField] SpriteRenderer shieldRenderer;
     [SerializeField] Image placementNumber;
+    [SerializeField] Canvas endgameInterface;
+    [SerializeField] Image endgamePlacementImage;
 
     public override void OnStartLocalPlayer()
     {
@@ -141,6 +150,8 @@ public class MultiplayerController : FSM
         dataManager = GameObject.FindGameObjectWithTag("DataManager").GetComponent<DataManager>();
         GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraMovement>().Initialize(gameObject);
         playerInterface.transform.parent = null;
+        //endgameInterface.transform.parent = null;
+        lineRenderer.material = new Material(laserMaterial);
         Restart();
     }
 
@@ -170,50 +181,62 @@ public class MultiplayerController : FSM
 
     private void CheckState()
     {
-        if (currentState == PlayerStates.Jumping && airborne <= 0/* && !CheckOffRoadUp(new Vector2(transform.position.x, transform.position.y), 0)*/)
+        if (currentState == PlayerStates.Finish)
         {
-            if (grounded > 0)
+            SetLayer(13);
+            if (isLocalPlayer)
+            {
+                playerInterface.enabled = false;
+                endgameInterface.enabled = true;
+            }
+        }
+        else
+        {
+            if (currentState == PlayerStates.Jumping && airborne <= 0/* && !CheckOffRoadUp(new Vector2(transform.position.x, transform.position.y), 0)*/)
+            {
+                if (grounded > 0)
+                {
+                    currentState = PlayerStates.Grounded;
+                }
+                else
+                {
+                    CmdChangeHealth(0);
+                }
+            }
+            if (health <= 0f && currentState != PlayerStates.Dead)
+            {
+                currentState = PlayerStates.Dead;
+                dead = Time.time + deathTimer;
+            }
+            else if (health > 0f && currentState == PlayerStates.Dead)
             {
                 currentState = PlayerStates.Grounded;
             }
-            else
+            if (currentState == PlayerStates.Dead && dead < Time.time)
             {
-                CmdChangeHealth(0);
+                Restart();
             }
-        }
-        if (health <= 0f && currentState != PlayerStates.Dead)
-        {
-            currentState = PlayerStates.Dead;
-            dead = Time.time + deathTimer;
-        }
-        else if (health > 0f && currentState == PlayerStates.Dead)
-        {
-            currentState = PlayerStates.Grounded;
-        }
-        if (currentState == PlayerStates.Dead && dead < Time.time)
-        {
-            Restart();
-        }
-        if (username.text != usernameText)
-        {
-            username.text = usernameText;
-        }
-        if (currentMaxSpeed < maxSpeed && slowTimer < Time.time)
-        {
-            currentMaxSpeed = maxSpeed;
-        }
-        if (currentState == PlayerStates.Dead)
-        {
-            SetLayer(10);
-        }
-        if (firingLaser && laserCountdown < Time.time)
-        {
-            CmdLaserHit(transform.position + new Vector3(direction.x, direction.y, 0) * 2, direction);
-            firingLaser = false;
-            lineRenderer.enabled = false;
-            CmdUseItem();
-            currentItem = Items.None;
-            itemSprite.sprite = none;
+            if (username.text != usernameText)
+            {
+                username.text = usernameText;
+            }
+            if (currentMaxSpeed < maxSpeed && slowTimer < Time.time)
+            {
+                currentMaxSpeed = maxSpeed;
+            }
+            if (currentState == PlayerStates.Dead)
+            {
+                SetLayer(10);
+            }
+            if (firingLaser && laserCountdown < Time.time)
+            {
+                CmdLaserHit(transform.position + new Vector3(direction.x, direction.y, 0) * 2, direction, laserPosition.position, transform.rotation);
+                firingLaser = false;
+                lineRenderer.enabled = false;
+                CmdUseItem();
+                currentItem = Items.None;
+                itemSprite.sprite = none;
+            }
         }
     }
 
@@ -271,6 +294,7 @@ public class MultiplayerController : FSM
     private void SetPlacementImage()
     {
         placementNumber.sprite = Resources.Load<Sprite>("UI/placement" + placement);
+        endgamePlacementImage.sprite = Resources.Load<Sprite>("UI/placement" + placement);
     }
 
     public void Restart()
@@ -369,6 +393,16 @@ public class MultiplayerController : FSM
     private void LastSpeedChange(float oldSpeed, float newSpeed)
     {
         lastSpeedMagnitude = newSpeed;
+    }
+
+    private void OnRollingChange(bool oldRolling, bool newRolling)
+    {
+        rollingSync = newRolling;
+    }
+
+    private void OnStateChange(PlayerStates oldState, PlayerStates newState)
+    {
+        currentState = newState;
     }
 
     private void OnItemChange(Items oldItem, Items newItem)
@@ -503,7 +537,7 @@ public class MultiplayerController : FSM
                 strafingRight = false;
             }
 
-            if (Input.GetKeyDown(KeyCode.Joystick1Button4))
+            if (Input.GetKeyDown(KeyCode.Joystick1Button4) || Input.GetKeyDown(KeyCode.Joystick1Button5))
             {
                 UseItem();
             }
@@ -581,15 +615,20 @@ public class MultiplayerController : FSM
                 strafingRight = false;
             }
 
-            if (Input.GetKeyDown(KeyCode.Joystick1Button4))
+            if (Input.GetKeyDown(KeyCode.Joystick1Button4) || Input.GetKeyDown(KeyCode.Joystick1Button5))
             {
                 UseItem();
             }
+        }
+        if (rollingSync != rolling)
+        {
+            CmdRolling(rolling);
         }
     }
 
     private void Move()
     {
+        direction = new Vector2(Mathf.Cos(rb.rotation * Mathf.Deg2Rad), Mathf.Sin(rb.rotation * Mathf.Deg2Rad)); //Iba en Grounded
         switch (currentState)
         {
             case PlayerStates.None:
@@ -598,8 +637,8 @@ public class MultiplayerController : FSM
 
             case PlayerStates.Grounded:
                 SetLayer(6);
+                CmdSetScale(1);
                 sr.sortingLayerID = SortingLayer.NameToID("Players");
-                direction = new Vector2(Mathf.Cos(rb.rotation * Mathf.Deg2Rad), Mathf.Sin(rb.rotation * Mathf.Deg2Rad));
                 if (rolling)
                 {
                     if (currentSpeed > 1)
@@ -755,9 +794,29 @@ public class MultiplayerController : FSM
     }
 
     [Command]
-    private void CmdSetLap(int lap)
+    private void CmdSetLap(int lap, int placement)
     {
         currentLap = lap;
+        if (lapManager == null)
+        {
+            lapManager = GameObject.FindGameObjectWithTag("LapManager").GetComponent<LapManager>();
+        }
+        if (currentLap > lapManager.lapCount && currentState != PlayerStates.Finish)
+        {
+            currentState = PlayerStates.Finish;
+            CmdSetCheckpoint(8 - placement);
+            RpcEndRace();
+        }
+    }
+
+    [ClientRpc]
+    private void RpcEndRace()
+    {
+        GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject go in gameObjects)
+        {
+            go.GetComponent<MultiplayerController>().endgameManager.AddDictionaryEntry(placement, usernameText);
+        }
     }
 
     [Command]
@@ -766,6 +825,11 @@ public class MultiplayerController : FSM
         lastSpeedMagnitude = speed;
     }
 
+    [Command]
+    private void CmdRolling(bool rolling)
+    {
+        rollingSync = rolling;
+    }
 
     private void Jump(bool item)
     {
@@ -838,18 +902,21 @@ public class MultiplayerController : FSM
     [Command]
     private void CmdLaser()
     {
-        laserCountdown = (float)NetworkTime.time + 0.5f;
+        laserCountdown = Time.time + 0.5f;
         firingLaser = true;
     }
 
     [Command]
-    private void CmdLaserHit(Vector3 pos, Vector2 dir)
+    private void CmdLaserHit(Vector3 pos, Vector2 dir, Vector3 laserPos, Quaternion laserRotation)
     {
-        RaycastHit2D hit = Physics2D.Raycast(pos, dir, 10000, ~6);
-        if (hit != null && hit.collider.tag == "Player")
+        float distance = 10000;
+        RaycastHit2D hit = Physics2D.Raycast(pos, dir, 10000, layerMask);
+        if (Physics2D.Raycast(pos, dir, 10000, layerMask))
         {
             RpcLaserHit(hit.point);
+            distance = hit.distance * 10;
         }
+        RpcShootLaser(laserPos, laserRotation, distance);
         firingLaser = false;
     }
 
@@ -857,6 +924,16 @@ public class MultiplayerController : FSM
     private void RpcLaserHit(Vector2 hitPoint)
     {
         GameObject las = Instantiate(laserHit, hitPoint, Quaternion.identity);
+    }
+
+    [ClientRpc]
+    private void RpcShootLaser(Vector3 laserPos, Quaternion rotation, float distance)
+    {
+        GameObject l = Instantiate(laserVFX, laserPos, rotation);
+        l.GetComponent<VisualEffect>().SetFloat("Length", distance);
+        l.GetComponent<VisualEffect>().SetFloat("Position", distance / 10);
+        l.GetComponent<DestroyDelay>().DestroyAfterDelay();
+        Debug.Log(distance);
     }
 
     private void LaserUpdate()
@@ -868,14 +945,40 @@ public class MultiplayerController : FSM
             lineRenderer.startColor = firingLaser ? Color.cyan : Color.green;
             position = hit.point;
             CmdSpawnLaserPointer(position);
+            CmdLaserUpdate(firingLaser, true, transform.position, position);
         }
         else
         {
             lineRenderer.startColor = firingLaser ? Color.cyan : Color.red;
             position = transform.position + new Vector3(direction.x, direction.y, 0) * 1000;
+            CmdLaserUpdate(firingLaser, false, transform.position, position);
         }
         lineRenderer.SetPosition(0, transform.position);
         lineRenderer.SetPosition(1, position);
+    }
+
+    [Command]
+    private void CmdLaserUpdate(bool firingLaser, bool hit, Vector3 pos1, Vector3 pos2)
+    {
+        RpcLaserUpdate(firingLaser, hit, pos1, pos2);
+    }
+
+    [ClientRpc]
+    private void RpcLaserUpdate(bool firingLaser, bool hit, Vector3 pos1, Vector3 pos2)
+    {
+        float countdown = laserCountdown - Time.time;
+        if (hit)
+        {
+            lineRenderer.startColor = firingLaser ? Color.cyan : Color.green;
+            lineRenderer.material.SetColor("_Color", firingLaser ? new Vector4(Mathf.Lerp(150, 0, countdown - 0.1f / 0.4f), Mathf.Lerp(150, 50, countdown - 0.1f / 0.4f), 200, 2) : new Vector4(0, 150, 0, 2));
+        }
+        else
+        {
+            lineRenderer.startColor = firingLaser ? Color.cyan : Color.red;
+            lineRenderer.material.SetColor("_Color", firingLaser ? new Vector4(Mathf.Lerp(150, 0, countdown - 0.1f / 0.4f), Mathf.Lerp(150, 50, countdown - 0.1f / 0.4f), 200, 2) : new Vector4(150, 0, 0, 2));
+        }
+        lineRenderer.SetPosition(0, pos1);
+        lineRenderer.SetPosition(1, pos2);
     }
 
     [Command]
@@ -1074,6 +1177,12 @@ public class MultiplayerController : FSM
     }
 
     [Command]
+    private void CmdSetPlacement(int placement)
+    {
+        this.placement = placement;
+    }
+
+    [Command]
     private void CmdSetCheckpoint(int checkpoint)
     {
         currentCheckpoint = checkpoint;
@@ -1085,8 +1194,6 @@ public class MultiplayerController : FSM
     {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
-        placement = 1;
-
         foreach (GameObject player in players)
         {
             player.GetComponent<MultiplayerController>().CheckPosition();
@@ -1097,7 +1204,7 @@ public class MultiplayerController : FSM
     {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
-        placement = 1;
+        int tempPlacement = 1;
 
         foreach (GameObject player in players)
         {
@@ -1106,18 +1213,27 @@ public class MultiplayerController : FSM
                 MultiplayerController controller = player.GetComponent<MultiplayerController>();
                 if (controller.currentLap == currentLap)
                 {
-                    if (controller.currentCheckpoint >= currentCheckpoint)
+                    if (controller.currentCheckpoint > currentCheckpoint)
                     {
-                        placement++;
+                        tempPlacement++;
+                    }
+                    else if (controller.currentCheckpoint == currentCheckpoint && controller.placement < placement)
+                    {
+                        tempPlacement++;
                     }
                 }
                 else if (controller.currentLap > currentLap)
                 {
-                    placement++;
+                    tempPlacement++;
                 }
             }
         }
-        SetPlacementImage();
+        placement = tempPlacement;
+        if (isLocalPlayer)
+        {
+            CmdSetPlacement(tempPlacement);
+            SetPlacementImage();
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -1227,11 +1343,14 @@ public class MultiplayerController : FSM
                 if (lapManager.CheckNextLap(checkpointCount))
                 {
                     currentLap++;
-                    CmdSetLap(currentLap);
+                    CmdSetLap(currentLap, placement);
                     SetLap();
                 }
                 checkpointCount = 0;
-                CmdSetCheckpoint(0);
+                if (currentState != PlayerStates.Finish)
+                {
+                    CmdSetCheckpoint(0);
+                }
             } else
             {
                 checkpointCount++;
