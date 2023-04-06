@@ -27,7 +27,6 @@ public class EndgameManager : MonoBehaviour
             returning = false;
             StartCoroutine(ReturnInSeconds());
         }
-        Debug.Log(GameObject.FindGameObjectsWithTag("Player").Length);
 
         for (int i = 0; i < playerDictionary.Count; i++)
         {
@@ -58,8 +57,21 @@ public class EndgameManager : MonoBehaviour
         playerDictionary[placement] = username;
     }
 
+    public int GetPlacement(string username)
+    {
+        for (int i = 1; i <= playerDictionary.Count; i++)
+        {
+            if (playerDictionary[i] == username)
+            {
+                return i;
+            }
+        }
+        return 8;
+    }
+
     private IEnumerator ReturnInSeconds()
     {
+        GameStateManager.GetInstance().gameState = GameStateManager.GameState.GameOver;
         yield return new WaitForSeconds(3);
         ReturnToLobby();
     }

@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lapCount: 3
+  levelColor: {x: 150, y: 0, z: 0, w: 0.4}
   checkpointTolerance: 0.2
   minimumCheckpoints: 0
   exitToLobby: {fileID: 0}

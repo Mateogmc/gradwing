@@ -25,6 +25,8 @@ TagManager:
   - Magnet
   - Reference
   - FrontLine
+  - GameManager
+  - LevelData
   layers:
   - Default
   - TransparentFX

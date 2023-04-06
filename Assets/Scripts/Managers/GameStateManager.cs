@@ -12,6 +12,7 @@ public class GameStateManager : MonoBehaviour
     {
         None,
         OnLobby,
+        Starting,
         Running,
         GameOver
     }

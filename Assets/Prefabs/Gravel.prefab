@@ -32,7 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1971053207 &917847821711841680
 SpriteShapeRenderer:
@@ -54,8 +54,8 @@ SpriteShapeRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -92,7 +92,6 @@ SpriteShapeRenderer:
   m_LocalAABB:
     m_Center: {x: 53.489296, y: 14.750502, z: 0}
     m_Extent: {x: 24.81475, y: 15.458687, z: 0}
-  m_SpriteSortPoint: 0
 --- !u!114 &917847821711841679
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,6 +112,8 @@ MonoBehaviour:
       rightTangent: {x: -0.5359764, y: 0.00048065186, z: 0}
       mode: 1
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -121,6 +122,8 @@ MonoBehaviour:
       rightTangent: {x: 0.47372818, y: -0.00049972534, z: 0}
       mode: 1
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -129,6 +132,8 @@ MonoBehaviour:
       rightTangent: {x: 12.466282, y: -1.9705505, z: 0}
       mode: 1
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -137,6 +142,8 @@ MonoBehaviour:
       rightTangent: {x: 1.0005951, y: 0.0016937256, z: 0}
       mode: 1
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -145,6 +152,8 @@ MonoBehaviour:
       rightTangent: {x: -0.5439148, y: -0.0004196167, z: 0}
       mode: 1
       height: 1
+      bevelCutoff: 0
+      bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
@@ -164,8 +173,6 @@ MonoBehaviour:
   m_EnableTangents: 0
   m_GeometryCached: 0
   m_UTess2D: 0
-  m_Creator: {fileID: 0}
-  m_Modifiers: []
 --- !u!60 &917847821711841682
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -257,4 +264,3 @@ PolygonCollider2D:
       - {x: 33.708202, y: -0.44456935}
       - {x: 33.021187, y: -0.43749273}
       - {x: 32.61061, y: -0.4338891}
-  m_UseDelaunayMesh: 0

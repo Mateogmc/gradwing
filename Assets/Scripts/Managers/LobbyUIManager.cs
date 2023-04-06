@@ -11,13 +11,17 @@ public class LobbyUIManager : MonoBehaviour
     [SerializeField] Button startGame;
     [SerializeField] Button editStats;
     [SerializeField] Button setStats;
+    [SerializeField] Button setVehicle;
 
     [SerializeField] GameObject statPanel;
+    [SerializeField] GameObject vehiclePanel;
 
     [SerializeField] Slider velocity;
     [SerializeField] Slider acceleration;
     [SerializeField] Slider weight;
     [SerializeField] Slider handling;
+
+    public Button[] vehicles;
 
     [SerializeField] Button level1;
     [SerializeField] TextMeshProUGUI level1Text;
@@ -31,6 +35,8 @@ public class LobbyUIManager : MonoBehaviour
     DataManager dataManager;
     [SerializeField] LobbyManager lobbyManager;
 
+
+
     private void Start()
     {
         disconnect.onClick.AddListener(() => Disconnect());
@@ -41,6 +47,8 @@ public class LobbyUIManager : MonoBehaviour
         weight.onValueChanged.AddListener(delegate { SliderChange(2); });
         handling.onValueChanged.AddListener(delegate { SliderChange(3); });
         setStats.onClick.AddListener(() => SetStats());
+        setVehicle.onClick.AddListener(() => OpenVehicleWindow());
+
 
         level1.onClick.AddListener(() => SelectLevel(1));
         level2.onClick.AddListener(() => SelectLevel(2));
@@ -55,14 +63,12 @@ public class LobbyUIManager : MonoBehaviour
         startGame.gameObject.SetActive(NetworkServer.active);
     }
 
-    private void Update()
+    public void SetVehicleListeners()
     {
-        if (LobbyManager.GetInstance().gameReady)
+        for (int i = 0; i < vehicles.Length; i++)
         {
-            startGame.gameObject.SetActive(true);
-        } else
-        {
-            startGame.gameObject.SetActive(false);
+            int j = i;
+            vehicles[i].onClick.AddListener(() => SetVehicle(j));
         }
     }
 
@@ -99,6 +105,20 @@ public class LobbyUIManager : MonoBehaviour
     private void EditStats()
     {
         statPanel.SetActive(!statPanel.activeSelf);
+        vehiclePanel.SetActive(false);
+    }
+
+    private void OpenVehicleWindow()
+    {
+        vehiclePanel.SetActive(!vehiclePanel.activeSelf);
+        statPanel.SetActive(false);
+    }
+
+    private void SetVehicle(int i)
+    {
+        OpenVehicleWindow();
+        DataManager.GetInstance().SetVehicleSprite(i);
+        NetworkClient.localPlayer.gameObject.GetComponent<MultiplayerController>().Restart();
     }
 
     private void SetStats()

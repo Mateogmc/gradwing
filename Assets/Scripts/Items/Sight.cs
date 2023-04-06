@@ -40,11 +40,14 @@ public class Sight : NetworkBehaviour
     {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
-        foreach (GameObject p in players)
+        for (int i = 1; i <= players.Length; i++)
         {
-            if (p.GetComponent<MultiplayerController>().placement == 1)
+            foreach (GameObject p in players)
             {
-                return p;
+                if (p.GetComponent<MultiplayerController>().placement == i && p.GetComponent<MultiplayerController>().currentState != PlayerStates.Finish)
+                {
+                    return p;
+                }
             }
         }
         return null;

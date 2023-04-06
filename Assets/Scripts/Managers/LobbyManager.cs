@@ -20,11 +20,13 @@ public class LobbyManager : NetworkBehaviour
 
     [SerializeField] UIManager uiManager;
 
+    [SyncVar(hook = nameof(OnCountdownChange))] public int countdownValue = 30;
+
     int playerCount;
 
     private List<int> levels = new List<int>();
 
-    public bool gameReady = false;
+    [SyncVar(hook = nameof(OnGameReady))] public bool gameReady = false;
 
     [SyncVar(hook = nameof(Level1Change))] private int level1;
     [SyncVar(hook = nameof(Level2Change))] private int level2;
@@ -43,6 +45,25 @@ public class LobbyManager : NetworkBehaviour
     private void Level3Change(int oldVal, int newVal)
     {
         level3 = newVal;
+    }
+
+    private void OnGameReady(bool oldReady, bool newReady)
+    {
+        gameReady = newReady;
+    }
+
+    private void OnCountdownChange(int oldVal, int newVal)
+    {
+        countdownValue = newVal;
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CmdSetCountdown(int val)
+    {
+        if (isServer)
+        {
+            countdownValue = val;
+        }
     }
 
 

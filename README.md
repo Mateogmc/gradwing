@@ -108,3 +108,19 @@
 *Version 0.14*
 - Added treadmill
 - Added results screen and finished the game loop
+
+*Version 0.14.1*
+- Added race start countdown
+
+*Version 0.14.2*
+- Added spectator mode
+- Now Boost protects from slowing down over gravel
+- Now Boost makes the player deal more and receive less contact damage
+- Added VFX to boost
+- Added boost at the start of the race (Lerp(1 sec left - start))
+- Now missiles follow first player ignoring finished ones
+- Stilyzed level borders
+
+*Version 0.15*
+- Added vehicle type selection
+- Added dynamic vehicle color based on stats

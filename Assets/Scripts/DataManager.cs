@@ -43,11 +43,14 @@ public class DataManager : MonoBehaviour
     public float acceleration = ACCELERATION;
     public float weight = WEIGHT;
     public float handling = HANDLING;
+    public int spriteValue = 0;
 
     public bool xboxController;
     public bool strafeMode;
 
     public static int maxPoints = 24;
+
+    public static Color vehicleColor;
 
 
     void Start()
@@ -68,6 +71,7 @@ public class DataManager : MonoBehaviour
             initHandling = float.Parse(sr.ReadLine());
             xboxController = sr.ReadLine() == "1";
             strafeMode = sr.ReadLine() == "1";
+            spriteValue = int.Parse(sr.ReadLine());
         }
         using (StreamReader sr = new StreamReader(Application.streamingAssetsPath + "/levels.dat"))
         {
@@ -154,6 +158,17 @@ public class DataManager : MonoBehaviour
         WriteStats();
     }
 
+    public void SetVehicleSprite(int i)
+    {
+        spriteValue = i;
+        WriteStats();
+    }
+
+    public void GetStatColor()
+    {
+        
+    }
+
     public void UsernameEdit(string username)
     {
         DataManager.username = username;
@@ -170,6 +185,8 @@ public class DataManager : MonoBehaviour
         this.acceleration = acceleration;
         this.weight = weight / 5;
         this.handling = handling / 10;
+
+        GetStatColor();
     }
 
     public void WriteStats()
@@ -181,7 +198,8 @@ public class DataManager : MonoBehaviour
             sw.WriteLine(this.weight);
             sw.WriteLine(this.handling);
             sw.WriteLine(xboxController ? 1 : 0);
-            sw.Write(strafeMode ? 1 : 0);
+            sw.WriteLine(strafeMode ? 1 : 0);
+            sw.WriteLine(this.spriteValue);
         }
     }
 }

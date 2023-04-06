@@ -7,11 +7,14 @@ public class Rebounder : MonoBehaviour
     Vector2 lastSpeed;
     public PlayerStates currentState;
     float airborne;
-    bool grounded = true;
     [SerializeField] int bouncesLeft;
     [SerializeField] Rigidbody2D rb;
     [SerializeField] SpriteRenderer sr;
+    [SerializeField] TrailRenderer tr;
+    [SerializeField] Material trMaterial;
+    Material currentMaterial;
     float currentScale = 1;
+    int grounded;
 
     public void InitializeRebounder(Vector2 velocity, PlayerStates playerState, float airborne)
     {
@@ -24,10 +27,18 @@ public class Rebounder : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        currentMaterial = new Material(trMaterial);
+        currentMaterial.SetColor("_TrailColor", new Vector4(100, 20, 35, 0.1f));
+        tr.material = currentMaterial;
+    }
+
     private void Update()
     {
         lastSpeed = rb.velocity;
         rb.angularVelocity = 500f;
+        tr.widthMultiplier = currentScale;
     }
 
     private void FixedUpdate()
@@ -45,6 +56,8 @@ public class Rebounder : MonoBehaviour
                 transform.localScale = new Vector3(currentScale, currentScale, currentScale);
             } else
             {
+                tr.gameObject.transform.parent = null;
+                tr.gameObject.GetComponent<DestroyDelay>().DestroyAfterDelay(1);
                 Destroy(gameObject);
             }
         } else
@@ -57,7 +70,7 @@ public class Rebounder : MonoBehaviour
             }
             else
             {
-                if (!grounded)
+                if (grounded < 0)
                 {
                     currentState = PlayerStates.Dead;
                 }
@@ -95,15 +108,21 @@ public class Rebounder : MonoBehaviour
                 rb.velocity = Vector2.Reflect(lastSpeed, collision.contacts[0].normal);
             } else
             {
+                tr.gameObject.transform.parent = null;
+                tr.gameObject.GetComponent<DestroyDelay>().DestroyAfterDelay(1);
                 Destroy(gameObject);
             }
         } 
         else if (collision.gameObject.tag == "Rebounder")
         {
+            tr.gameObject.transform.parent = null;
+            tr.gameObject.GetComponent<DestroyDelay>().DestroyAfterDelay(1);
             Destroy(gameObject);
         }
         else if (collision.gameObject.tag == "Player")
         {
+            tr.gameObject.transform.parent = null;
+            tr.gameObject.GetComponent<DestroyDelay>().DestroyAfterDelay(1);
             Destroy(gameObject);
         }
     }
@@ -113,6 +132,8 @@ public class Rebounder : MonoBehaviour
         if (collision.tag == "Trap")
         {
             Destroy(collision.gameObject);
+            tr.gameObject.transform.parent = null;
+            tr.gameObject.GetComponent<DestroyDelay>().DestroyAfterDelay(1);
             Destroy(gameObject);
         }
         else if (collision.tag == "Ramp")
@@ -121,15 +142,7 @@ public class Rebounder : MonoBehaviour
         }
         else if (collision.tag == "Ground")
         {
-            grounded = true;
-        }
-    }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.tag == "Ground" && !grounded)
-        {
-            grounded = true;
+            grounded++;
         }
     }
 
@@ -137,10 +150,10 @@ public class Rebounder : MonoBehaviour
     {
         if (collision.tag == "Ground")
         {
-            grounded = false;
-            if (currentState == PlayerStates.Grounded)
+            grounded--;
+            if (currentState == PlayerStates.Grounded && grounded <= 0 && airborne <= 0)
             {
-                Destroy(gameObject);
+                currentState = PlayerStates.Dead;
             }
         }
     }

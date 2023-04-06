@@ -26,23 +26,37 @@ public class LobbyStatus : MonoBehaviour
 
     IEnumerator StartCountDownRoutine()
     {
-        for (int i = 30; i >= 0; i--)
+        LobbyManager.GetInstance().CmdSetCountdown(30);
+        for (int i = LobbyManager.GetInstance().countdownValue; i >= 0; i--)
         {
             UpdateText(i.ToString());
+            LobbyManager.GetInstance().CmdSetCountdown(i);
             yield return new WaitForSeconds(1f);
+            if (LobbyManager.GetInstance().gameReady)
+            {
+                break;
+            }
         }
+        yield return new WaitForSeconds(1f);
+        for (int i = 3; i >= 0; i--)
+        {
+            UpdateText("Starting in " + i.ToString() + "...");
+            yield return new WaitForSeconds(1);
+        }
+        LobbyManager.GetInstance().CmdStartGame();
     }
 
     public void LobbyReady(bool ready, List<int> list)
     {
         if (ready)
         {
-            UpdateText("Lobby Ready!");
+            StartCoroutine(StartCountDownRoutine());
             levelSelectPanel.SetActive(true);
             SetLevels(list);
         }
         else
         {
+            StopAllCoroutines();
             levelSelectPanel.SetActive(false);
             UpdateText("Waiting for players");
         }

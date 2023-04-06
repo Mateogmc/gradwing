@@ -35,12 +35,12 @@ public class Trail : MonoBehaviour
             red = 200;
             blue = 0;
 
-            green = Mathf.Lerp(50, 150, currentSpeed / 30);
+            green = Mathf.Lerp(50, 100, currentSpeed / 30);
             GetComponent<TrailRenderer>().widthMultiplier = 0.6f;
         }
         else if (currentSpeed < 50)
         {
-            green = 150;
+            green = 100;
             blue = 0;
 
             red = Mathf.Lerp(200, 0, (currentSpeed - 30) / 20);
@@ -48,20 +48,25 @@ public class Trail : MonoBehaviour
         }
         else if (currentSpeed < 70)
         {
-            green = 150;
+            green = 100;
             red = 0;
 
-            blue = Mathf.Lerp(0, 150, (currentSpeed - 50) / 20);
+            blue = Mathf.Lerp(0, 100, (currentSpeed - 50) / 20);
             GetComponent<TrailRenderer>().widthMultiplier = 0.6f;
         }
         else if (controller.maxSpeed < currentSpeed)
         {
-            green = Mathf.Lerp(150, 200, (currentSpeed - controller.maxSpeed) / 40);
-            blue = Mathf.Lerp(150, 250, (currentSpeed - controller.maxSpeed) / 40);
+            green = Mathf.Lerp(100, 150, (currentSpeed - controller.maxSpeed) / 40);
+            blue = Mathf.Lerp(100, 200, (currentSpeed - controller.maxSpeed) / 40);
 
-            red = Mathf.Lerp(0, 200, (currentSpeed - controller.maxSpeed) / 40);
+            red = Mathf.Lerp(0, 150, (currentSpeed - controller.maxSpeed) / 40);
 
-            GetComponent<TrailRenderer>().widthMultiplier = Mathf.Lerp(0.6f, 2.5f, (currentSpeed - controller.maxSpeed) / 40);
+            GetComponent<TrailRenderer>().widthMultiplier = Mathf.Lerp(0.6f, 1.5f, (currentSpeed - controller.maxSpeed) / 40);
+        }
+        if (controller.boostTime > Time.time)
+        {
+            red = Mathf.Lerp(red, 255, (controller.boostTime - Time.time) / 1.5f);
+            GetComponent<TrailRenderer>().widthMultiplier = Mathf.Lerp(GetComponent<TrailRenderer>().widthMultiplier, 3f,  (controller.boostTime - Time.time) / 1.5f);
         }
 
         currentMaterial.SetColor("_TrailColor", new Vector4(red, green, blue, 0.2f));
