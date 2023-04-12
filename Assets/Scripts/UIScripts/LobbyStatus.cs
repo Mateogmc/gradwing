@@ -8,6 +8,7 @@ using Mirror;
 public class LobbyStatus : MonoBehaviour
 {
     public TextMeshProUGUI textMeshProUGUI;
+    public TextMeshProUGUI playerCountText;
 
     [SerializeField] GameObject levelSelectPanel;
 
@@ -46,9 +47,9 @@ public class LobbyStatus : MonoBehaviour
         LobbyManager.GetInstance().CmdStartGame();
     }
 
-    public void LobbyReady(bool ready, List<int> list)
+    public void LobbyReady(int playerCount, List<int> list)
     {
-        if (ready)
+        if (playerCount == 8 || LobbyManager.GetInstance().lobbyReady)
         {
             StartCoroutine(StartCountDownRoutine());
             levelSelectPanel.SetActive(true);
@@ -58,7 +59,7 @@ public class LobbyStatus : MonoBehaviour
         {
             StopAllCoroutines();
             levelSelectPanel.SetActive(false);
-            UpdateText("Waiting for players");
+            UpdateText("Waiting for players...");
         }
     }
 
@@ -76,5 +77,6 @@ public class LobbyStatus : MonoBehaviour
     public void UpdateText(string text)
     {
         textMeshProUGUI.text = text;
+        playerCountText.text = LobbyManager.GetInstance().playerCount + " players online";
     }
 }

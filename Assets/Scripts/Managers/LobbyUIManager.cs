@@ -154,7 +154,7 @@ public class LobbyUIManager : MonoBehaviour
 
     private void StartGame()
     {
-        LobbyManager.GetInstance().CmdStartGame();
+        LobbyManager.GetInstance().CmdStartLobby(true);
     }
 
     private void Disconnect()

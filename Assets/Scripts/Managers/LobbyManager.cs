@@ -16,13 +16,18 @@ public class LobbyManager : NetworkBehaviour
         GameStateManager.GetInstance().gameState = GameStateManager.GameState.OnLobby;
         Debug.Log("Lobby");
         instance = this;
+        if (isServer)
+        {
+            countdownValue = 30;
+        }
     }
 
     [SerializeField] UIManager uiManager;
 
-    [SyncVar(hook = nameof(OnCountdownChange))] public int countdownValue = 30;
+    [SyncVar(hook = nameof(OnCountdownChange))] public int countdownValue;
+    [SyncVar(hook = nameof(OnLobbyReady))] public bool lobbyReady = false;
 
-    int playerCount;
+    [SyncVar(hook = nameof(OnPlayerCountChange))] public int playerCount;
 
     private List<int> levels = new List<int>();
 
@@ -46,10 +51,19 @@ public class LobbyManager : NetworkBehaviour
     {
         level3 = newVal;
     }
+    private void OnPlayerCountChange(int oldVal, int newVal)
+    {
+        playerCount = newVal;
+    }
 
     private void OnGameReady(bool oldReady, bool newReady)
     {
         gameReady = newReady;
+    }
+
+    private void OnLobbyReady(bool oldBool, bool newBool)
+    {
+        lobbyReady = newBool;
     }
 
     private void OnCountdownChange(int oldVal, int newVal)
@@ -123,6 +137,13 @@ public class LobbyManager : NetworkBehaviour
         //uiManager.OnStartGame();
     }
 
+    [Command(requiresAuthority = false)]
+    public void CmdStartLobby(bool startLobby)
+    {
+        lobbyReady = startLobby;
+        LobbyReady(playerCount);
+    }
+
     [Server]
     public void LobbyReady(int playerCount)
     {
@@ -139,12 +160,12 @@ public class LobbyManager : NetworkBehaviour
                 levels.Add(val);
             }
         }
-        RpcLobbyReady(playerCount > 1, levels);
+        RpcLobbyReady(playerCount, levels);
     }
 
     [ClientRpc]
-    private void RpcLobbyReady(bool ready, List<int> list)
+    private void RpcLobbyReady(int playerCount, List<int> list)
     {
-        uiManager.OnLobbyReady(ready, list);
+        uiManager.OnLobbyReady(playerCount, list);
     }
 }

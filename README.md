@@ -124,3 +124,7 @@
 *Version 0.15*
 - Added vehicle type selection
 - Added dynamic vehicle color based on stats
+
+*Version 0.15.1*
+- Fixed wall shaders
+- Reworked game start system

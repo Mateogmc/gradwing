@@ -341,6 +341,7 @@ public class MultiplayerController : FSM
         {
             itemSprite.sprite = none;
         }
+        sr.sprite = Resources.Load<Sprite>("Vehicles/Vehicle" + this.spriteValue);
         vehicle.SetColor();
     }
 
@@ -1001,7 +1002,6 @@ public class MultiplayerController : FSM
         this.rotationSpeed = handling + 0.2f;
         this.spriteValue = spriteValue;
         currentRotationSpeed = rotationSpeed;
-        sr.sprite = Resources.Load<Sprite>("Vehicles/Vehicle" + spriteValue);
 
         maxHealth = 20 + weight * 40;
 
