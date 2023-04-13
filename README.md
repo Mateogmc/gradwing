@@ -128,3 +128,5 @@
 *Version 0.15.1*
 - Fixed wall shaders
 - Reworked game start system
+- Now you can see current lap on spectated player
+- Fixed PS4 drifting

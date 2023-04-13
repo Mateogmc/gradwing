@@ -7,6 +7,8 @@ public class Explosion : MonoBehaviour
     [SerializeField] GameObject explosionRadius;
     [SerializeField] GameObject explosionBlast;
     [SerializeField] public float maxDamage;
+    [SerializeField] Material explosionMaterial;
+    Material currentMaterial;
 
     float initialTime;
     float t;
@@ -19,6 +21,8 @@ public class Explosion : MonoBehaviour
         explosionBlast.transform.localScale = Vector3.zero;
         tmp = explosionBlast.GetComponent<SpriteRenderer>().color;
         explosionBlast.GetComponent<CircleCollider2D>().radius = 1;
+        currentMaterial = new Material(explosionMaterial);
+        explosionBlast.GetComponent<SpriteRenderer>().material = currentMaterial;
     }
 
     private void Update()
@@ -38,6 +42,7 @@ public class Explosion : MonoBehaviour
         explosionBlast.GetComponent<CircleCollider2D>().radius = Mathf.Lerp(11f, 1, PowLerp(t));
         tmp.a = Mathf.Lerp(0, 1, SqrLerp(t));
         explosionBlast.GetComponent<SpriteRenderer>().color = tmp;
+        currentMaterial.SetFloat("_StepValue", Mathf.Lerp(1, 0, SqrLerp(t)));
     }
 
     public float Damage()

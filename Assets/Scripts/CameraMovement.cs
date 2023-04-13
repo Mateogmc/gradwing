@@ -107,7 +107,7 @@ public class CameraMovement : MonoBehaviour
             }
 
             Vector3 targetPosition = Vector3.zero;
-            if (pC.rolling || pC.bounceTime > Time.time)
+            if ((pC.rolling && pC.currentState == PlayerStates.Grounded) || pC.bounceTime > Time.time)
             {
                 targetPosition = player.transform.position + offset;
             }

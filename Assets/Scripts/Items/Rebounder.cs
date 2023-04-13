@@ -29,9 +29,19 @@ public class Rebounder : MonoBehaviour
 
     private void Start()
     {
+        Physics2D.IgnoreLayerCollision(7, 6, true);
+        Physics2D.IgnoreLayerCollision(9, 8, true);
         currentMaterial = new Material(trMaterial);
         currentMaterial.SetColor("_TrailColor", new Vector4(100, 20, 35, 0.1f));
         tr.material = currentMaterial;
+        StartCoroutine(IgnoreCollision());
+    }
+
+    IEnumerator IgnoreCollision()
+    {
+        yield return new WaitForSeconds(0.05f);
+        Physics2D.IgnoreLayerCollision(7, 6, false);
+        Physics2D.IgnoreLayerCollision(9, 8, false);
     }
 
     private void Update()

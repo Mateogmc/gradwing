@@ -236,6 +236,7 @@ MonoBehaviour:
   explosionRadius: {fileID: 3892313164057389856}
   explosionBlast: {fileID: 3892313163850294615}
   maxDamage: 100
+  explosionMaterial: {fileID: 2100000, guid: e4c4be443477d4c4f9d16d6f389f2c78, type: 2}
 --- !u!114 &6042205044922904646
 MonoBehaviour:
   m_ObjectHideFlags: 0

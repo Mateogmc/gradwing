@@ -16,9 +16,18 @@ public class LobbyManager : NetworkBehaviour
         GameStateManager.GetInstance().gameState = GameStateManager.GameState.OnLobby;
         Debug.Log("Lobby");
         instance = this;
+    }
+
+    private void Start()
+    {
         if (isServer)
         {
             countdownValue = 30;
+            Debug.Log(DataManager.GetInstance().gameStarted);
+            if (DataManager.GetInstance().gameStarted)
+            {
+                CmdStartLobby(true);
+            }
         }
     }
 

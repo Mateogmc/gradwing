@@ -125,6 +125,7 @@ public class MultiplayerController : FSM
     [SerializeField] Slider healthBar;
     [SerializeField] Slider playerHealthBar;
     [SerializeField] Image playerItemSprite;
+    [SerializeField] GameObject rollingArrow;
     [SerializeField] Canvas ui;
     [SerializeField] TextMeshProUGUI username;
     [SerializeField] SpriteRenderer shieldRenderer;
@@ -337,6 +338,14 @@ public class MultiplayerController : FSM
             }
             enemyInterface.enabled = false;
         }
+        if (rolling)
+        {
+            rollingArrow.SetActive(true);
+        }
+        else
+        {
+            rollingArrow.SetActive(false);
+        }
         if (currentItem == Items.None)
         {
             itemSprite.sprite = none;
@@ -348,12 +357,14 @@ public class MultiplayerController : FSM
     public void FollowPlayer()
     {
         playerInterface.gameObject.SetActive(true);
+        lapTextRenderer.SetActive(true);
         enemyInterface.enabled = false;
     }
     public void UnfollowPlayer()
     {
         enemyInterface.enabled = true;
         playerInterface.gameObject.SetActive(false);
+        lapTextRenderer.SetActive(false);
     }
 
     public void ToggleResults()
@@ -382,6 +393,7 @@ public class MultiplayerController : FSM
         xboxController = DataManager.GetInstance().xboxController;
         SetPlacementImage();
         SetLayer(6);
+        currentRotationSpeed = rotationSpeed;
     }
 
     private void OnHealthChange(float oldHealth, float newHealth)
@@ -557,7 +569,7 @@ public class MultiplayerController : FSM
 
             if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Joystick1Button7))
             {
-                Application.Quit();
+                //Application.Quit();
             }
             if (Input.GetKeyDown(KeyCode.Joystick1Button6))
             {
@@ -637,13 +649,13 @@ public class MultiplayerController : FSM
         {
             if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Joystick1Button7))
             {
-                Application.Quit();
+                //Application.Quit();
             }
             if (Input.GetKeyDown(KeyCode.Joystick1Button6))
             {
                 //Restart();
             }
-            if (Input.GetKey(KeyCode.X) || Input.GetButton("Accel"))
+            if (Input.GetKey(KeyCode.X) || Input.GetKey(KeyCode.Joystick1Button1))
             {
                 accelerating = true;
             }
@@ -652,7 +664,7 @@ public class MultiplayerController : FSM
                 accelerating = false;
             }
 
-            if (Input.GetKey(KeyCode.C) || Input.GetKey(KeyCode.JoystickButton1))
+            if (Input.GetKey(KeyCode.C) || Input.GetKey(KeyCode.JoystickButton2))
             {
                 braking = true;
             }
@@ -688,7 +700,7 @@ public class MultiplayerController : FSM
                 rotatingRight = false;
             }
 
-            strafeValue = Input.GetAxis("StrafeR") - Input.GetAxis("StrafeL");
+            strafeValue = Mathf.Lerp(0, 1, (Input.GetAxis("StrafeR") + 1)/ 2) - Mathf.Lerp(0, 1, (Input.GetAxis("StrafeL") + 1) / 2);
 
             if (strafeValue < -0.1f)
             {
@@ -818,11 +830,11 @@ public class MultiplayerController : FSM
 
                 if (rotatingLeft && !rotatingRight)
                 {
-                    rb.rotation += (rolling ? 6f : (3f + (DataManager.GetInstance().strafeMode ? strafeValue : - strafeValue) * 2f)) * currentRotationSpeed * Mathf.Abs(Input.GetAxis("Horizontal1"));
+                    rb.rotation += (rolling ? 6f : ((3f + (DataManager.GetInstance().strafeMode ? strafeValue : - strafeValue) * 2f)) * currentRotationSpeed * Mathf.Abs(Input.GetAxis("Horizontal1")));
                 }
                 else if (rotatingRight && !rotatingLeft)
                 {
-                    rb.rotation -= (rolling ? 6f : (3f + strafeValue * 2f)) * currentRotationSpeed * Mathf.Abs(Input.GetAxis("Horizontal1"));
+                    rb.rotation -= (rolling ? 6f : ((3f + strafeValue * 2f)) * currentRotationSpeed * Mathf.Abs(Input.GetAxis("Horizontal1")));
                 }
                 break;
 
@@ -1001,7 +1013,6 @@ public class MultiplayerController : FSM
         this.weight = weight;
         this.rotationSpeed = handling + 0.2f;
         this.spriteValue = spriteValue;
-        currentRotationSpeed = rotationSpeed;
 
         maxHealth = 20 + weight * 40;
 
@@ -1659,41 +1670,45 @@ public class MultiplayerController : FSM
             checkpointCount = 0;
             lapManager.CheckNextLap(0);
         }
-        else if ((collision.tag == "Checkpoint" || collision.tag == "FinishLine") && isLocalPlayer)
+        else if ((collision.tag == "Checkpoint" || collision.tag == "FinishLine"))
         {
-            spawnPos = collision.transform.position;
-            spawnRotation = collision.transform.eulerAngles.z;
+            if (isLocalPlayer)
+            {
+                spawnPos = collision.transform.position;
+                spawnRotation = collision.transform.eulerAngles.z;
 
-            Vector2 collisionNormal = (collision.ClosestPoint(transform.position) - new Vector2(transform.position.x, transform.position.y)).normalized;
-            collisionNormal = Vector2.Reflect(collisionNormal, Vector2.up);
-            float normalFloat = Mathf.Round(Vector2.SignedAngle(collisionNormal, Vector2.right));
-            if (normalFloat < 0)
-            {
-                normalFloat += 360;
-            }
+                Vector2 collisionNormal = (collision.ClosestPoint(transform.position) - new Vector2(transform.position.x, transform.position.y)).normalized;
+                collisionNormal = Vector2.Reflect(collisionNormal, Vector2.up);
+                float normalFloat = Mathf.Round(Vector2.SignedAngle(collisionNormal, Vector2.right));
+                if (normalFloat < 0)
+                {
+                    normalFloat += 360;
+                }
 
-            if (collision.tag == "FinishLine")
-            {
-                if (lapManager == null)
+                if (collision.tag == "FinishLine")
                 {
-                    lapManager = GameObject.FindGameObjectWithTag("LapManager").GetComponent<LapManager>();
+                    if (lapManager == null)
+                    {
+                        lapManager = GameObject.FindGameObjectWithTag("LapManager").GetComponent<LapManager>();
+                    }
+                    if (lapManager.CheckNextLap(checkpointCount))
+                    {
+                        currentLap++;
+                        CmdSetLap(currentLap, placement);
+                    }
+                    checkpointCount = 0;
+                    CmdSetCheckpoint(0);
                 }
-                if (lapManager.CheckNextLap(checkpointCount))
+                else
                 {
-                    currentLap++;
-                    CmdSetLap(currentLap, placement);
-                    SetLap();
+                    checkpointCount++;
+                    currentCheckpoint = collision.gameObject.GetComponent<CheckpointValue>().checkpointNumber;
+                    CmdSetCheckpoint(currentCheckpoint);
+                    lapManager.DisableCheckpoints(currentCheckpoint);
+                    collision.gameObject.SetActive(false);
                 }
-                checkpointCount = 0;
-                CmdSetCheckpoint(0);
-            } else
-            {
-                checkpointCount++;
-                currentCheckpoint = collision.gameObject.GetComponent<CheckpointValue>().checkpointNumber;
-                CmdSetCheckpoint(currentCheckpoint);
-                lapManager.DisableCheckpoints(currentCheckpoint);
-                collision.gameObject.SetActive(false);
             }
+            SetLap();
         }
         else if (collision.tag == "Ice")
         {

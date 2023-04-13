@@ -1175,8 +1175,10 @@ MonoBehaviour:
   acceleration: 0
   weight: 0
   handling: 0
+  spriteValue: 0
   xboxController: 0
   strafeMode: 0
+  gameStarted: 0
 --- !u!4 &786048047
 Transform:
   m_ObjectHideFlags: 0

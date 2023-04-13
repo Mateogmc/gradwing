@@ -34,7 +34,7 @@ public class ItemBox : NetworkBehaviour
         { 0.25f, 0f, 0.45f, 0.2f, 0f, 0.1f, 0f },
         { 0.2f, 0.05f, 0.3f, 0.25f, 0.1f, 0.1f, 0f },
         { 0.3f, 0.05f, 0.2f, 0.2f, 0.1f, 0.15f, 0f },
-        { 0.3f, 0.1f, 0.1f, 0.2f, 0.1f, 0.15f, 0.05f },
+        { 0.25f, 0.1f, 0.1f, 0.2f, 0.1f, 0.15f, 0.1f },
         { 0.1f, 0.15f, 0.1f, 0.2f, 0.2f, 0.2f, 0.05f },
         { 0.1f, 0.20f, 0.1f, 0.15f, 0.2f, 0.2f, 0.05f },
         { 0f, 0.25f, 0f, 0f, 0.30f, 0.2f, 0.1f },
@@ -75,8 +75,7 @@ public class ItemBox : NetworkBehaviour
                 random -= itemWeights[placement, i];
                 if (random <= 0)
                 {
-                    player.CmdGetItem("Laser");
-                    //player.CmdGetItem(items[i]);
+                    player.CmdGetItem(items[i]);
                     break;
                 }
             }

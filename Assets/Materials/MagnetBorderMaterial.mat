@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MagnetMaterial
-  m_Shader: {fileID: -6465566751694194690, guid: 674b60638217caf439cde06a47b75158, type: 3}
+  m_Name: MagnetBorderMaterial
+  m_Shader: {fileID: -6465566751694194690, guid: 14a2fc87aedf68b44b8e18c9baffe098, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -21,7 +21,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: bee3b3140730adf4bad3f5637ec7949e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -41,10 +41,10 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
-    - _NegativeColor: {r: 0.09621808, g: 0.066551104, b: 4.237095, a: 0}
-    - _PositiveColor: {r: 1.378453, g: 0.0665511, b: 4.237095, a: 0}
+    - _NegativeColor: {r: 0.0665511, g: 0.09561254, b: 4.237095, a: 0}
+    - _PositiveColor: {r: 0.7821263, g: 0.0665511, b: 4.237095, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &7370668694935944932
+--- !u!114 &5422754027072478875
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

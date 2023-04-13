@@ -52,6 +52,8 @@ public class DataManager : MonoBehaviour
 
     public static Color vehicleColor;
 
+    public bool gameStarted = false;
+
 
     void Start()
     {

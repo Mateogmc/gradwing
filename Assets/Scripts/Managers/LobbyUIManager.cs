@@ -60,7 +60,7 @@ public class LobbyUIManager : MonoBehaviour
         weight.value = dataManager.initWeight * 5;
         handling.value = dataManager.initHandling * 10;
 
-        startGame.gameObject.SetActive(NetworkServer.active);
+        startGame.gameObject.SetActive(NetworkServer.active && !DataManager.GetInstance().gameStarted);
     }
 
     public void SetVehicleListeners()
@@ -154,6 +154,8 @@ public class LobbyUIManager : MonoBehaviour
 
     private void StartGame()
     {
+        DataManager.GetInstance().gameStarted = true;
+        startGame.gameObject.SetActive(false);
         LobbyManager.GetInstance().CmdStartLobby(true);
     }
 

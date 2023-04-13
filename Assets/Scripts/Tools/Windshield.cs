@@ -27,7 +27,7 @@ public class Windshield : MonoBehaviour
 
     private void Update()
     {
-        currentMaterial.SetFloat("_ReflectionSpeed", controller.lastSpeedMagnitude / 40);
+        currentMaterial.SetFloat("_ReflectionSpeed", controller.lastSpeedMagnitude / 80);
         currentMaterial.SetColor("_WindowColor", color);
         currentMaterial.SetColor("_LineColor", colorAlt);
     }
