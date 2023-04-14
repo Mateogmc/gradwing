@@ -34,11 +34,11 @@ public class ItemBox : NetworkBehaviour
         { 0.25f, 0f, 0.45f, 0.2f, 0f, 0.1f, 0f },
         { 0.2f, 0.05f, 0.3f, 0.25f, 0.1f, 0.1f, 0f },
         { 0.3f, 0.05f, 0.2f, 0.2f, 0.1f, 0.15f, 0f },
-        { 0.25f, 0.1f, 0.1f, 0.2f, 0.1f, 0.15f, 0.1f },
-        { 0.1f, 0.15f, 0.1f, 0.2f, 0.2f, 0.2f, 0.05f },
-        { 0.1f, 0.20f, 0.1f, 0.15f, 0.2f, 0.2f, 0.05f },
-        { 0f, 0.25f, 0f, 0f, 0.30f, 0.2f, 0.1f },
-        { 0f, 0.30f, 0f, 0f, 0.30f, 0.2f, 0.05f }
+        { 0.25f, 0.1f, 0.1f, 0.2f, 0.1f, 0.15f, 0.2f },
+        { 0.1f, 0.15f, 0.1f, 0.2f, 0.2f, 0.2f, 0.1f },
+        { 0.1f, 0.20f, 0.1f, 0.15f, 0.2f, 0.2f, 0.1f },
+        { 0f, 0.25f, 0f, 0f, 0.30f, 0.2f, 0.2f },
+        { 0f, 0.30f, 0f, 0f, 0.30f, 0.2f, 0.1f }
     };
 
     private void Update()
@@ -69,7 +69,14 @@ public class ItemBox : NetworkBehaviour
             }
             placement--;
 
-            float random = Random.value;
+            float maxWeight = 0;
+
+            for (int i = 0; i < items.Length; i++)
+            {
+                maxWeight += itemWeights[placement, i];
+            }
+
+            float random = Random.Range(0, maxWeight);
             for (int i = 0; i < items.Length; i++)
             {
                 random -= itemWeights[placement, i];

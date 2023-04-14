@@ -575,7 +575,7 @@ public class MultiplayerController : FSM
             {
                 //Restart();
             }
-            if (Input.GetKey(KeyCode.X) || Input.GetButton("Accel"))
+            if (Input.GetKey(KeyCode.LeftControl) || Input.GetButton("Accel"))
             {
                 accelerating = true;
             }
@@ -584,7 +584,7 @@ public class MultiplayerController : FSM
                 accelerating = false;
             }
 
-            if (Input.GetKey(KeyCode.C) || Input.GetKey(KeyCode.JoystickButton1))
+            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.JoystickButton1))
             {
                 braking = true;
             }
@@ -622,7 +622,7 @@ public class MultiplayerController : FSM
 
             strafeValue = Input.GetAxis("Strafe1");
 
-            if (Input.GetKey(KeyCode.S) || Input.GetAxis("Strafe1") < -0.1)
+            if (Input.GetKey(KeyCode.Z) || Input.GetAxis("Strafe1") < -0.1)
             {
                 strafingLeft = true;
             }
@@ -631,7 +631,7 @@ public class MultiplayerController : FSM
                 strafingLeft = false;
             }
 
-            if (Input.GetKey(KeyCode.D) || Input.GetAxis("Strafe1") > 0.1)
+            if (Input.GetKey(KeyCode.C) || Input.GetAxis("Strafe1") > 0.1)
             {
                 strafingRight = true;
             }
@@ -640,7 +640,16 @@ public class MultiplayerController : FSM
                 strafingRight = false;
             }
 
-            if (Input.GetKeyDown(KeyCode.Joystick1Button4) || Input.GetKeyDown(KeyCode.Joystick1Button5))
+            if (Input.GetKey(KeyCode.Z) && !Input.GetKey(KeyCode.C))
+            {
+                strafeValue = -1;
+            }
+            else if (Input.GetKey(KeyCode.C))
+            {
+                strafeValue = 1;
+            }
+
+            if (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.Joystick1Button4) || Input.GetKeyDown(KeyCode.Joystick1Button5))
             {
                 UseItem();
             }
@@ -655,7 +664,7 @@ public class MultiplayerController : FSM
             {
                 //Restart();
             }
-            if (Input.GetKey(KeyCode.X) || Input.GetKey(KeyCode.Joystick1Button1))
+            if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.Joystick1Button1))
             {
                 accelerating = true;
             }
@@ -664,7 +673,7 @@ public class MultiplayerController : FSM
                 accelerating = false;
             }
 
-            if (Input.GetKey(KeyCode.C) || Input.GetKey(KeyCode.JoystickButton2))
+            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.JoystickButton2))
             {
                 braking = true;
             }
@@ -702,12 +711,12 @@ public class MultiplayerController : FSM
 
             strafeValue = Mathf.Lerp(0, 1, (Input.GetAxis("StrafeR") + 1)/ 2) - Mathf.Lerp(0, 1, (Input.GetAxis("StrafeL") + 1) / 2);
 
-            if (strafeValue < -0.1f)
+            if (strafeValue < -0.1f || Input.GetKeyDown(KeyCode.Z))
             {
                 strafingLeft = true;
                 strafingRight = false;
             } 
-            else if (strafeValue > 0.1f)
+            else if (strafeValue > 0.1f || Input.GetKeyDown(KeyCode.C))
             {
                 strafingLeft = false;
                 strafingRight = true;
@@ -718,7 +727,16 @@ public class MultiplayerController : FSM
                 strafingRight = false;
             }
 
-            if (Input.GetKeyDown(KeyCode.Joystick1Button4) || Input.GetKeyDown(KeyCode.Joystick1Button5))
+            if (Input.GetKey(KeyCode.Z) && !Input.GetKey(KeyCode.C))
+            {
+                strafeValue = -1;
+            }
+            else if (Input.GetKey(KeyCode.C))
+            {
+                strafeValue = 1;
+            }
+
+            if (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.Joystick1Button4) || Input.GetKeyDown(KeyCode.Joystick1Button5))
             {
                 UseItem();
             }
@@ -830,11 +848,11 @@ public class MultiplayerController : FSM
 
                 if (rotatingLeft && !rotatingRight)
                 {
-                    rb.rotation += (rolling ? 6f : ((3f + (DataManager.GetInstance().strafeMode ? strafeValue : - strafeValue) * 2f)) * currentRotationSpeed * Mathf.Abs(Input.GetAxis("Horizontal1")));
+                    rb.rotation += (rolling ? 6f : ((3f + (DataManager.GetInstance().strafeMode ? strafeValue : - strafeValue) * 2f)) * currentRotationSpeed * (Input.GetKey(KeyCode.LeftArrow) ? 1 : Mathf.Abs(Input.GetAxis("Horizontal1"))));
                 }
                 else if (rotatingRight && !rotatingLeft)
                 {
-                    rb.rotation -= (rolling ? 6f : ((3f + strafeValue * 2f)) * currentRotationSpeed * Mathf.Abs(Input.GetAxis("Horizontal1")));
+                    rb.rotation -= (rolling ? 6f : ((3f + strafeValue * 2f)) * currentRotationSpeed * (Input.GetKey(KeyCode.RightArrow) ? 1 : Mathf.Abs(Input.GetAxis("Horizontal1"))));
                 }
                 break;
 
@@ -852,11 +870,11 @@ public class MultiplayerController : FSM
                 }
                 if (rotatingLeft && !rotatingRight)
                 {
-                    rb.rotation += (rolling ? 4f : (3f - strafeValue * 2f)) * currentRotationSpeed * Mathf.Abs(Input.GetAxis("Horizontal1"));
+                    rb.rotation += (rolling ? 4f : (3f - strafeValue * 2f)) * currentRotationSpeed * (Input.GetKey(KeyCode.LeftArrow) ? 1 : Mathf.Abs(Input.GetAxis("Horizontal1")));
                 }
                 else if (rotatingRight && !rotatingLeft)
                 {
-                    rb.rotation -= (rolling ? 4f : (3f + strafeValue * 2f)) * currentRotationSpeed * Mathf.Abs(Input.GetAxis("Horizontal1"));
+                    rb.rotation -= (rolling ? 4f : (3f + strafeValue * 2f)) * currentRotationSpeed * (Input.GetKey(KeyCode.RightArrow) ? 1 : Mathf.Abs(Input.GetAxis("Horizontal1")));
                 }
                 if (strafingLeft && !strafingRight)
                 {

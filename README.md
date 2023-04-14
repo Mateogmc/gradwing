@@ -130,3 +130,5 @@
 - Reworked game start system
 - Now you can see current lap on spectated player
 - Fixed PS4 drifting
+- Added keyboard controls (Gamepad is heavily reccomended)
+- Added controls screen

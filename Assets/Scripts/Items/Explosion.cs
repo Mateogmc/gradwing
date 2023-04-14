@@ -13,6 +13,7 @@ public class Explosion : MonoBehaviour
     float initialTime;
     float t;
     Color tmp;
+    Color tmp2;
 
     private void Start()
     {
@@ -20,15 +21,17 @@ public class Explosion : MonoBehaviour
         t = 1;
         explosionBlast.transform.localScale = Vector3.zero;
         tmp = explosionBlast.GetComponent<SpriteRenderer>().color;
+        tmp2 = explosionRadius.GetComponent<SpriteRenderer>().color;
         explosionBlast.GetComponent<CircleCollider2D>().radius = 1;
         currentMaterial = new Material(explosionMaterial);
         explosionBlast.GetComponent<SpriteRenderer>().material = currentMaterial;
+        explosionRadius.GetComponent <SpriteRenderer>().material = currentMaterial;
     }
 
     private void Update()
     {
         t = initialTime - Time.time;
-        if (t < 0)
+        if (t < -0.1f)
         {
             Destroy(gameObject);
         }
@@ -37,6 +40,8 @@ public class Explosion : MonoBehaviour
     private void FixedUpdate()
     {
         explosionRadius.transform.Rotate(new Vector3(0, 0, 3));
+        tmp2.a = Mathf.Lerp(0, 1, PowLerp(t));
+        explosionRadius.GetComponent<SpriteRenderer>().color = tmp2;
         float scale = Mathf.Lerp(1, 0, PowLerp(t));
         explosionBlast.transform.localScale = new Vector3(scale, scale, scale);
         explosionBlast.GetComponent<CircleCollider2D>().radius = Mathf.Lerp(11f, 1, PowLerp(t));
