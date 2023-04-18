@@ -23,6 +23,8 @@ public class ItemBox : NetworkBehaviour
     [SerializeField] float respawnDelay;
     [SerializeField] Transform icon;
     [SerializeField] SpriteRenderer iconRenderer;
+    [SerializeField] AudioSource itemTake;
+    [SerializeField] AudioSource itemSpawn;
     float respawnTimer = 0f;
 
     private string[] items = { "Shield", "Jump", "Trap", "Rebounder", "Laser", "Boost", "Missile"};
@@ -41,10 +43,17 @@ public class ItemBox : NetworkBehaviour
         { 0f, 0.30f, 0f, 0f, 0.30f, 0.2f, 0.1f }
     };
 
+    private void Awake()
+    {
+        itemTake.volume = DataManager.soundVolume;
+        itemSpawn.volume = DataManager.soundVolume;
+    }
+
     private void Update()
     {
         if (respawnTimer < Time.time && !sr.enabled)
         {
+            itemSpawn.Play();
             sr.enabled = true;
             cc.enabled = true;
             iconRenderer.enabled = true;
@@ -82,7 +91,8 @@ public class ItemBox : NetworkBehaviour
                 random -= itemWeights[placement, i];
                 if (random <= 0)
                 {
-                    player.CmdGetItem(items[i]);
+                    player.CmdGetItem("Laser");
+                    //player.GetItem(items[i]);
                     break;
                 }
             }
@@ -92,6 +102,7 @@ public class ItemBox : NetworkBehaviour
     public void Use(MultiplayerController player, int placement)
     {
         GiveItem(player, placement);
+        itemTake.Play();
         respawnTimer = Time.time + respawnDelay;
         sr.enabled = false;
         cc.enabled = false;

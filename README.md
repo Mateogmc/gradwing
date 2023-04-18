@@ -132,3 +132,33 @@
 - Fixed PS4 drifting
 - Added keyboard controls (Gamepad is heavily reccomended)
 - Added controls screen
+
+*Version 0.16*
+- Added audio system
+- Added music and sound volume variables
+<details>
+<summary>- Synthetised sound effects:</summary>
+	- Vehicle motor
+	- Boost
+	- Heal
+	- Gravel
+	- Ice
+	- Item box spawn
+	- Item box take
+	- Item rolling
+	- Final item
+	- Drifting
+	- Missile sound
+	- Missile followed ping
+	- Missile explosion
+	- Out of bounds
+	- Multiple hits with the walls
+	- Hits with other players
+	- Different horns for the different vehicles
+	- Jump
+	- Rolling
+	- Rolling end
+	- Laser get
+	- Laser idle
+	- Laser shoot
+</details>

@@ -18,6 +18,7 @@ public class Missile : NetworkBehaviour
     [SerializeField] private GameObject trail;
 
     private GameObject sight;
+    private float distance;
 
     void Start()
     {
@@ -28,6 +29,7 @@ public class Missile : NetworkBehaviour
         target = FindFirstPlayer();
         
         StartCoroutine(Activate());
+        StartCoroutine(Beep());
         sight = Instantiate(targetAim);
         sight.GetComponent<Sight>().missile = gameObject;
     }
@@ -40,6 +42,18 @@ public class Missile : NetworkBehaviour
         {
             target = FindFirstPlayer();
             yield return new WaitForSeconds(3);
+        }
+    }
+
+    private IEnumerator Beep()
+    {
+        while (true)
+        {
+            if (target == NetworkClient.localPlayer.gameObject)
+            {
+                AudioManager.instance.Play("MissileBeep");
+            }
+            yield return new WaitForSeconds(Mathf.Lerp(0.05f, 0.5f, Mathf.Sqrt(distance)));
         }
     }
 
@@ -62,11 +76,12 @@ public class Missile : NetworkBehaviour
 
     private void FixedUpdate()
     {
+        GetComponent<AudioSource>().volume = DataManager.soundVolume;
         Vector2 vectorDirection = new Vector2(target.transform.position.x - transform.position.x, target.transform.position.y - transform.position.y).normalized;
         float rotateAmount = Vector3.Cross(vectorDirection, transform.up).z;
         rb.angularVelocity = -rotateAmount * rotationSpeed;
 
-        float distance = new Vector2(target.transform.position.x - transform.position.x, target.transform.position.y - transform.position.y).magnitude;
+        distance = new Vector2(target.transform.position.x - transform.position.x, target.transform.position.y - transform.position.y).magnitude;
         distance = distance / maxSpeedDistance;
         if (distance > 1) { distance = 1; }
         float currentSpeed = minSpeed + Mathf.Lerp(0, maxExtraSpeed, distance);

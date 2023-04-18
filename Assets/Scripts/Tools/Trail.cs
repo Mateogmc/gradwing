@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
 public class Trail : MonoBehaviour
 {
@@ -43,6 +44,7 @@ public class Trail : MonoBehaviour
             green = 100;
             blue = 0;
 
+
             red = Mathf.Lerp(200, 0, (currentSpeed - 30) / 20);
             GetComponent<TrailRenderer>().widthMultiplier = 0.6f;
         }
@@ -63,10 +65,10 @@ public class Trail : MonoBehaviour
 
             GetComponent<TrailRenderer>().widthMultiplier = Mathf.Lerp(0.6f, 1.5f, (currentSpeed - controller.maxSpeed) / 40);
         }
-        if (controller.boostTime > Time.time)
+        if (controller.boostTime > NetworkTime.time)
         {
-            red = Mathf.Lerp(red, 255, (controller.boostTime - Time.time) / 1.5f);
-            GetComponent<TrailRenderer>().widthMultiplier = Mathf.Lerp(GetComponent<TrailRenderer>().widthMultiplier, 3f,  (controller.boostTime - Time.time) / 1.5f);
+            red = Mathf.Lerp(red, 255, (controller.boostTime - (float)NetworkTime.time) / 1.5f);
+            GetComponent<TrailRenderer>().widthMultiplier = Mathf.Lerp(GetComponent<TrailRenderer>().widthMultiplier, 3f,  (controller.boostTime - (float)NetworkTime.time) / 1.5f);
         }
 
         currentMaterial.SetColor("_TrailColor", new Vector4(red, green, blue, 0.2f));

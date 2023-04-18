@@ -54,6 +54,9 @@ public class DataManager : MonoBehaviour
 
     public bool gameStarted = false;
 
+    public static float soundVolume;
+    public static float musicVolume;
+
 
     void Start()
     {
@@ -74,6 +77,8 @@ public class DataManager : MonoBehaviour
             xboxController = sr.ReadLine() == "1";
             strafeMode = sr.ReadLine() == "1";
             spriteValue = int.Parse(sr.ReadLine());
+            soundVolume = float.Parse(sr.ReadLine());
+            musicVolume = float.Parse(sr.ReadLine());
         }
         using (StreamReader sr = new StreamReader(Application.streamingAssetsPath + "/levels.dat"))
         {
@@ -202,6 +207,8 @@ public class DataManager : MonoBehaviour
             sw.WriteLine(xboxController ? 1 : 0);
             sw.WriteLine(strafeMode ? 1 : 0);
             sw.WriteLine(this.spriteValue);
+            sw.WriteLine(soundVolume);
+            sw.WriteLine(musicVolume);
         }
     }
 }

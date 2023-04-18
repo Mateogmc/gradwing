@@ -17,6 +17,7 @@ public class Explosion : MonoBehaviour
 
     private void Start()
     {
+        GetComponent<AudioSource>().volume = DataManager.soundVolume;
         initialTime = Time.time + 1;
         t = 1;
         explosionBlast.transform.localScale = Vector3.zero;
