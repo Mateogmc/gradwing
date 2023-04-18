@@ -137,28 +137,32 @@
 - Added audio system
 - Added music and sound volume variables
 <details>
-<summary>- Synthetised sound effects:</summary>
-	- Vehicle motor
-	- Boost
-	- Heal
-	- Gravel
-	- Ice
-	- Item box spawn
-	- Item box take
-	- Item rolling
-	- Final item
-	- Drifting
-	- Missile sound
-	- Missile followed ping
-	- Missile explosion
-	- Out of bounds
-	- Multiple hits with the walls
-	- Hits with other players
-	- Different horns for the different vehicles
-	- Jump
-	- Rolling
-	- Rolling end
-	- Laser get
-	- Laser idle
-	- Laser shoot
+<summary>Synthetised sound effects:</summary>
+<ul>
+<ul>
+	<li>Vehicle motor
+	<li>Boost
+	<li>Heal
+	<li>Gravel
+	<li>Ice
+	<li>Item box spawn
+	<li>Item box take
+	<li>Item rolling
+	<li>Final item
+	<li>Drifting
+	<li>Missile sound
+	<li>Missile followed ping
+	<li>Missile explosion
+	<li>Out of bounds
+	<li>Multiple hits with the walls
+	<li>Hits with other players
+	<li>Different horns for the different vehicles
+	<li>Jump
+	<li>Rolling
+	<li>Rolling end
+	<li>Laser get
+	<li>Laser idle
+	<li>Laser shoot
+<ul>
+</ul>
 </details>
