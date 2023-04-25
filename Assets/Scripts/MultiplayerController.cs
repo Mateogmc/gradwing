@@ -60,6 +60,8 @@ public class MultiplayerController : FSM
     [SyncVar(hook = nameof(LastSpeedChange))] public float lastSpeedMagnitude;
     [SyncVar(hook = nameof(OnLayerChange))]int currentLayer = 6;
 
+    bool fallProtection;
+
     [HideInInspector]  bool accelerating = false;
     [HideInInspector] bool braking = false;
     [HideInInspector] public bool rotatingRight = false;
@@ -137,6 +139,7 @@ public class MultiplayerController : FSM
     [SerializeField] Image endgamePlacementImage;
     [SerializeField] Canvas startingCanvas;
     [SerializeField] TextMeshProUGUI startingText;
+    [SerializeField] GameObject pauseMenu;
 
     // Audio
     [SerializeField] VehicleAudioManager vehicleAudioManager;
@@ -157,8 +160,10 @@ public class MultiplayerController : FSM
         username.text = usernameText;
         CmdSetName(usernameText);
         playerInterface.gameObject.SetActive(true);
+        MusicManager.instance.Stop("Lobby");
         if (SceneManager.GetActiveScene().name == "Lobby")
         {
+            MusicManager.instance.Play(FindObjectOfType<LevelData>().GetWorld());
             currentState = PlayerStates.Grounded;
         }
         else
@@ -231,10 +236,13 @@ public class MultiplayerController : FSM
             if (accelerating && currentCountdown < 4)
             {
                 initialBoost += 1 * Time.deltaTime;
-                Debug.Log(initialBoost);
             }
             if (currentCountdown > 0 && currentCountdown < 4)
             {
+                if (startingText.text == "READY?")
+                {
+                    PlaySound("RaceStart");
+                }
                 startingText.text = currentCountdown.ToString();
             }
             else if (currentCountdown == 0)
@@ -273,6 +281,7 @@ public class MultiplayerController : FSM
             {
                 currentState = PlayerStates.Dead;
                 dead = Time.time + deathTimer;
+                fallProtection = true;
             }
             else if (health > 0f && currentState == PlayerStates.Dead)
             {
@@ -407,6 +416,13 @@ public class MultiplayerController : FSM
         SetPlacementImage();
         SetLayer(6);
         currentRotationSpeed = rotationSpeed;
+        StartCoroutine(FallProtection());
+    }
+
+    IEnumerator FallProtection()
+    {
+        yield return new WaitForSeconds(0.5f);
+        fallProtection = false;
     }
 
     private void OnHealthChange(float oldHealth, float newHealth)
@@ -577,232 +593,242 @@ public class MultiplayerController : FSM
 
     private void CheckInput()
     {
-        if (xboxController)
+        if (pauseMenu.activeSelf)
         {
-
-            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Joystick1Button7))
+            if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Escape) || (xboxController ? Input.GetKeyDown(KeyCode.Joystick1Button7) : Input.GetKeyDown(KeyCode.Joystick1Button8)))
             {
-                //Application.Quit();
-            }
-            if (Input.GetKeyDown(KeyCode.Joystick1Button6))
-            {
-                //Restart();
-            }
-            if (Input.GetKey(KeyCode.LeftControl) || Input.GetButton("Accel"))
-            {
-                accelerating = true;
-            }
-            else
-            {
-                accelerating = false;
-            }
-
-            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.JoystickButton1))
-            {
-                braking = true;
-            }
-            else
-            {
-                braking = false;
-            }
-
-            if (accelerating && braking)
-            {
-                if (!rolling)
-                {
-                    rolling = true;
-                    StartCoroutine(RollingBeep());
-                }
-            }
-            else
-            {
-                if (rolling)
-                {
-                    rolling = false;
-                    vehicleAudioManager.Play("RollingEnd");
-                }
-            }
-
-            if (Input.GetKey(KeyCode.LeftArrow) || Input.GetAxis("Horizontal1") < -0.2)
-            {
-                rotatingLeft = true;
-            }
-            else
-            {
-                rotatingLeft = false;
-            }
-
-            if (Input.GetKey(KeyCode.RightArrow) || Input.GetAxis("Horizontal1") > 0.2)
-            {
-                rotatingRight = true;
-            }
-            else
-            {
-                rotatingRight = false;
-            }
-
-            strafeValue = Input.GetAxis("Strafe1");
-
-            if (Input.GetKey(KeyCode.Z) || Input.GetAxis("Strafe1") < -0.1)
-            {
-                strafingLeft = true;
-            }
-            else
-            {
-                strafingLeft = false;
-            }
-
-            if (Input.GetKey(KeyCode.C) || Input.GetAxis("Strafe1") > 0.1)
-            {
-                strafingRight = true;
-            }
-            else
-            {
-                strafingRight = false;
-            }
-
-            if (Input.GetKey(KeyCode.Z) && !Input.GetKey(KeyCode.C))
-            {
-                strafeValue = -1;
-            }
-            else if (Input.GetKey(KeyCode.C))
-            {
-                strafeValue = 1;
-            }
-
-            if (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.Joystick1Button4) || Input.GetKeyDown(KeyCode.Joystick1Button5))
-            {
-                UseItem();
-            }
-
-            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Joystick1Button2))
-            {
-                CmdPlaySound("Honk" + spriteValue);
+                pauseMenu.SetActive(false);
             }
         }
         else
         {
-            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Joystick1Button7))
+            if (xboxController)
             {
-                //Application.Quit();
-            }
-            if (Input.GetKeyDown(KeyCode.Joystick1Button6))
-            {
-                //Restart();
-            }
-            if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.Joystick1Button1))
-            {
-                accelerating = true;
-            }
-            else
-            {
-                accelerating = false;
-            }
 
-            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.JoystickButton2))
-            {
-                braking = true;
-            }
-            else
-            {
-                braking = false;
-            }
-
-            if (accelerating && braking)
-            {
-                if (!rolling)
+                if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Joystick1Button7))
                 {
-                    rolling = true;
-                    StartCoroutine(RollingBeep());
+                    pauseMenu.SetActive(true);
+                }
+                if (Input.GetKeyDown(KeyCode.Joystick1Button6))
+                {
+                    //Restart();
+                }
+                if (Input.GetKey(KeyCode.LeftControl) || Input.GetButton("Accel"))
+                {
+                    accelerating = true;
+                }
+                else
+                {
+                    accelerating = false;
+                }
+
+                if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.JoystickButton1))
+                {
+                    braking = true;
+                }
+                else
+                {
+                    braking = false;
+                }
+
+                if (accelerating && braking)
+                {
+                    if (!rolling)
+                    {
+                        rolling = true;
+                        StartCoroutine(RollingBeep());
+                    }
+                }
+                else
+                {
+                    if (rolling)
+                    {
+                        rolling = false;
+                        vehicleAudioManager.Play("RollingEnd");
+                    }
+                }
+
+                if (Input.GetKey(KeyCode.LeftArrow) || Input.GetAxis("Horizontal1") < -0.2)
+                {
+                    rotatingLeft = true;
+                }
+                else
+                {
+                    rotatingLeft = false;
+                }
+
+                if (Input.GetKey(KeyCode.RightArrow) || Input.GetAxis("Horizontal1") > 0.2)
+                {
+                    rotatingRight = true;
+                }
+                else
+                {
+                    rotatingRight = false;
+                }
+
+                strafeValue = Input.GetAxis("Strafe1");
+
+                if (Input.GetKey(KeyCode.Z) || Input.GetAxis("Strafe1") < -0.1)
+                {
+                    strafingLeft = true;
+                }
+                else
+                {
+                    strafingLeft = false;
+                }
+
+                if (Input.GetKey(KeyCode.C) || Input.GetAxis("Strafe1") > 0.1)
+                {
+                    strafingRight = true;
+                }
+                else
+                {
+                    strafingRight = false;
+                }
+
+                if (Input.GetKey(KeyCode.Z) && !Input.GetKey(KeyCode.C))
+                {
+                    strafeValue = -1;
+                }
+                else if (Input.GetKey(KeyCode.C))
+                {
+                    strafeValue = 1;
+                }
+
+                if (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.Joystick1Button4) || Input.GetKeyDown(KeyCode.Joystick1Button5))
+                {
+                    UseItem();
+                }
+
+                if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Joystick1Button2))
+                {
+                    CmdPlaySound("Honk" + spriteValue);
                 }
             }
             else
             {
-                if (rolling)
+                if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Joystick1Button8))
                 {
-                    rolling = false;
-                    vehicleAudioManager.Play("RollingEnd");
+                    pauseMenu.SetActive(true);
+                }
+                if (Input.GetKeyDown(KeyCode.Joystick1Button6))
+                {
+                    //Restart();
+                }
+                if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.Joystick1Button1))
+                {
+                    accelerating = true;
+                }
+                else
+                {
+                    accelerating = false;
+                }
+
+                if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.JoystickButton2))
+                {
+                    braking = true;
+                }
+                else
+                {
+                    braking = false;
+                }
+
+                if (accelerating && braking)
+                {
+                    if (!rolling)
+                    {
+                        rolling = true;
+                        StartCoroutine(RollingBeep());
+                    }
+                }
+                else
+                {
+                    if (rolling)
+                    {
+                        rolling = false;
+                        vehicleAudioManager.Play("RollingEnd");
+                    }
+                }
+
+                if (Input.GetKey(KeyCode.LeftArrow) || Input.GetAxis("Horizontal1") < -0.2)
+                {
+                    rotatingLeft = true;
+                }
+                else
+                {
+                    rotatingLeft = false;
+                }
+
+                if (Input.GetKey(KeyCode.RightArrow) || Input.GetAxis("Horizontal1") > 0.2)
+                {
+                    rotatingRight = true;
+                }
+                else
+                {
+                    rotatingRight = false;
+                }
+
+                strafeValue = Mathf.Lerp(0, 1, (Input.GetAxis("StrafeR") + 1) / 2) - Mathf.Lerp(0, 1, (Input.GetAxis("StrafeL") + 1) / 2);
+
+                if (strafeValue < -0.1f || Input.GetKeyDown(KeyCode.Z))
+                {
+                    strafingLeft = true;
+                    strafingRight = false;
+                }
+                else if (strafeValue > 0.1f || Input.GetKeyDown(KeyCode.C))
+                {
+                    strafingLeft = false;
+                    strafingRight = true;
+                }
+                else
+                {
+                    strafingLeft = false;
+                    strafingRight = false;
+                }
+
+                if (Input.GetKey(KeyCode.Z) && !Input.GetKey(KeyCode.C))
+                {
+                    strafeValue = -1;
+                }
+                else if (Input.GetKey(KeyCode.C))
+                {
+                    strafeValue = 1;
+                }
+
+                if (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.Joystick1Button4) || Input.GetKeyDown(KeyCode.Joystick1Button5))
+                {
+                    UseItem();
+                }
+
+                if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Joystick1Button0))
+                {
+                    CmdPlaySound("Honk" + spriteValue);
                 }
             }
-
-            if (Input.GetKey(KeyCode.LeftArrow) || Input.GetAxis("Horizontal1") < -0.2)
+            if (rollingSync != rolling)
             {
-                rotatingLeft = true;
+                CmdRolling(rolling);
+            }
+
+            if (strafingLeft || strafingRight)
+            {
+                AudioManager.instance.SetVolume("Drift", Mathf.Lerp(0f, DataManager.soundVolume, Mathf.Abs(strafeValue)));
+                if (currentState == PlayerStates.Grounded)
+                {
+                    AudioManager.instance.SetPitch("Drift", Mathf.Lerp(0.2f, 2f, currentSpeed / 80));
+                }
+                else if (currentState == PlayerStates.Jumping)
+                {
+                    AudioManager.instance.SetPitch("Drift", 2.5f);
+                }
+                AudioManager.instance.Play("Drift");
             }
             else
             {
-                rotatingLeft = false;
+                AudioManager.instance.SetVolume("Drift", 0);
+                AudioManager.instance.SetPitch("Drift", 0);
+                AudioManager.instance.Stop("Drift");
             }
-
-            if (Input.GetKey(KeyCode.RightArrow) || Input.GetAxis("Horizontal1") > 0.2)
-            {
-                rotatingRight = true;
-            }
-            else
-            {
-                rotatingRight = false;
-            }
-
-            strafeValue = Mathf.Lerp(0, 1, (Input.GetAxis("StrafeR") + 1)/ 2) - Mathf.Lerp(0, 1, (Input.GetAxis("StrafeL") + 1) / 2);
-
-            if (strafeValue < -0.1f || Input.GetKeyDown(KeyCode.Z))
-            {
-                strafingLeft = true;
-                strafingRight = false;
-            } 
-            else if (strafeValue > 0.1f || Input.GetKeyDown(KeyCode.C))
-            {
-                strafingLeft = false;
-                strafingRight = true;
-            }
-            else
-            {
-                strafingLeft = false;
-                strafingRight = false;
-            }
-
-            if (Input.GetKey(KeyCode.Z) && !Input.GetKey(KeyCode.C))
-            {
-                strafeValue = -1;
-            }
-            else if (Input.GetKey(KeyCode.C))
-            {
-                strafeValue = 1;
-            }
-
-            if (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.Joystick1Button4) || Input.GetKeyDown(KeyCode.Joystick1Button5))
-            {
-                UseItem();
-            }
-
-            if(Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Joystick1Button0))
-            {
-                CmdPlaySound("Honk" + spriteValue);
-            }
-        }
-        if (rollingSync != rolling)
-        {
-            CmdRolling(rolling);
-        }
-
-        if (strafingLeft || strafingRight)
-        {
-            AudioManager.instance.SetVolume("Drift", Mathf.Lerp(0f, DataManager.soundVolume, Mathf.Abs(strafeValue)));
-            if (currentState == PlayerStates.Grounded)
-            {
-                AudioManager.instance.SetPitch("Drift", Mathf.Lerp(0.2f, 2f, currentSpeed / 80));
-            }
-            else if (currentState == PlayerStates.Jumping)
-            {
-                AudioManager.instance.SetPitch("Drift", 2.5f);
-            }
-            AudioManager.instance.Play("Drift");
-        }
-        else
-        {
-            AudioManager.instance.SetVolume("Drift", 0);
-            AudioManager.instance.SetPitch("Drift", 0);
-            AudioManager.instance.Stop("Drift");
         }
     }
 
@@ -971,7 +997,10 @@ public class MultiplayerController : FSM
                 }
                 SetLayer(10);
                 CmdChangeHealth(health);
-                rb.velocity = Vector3.zero;
+                if (currentSpeed > 0.05)
+                {
+                    rb.AddForce(rb.velocity.normalized * (-currentDrag * 2));
+                }
                 break;
 
             case PlayerStates.Finish:
@@ -1000,6 +1029,7 @@ public class MultiplayerController : FSM
     {
         yield return new WaitForSeconds(1);
         startingCanvas.enabled = false;
+        MusicManager.instance.Play(FindObjectOfType<LevelData>().GetWorld());
     }
 
     public void StartRace()
@@ -1037,6 +1067,7 @@ public class MultiplayerController : FSM
         if (currentLap > lapManager.lapCount && currentState != PlayerStates.Finish)
         {
             currentState = PlayerStates.Finish;
+            PlaySound("RaceEnd");
             RpcEndRace();
         }
     }
@@ -1570,6 +1601,11 @@ public class MultiplayerController : FSM
         }
         CmdGetItem(item);
         PlaySound("ItemGet");
+        if (item == "Laser")
+        {
+            CmdPlaySound("LaserGet");
+            CmdPlaySound("LaserIdle");
+        }
         gettingItem = false;
     }
 
@@ -1628,8 +1664,6 @@ public class MultiplayerController : FSM
                 currentItem = Items.Laser;
                 itemSprite.sprite = laser;
                 playerItemSprite.sprite = laser;
-                CmdPlaySound("LaserGet");
-                CmdPlaySound("LaserIdle");
                 break;
 
             case "Boost":
@@ -1873,7 +1907,11 @@ public class MultiplayerController : FSM
         else if (collision.tag == "Laser")
         {
             NetworkServer.Destroy(collision.gameObject);
-            Hit(90, 40, 6);
+            if (isLocalPlayer)
+            {
+                Hit(90, 40, 6);
+                CmdPlaySound("LaserHit");
+            }
         }
         else if (collision.tag == "Booster")
         {
@@ -1910,6 +1948,10 @@ public class MultiplayerController : FSM
                     {
                         currentLap++;
                         CmdSetLap(currentLap, placement);
+                        if (currentLap <= lapManager.lapCount)
+                        {
+                            PlaySound("Lap");
+                        }
                     }
                     checkpointCount = 0;
                     CmdSetCheckpoint(0);
@@ -2007,7 +2049,7 @@ public class MultiplayerController : FSM
         if (collision.tag == "Ground" || collision.tag == "Ramp")
         {
             grounded--;
-            if (currentState == PlayerStates.Grounded && grounded <= 0 && airborne <= 0)
+            if (currentState == PlayerStates.Grounded && grounded <= 0 && airborne <= 0 && !fallProtection)
             {
                 CmdChangeHealth(0);
                 PlaySound("Fall");

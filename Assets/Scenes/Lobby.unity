@@ -4103,7 +4103,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1f3d9ff89533d64c82a214cdce93bda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wallColor: {x: 0, y: 5, z: 1, w: 0}
+  illusionGroundMaterial: {fileID: 2100000, guid: 5452581514825444d8eee512b8a596ce, type: 2}
+  world: 0
 --- !u!4 &896566280
 Transform:
   m_ObjectHideFlags: 0

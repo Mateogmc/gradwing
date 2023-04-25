@@ -7,6 +7,7 @@ public class Trail : MonoBehaviour
 {
     [SerializeField] MultiplayerController controller;
     [SerializeField] Material material;
+    [SerializeField] TrailRenderer smoke;
     Material currentMaterial;
 
     float currentSpeed;
@@ -88,6 +89,17 @@ public class Trail : MonoBehaviour
         else
         {
             GetComponent<TrailRenderer>().time = 0.5f;
+        }
+
+        if (controller.currentState == PlayerStates.Dead)
+        {
+            GetComponent<TrailRenderer>().sortingLayerName = "Background";
+            smoke.sortingLayerName = "Background";
+        }
+        else
+        {
+            GetComponent<TrailRenderer>().sortingLayerName = "Players";
+            smoke.sortingLayerName = "Players";
         }
     }
 }

@@ -1910,6 +1910,66 @@ MonoBehaviour:
     pitch: 1
     loop: 1
     source: {fileID: 0}
+  - name: RaceStart
+    clip: {fileID: 8300000, guid: 45903dc47d3a82941a935d03ff191558, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: RaceEnd
+    clip: {fileID: 8300000, guid: a574082d66b627348af28f04c32d0ef4, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Lap
+    clip: {fileID: 8300000, guid: 7bb3934bb13c9d74d8a1f979b96a4174, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Thunder1
+    clip: {fileID: 8300000, guid: 8941468b28078a24e900cd6e89b3f53e, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Thunder2
+    clip: {fileID: 8300000, guid: 6427f693e2897e0438a0b9848e406213, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Thunder3
+    clip: {fileID: 8300000, guid: e9fca7ac35d538e468b144e4d37a11ba, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Thunder4
+    clip: {fileID: 8300000, guid: 60c9cdc392a20444f846cd5514dd0b18, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Thunder5
+    clip: {fileID: 8300000, guid: efb789ed9261a3b4fa58866bfe8f8193, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Thunder6
+    clip: {fileID: 8300000, guid: 9796acdb71460594295f1d5106c0459f, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Thunder7
+    clip: {fileID: 8300000, guid: 4d7319578a7295b47802922cdb0f6d33, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
 --- !u!4 &1106679452
 Transform:
   m_ObjectHideFlags: 0
@@ -1924,6 +1984,81 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1238734914
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1238734916}
+  - component: {fileID: 1238734915}
+  m_Layer: 0
+  m_Name: MusicManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1238734915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1238734914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 905e9e4a0e0c94842965a26747c9fc64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tracks:
+  - name: HeavyLight
+    clip: {fileID: 8300000, guid: 6d07a669d3b882444b5b432c5a8b1158, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: InfiniteFrost
+    clip: {fileID: 8300000, guid: 5c9a73dc253e0a248a2ec04c38002763, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: Lobby
+    clip: {fileID: 8300000, guid: 930e7f0bc4cc46f49bd4b30add3e95c8, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: NoBarriers
+    clip: {fileID: 8300000, guid: 15a43b5efc27bfc418a468f9d6b50789, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: ItemTing
+    clip: {fileID: 8300000, guid: fe88d2bd09a81324cbfc10ee9561e4aa, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+--- !u!4 &1238734916
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1238734914}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -34.568245, y: -66.27032, z: 0.4767084}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1242737046
 GameObject:

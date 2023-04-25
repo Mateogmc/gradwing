@@ -26,4 +26,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Volute.unity
     guid: ff491f41bf590b64cb12dc98550e8fc0
+  - enabled: 1
+    path: Assets/Scenes/Fake Pathway.unity
+    guid: 9aabb4b58becf7b4cab2315ad8f04bcb
   m_configObjects: {}

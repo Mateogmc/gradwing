@@ -163,6 +163,32 @@
 	<li>Laser get
 	<li>Laser idle
 	<li>Laser shoot
+	<li>Laser hit
+	<li>Race countdown
+	<li>Lap
+	<li>Race end
 <ul>
 </ul>
 </details>
+<details>
+<summary>Composed music tracks:</summary>
+<ul>
+<ul>
+	<li>Heavy Light
+	<li>Infinite Frost
+	<li>Lobby
+	<li>No Barriers
+<ul>
+</ul>
+</details>
+- Added world setting to the levels:
+	- Lobby
+	- City
+	- Desert
+	- Ice
+	- Water
+	- Fire
+	- Lightning
+	- Sky
+	- Illusion
+- Made backgrounds and ambience for Water, Lightning and Illusion settings

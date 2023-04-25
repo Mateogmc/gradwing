@@ -71,6 +71,10 @@ public class Minimap : MonoBehaviour
     public void SetMinimap(string sceneName)
     {
         floorImage.sprite = Resources.Load<Sprite>("LevelThumbnails/mini_" + sceneName);
+        if (floorImage.sprite == null)
+        {
+            floorImage.color = Vector4.zero;
+        }
     }
 
     public void CalculateMapRatio()

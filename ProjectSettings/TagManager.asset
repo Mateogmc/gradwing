@@ -27,6 +27,7 @@ TagManager:
   - FrontLine
   - GameManager
   - LevelData
+  - Ice
   layers:
   - Default
   - TransparentFX
@@ -42,7 +43,7 @@ TagManager:
   - GroundedElements
   - Missile
   - PlayerFinish
-  - 
+  - Checkpoint
   - 
   - 
   - 

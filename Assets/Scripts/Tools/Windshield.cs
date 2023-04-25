@@ -14,7 +14,7 @@ public class Windshield : MonoBehaviour
     {
         currentMaterial = new Material(vehicleMaterial);
         GetComponent<SpriteRenderer>().material = currentMaterial;
-        Color wallColor = GameObject.FindGameObjectWithTag("LevelData").GetComponent<LevelData>().wallColor / 60;
+        Color wallColor = GameObject.FindGameObjectWithTag("LevelData").GetComponent<LevelData>().GetColor() / 60;
         color.r = wallColor.r;
         color.g = wallColor.g;
         color.b = wallColor.b;

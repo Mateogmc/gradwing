@@ -3,7 +3,8 @@ guid: e1f3d9ff89533d64c82a214cdce93bda
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - illusionGroundMaterial: {fileID: 2100000, guid: 5452581514825444d8eee512b8a596ce, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

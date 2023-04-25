@@ -11,7 +11,7 @@ public class WallColor : MonoBehaviour
         if (GameObject.FindGameObjectWithTag("LevelData") != null)
         {
             Color color = wallMaterial.GetColor("_Color");
-            wallMaterial.SetColor("_Color", GameObject.FindGameObjectWithTag("LevelData").GetComponent<LevelData>().wallColor);
+            wallMaterial.SetColor("_Color", GameObject.FindGameObjectWithTag("LevelData").GetComponent<LevelData>().GetColor());
         }
     }
 }

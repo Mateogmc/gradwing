@@ -91,8 +91,7 @@ public class ItemBox : NetworkBehaviour
                 random -= itemWeights[placement, i];
                 if (random <= 0)
                 {
-                    player.CmdGetItem("Laser");
-                    //player.GetItem(items[i]);
+                    player.GetItem(items[i]);
                     break;
                 }
             }
