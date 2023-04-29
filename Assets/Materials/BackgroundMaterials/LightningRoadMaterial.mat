@@ -49,8 +49,8 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
-    - _Color1: {r: 0.31131896, g: 0.31131896, b: 0.31131896, a: 0}
-    - _Color2: {r: 0.46855342, g: 0.80453485, b: 1, a: 0}
+    - _Color1: {r: 0.31131783, g: 0.31131783, b: 0.31131783, a: 0}
+    - _Color2: {r: 0.65231425, g: 0.51174796, b: 0.7075472, a: 0}
     - _RippleColor: {r: 3.113498, g: 2.75845, b: 1.447504, a: 0}
     - _RippleTiling: {r: 0.1, g: 0.1, b: 0, a: 0}
     - _TextureTiling: {r: 0.1, g: 0.1, b: 0, a: 0}

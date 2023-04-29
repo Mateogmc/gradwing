@@ -20,7 +20,7 @@ public class LightningBackground : MonoBehaviour
         {
             layer.material = new Material(cloudMaterial);
             layer.material.SetVector("_Offset", new Vector4(i, i, 0, 0));
-            layer.material.SetFloat("_NoiseSpeed", 0); //(i + 0.1f)
+            layer.material.SetFloat("_NoiseSpeed", (i + 0.1f));
             layer.material.SetFloat("_NoisePower", 1 + (i * 4));
             layer.material.SetColor("_Color", Color.gray * (1 -(4 * i / 5)));
             i += 0.25f;
@@ -34,7 +34,7 @@ public class LightningBackground : MonoBehaviour
 
         for (int i = 0; i < layers.Length; i++)
         {
-            layers[i].material.SetVector("_Displacement", new Vector4(camera.position.x / (parallaxValue * (5 - i)), camera.position.y / (parallaxValue * (5 - i)), 0, 0));
+            layers[i].material.SetVector("_Displacement", new Vector4(camera.position.x / (parallaxValue * (2.5f - i / 2)), camera.position.y / (parallaxValue * (2.5f - i / 2)), 0, 0));
         }
     }
 

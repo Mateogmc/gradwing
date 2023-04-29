@@ -345,3 +345,4 @@ MonoBehaviour:
   sr: {fileID: 1150207154184522519}
   tr: {fileID: 3980107152061010553}
   trMaterial: {fileID: 2100000, guid: 4a635d8a4db641e4f9b8ff6bf7e530a5, type: 2}
+  minVelocity: 50

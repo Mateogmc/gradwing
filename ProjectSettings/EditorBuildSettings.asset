@@ -29,4 +29,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Fake Pathway.unity
     guid: 9aabb4b58becf7b4cab2315ad8f04bcb
+  - enabled: 1
+    path: Assets/Scenes/Permafrost.unity
+    guid: a2e6ee8edb2f75246805cd9f1e07e559
   m_configObjects: {}

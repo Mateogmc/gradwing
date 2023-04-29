@@ -192,3 +192,8 @@
 	- Sky
 	- Illusion
 - Made backgrounds and ambience for Water, Lightning and Illusion settings
+
+*Version 0.16.1*
+- Composed new music track:
+	- Deep Dive
+- Made backgrounds and ambience for Snow and Sand settings

@@ -93,11 +93,11 @@ public class LevelData : MonoBehaviour
                 break;
 
             case WorldName.Sand:
-                worldName = "Default";
+                worldName = "DeepDive";
                 break;
 
             case WorldName.Water:
-                worldName = "InfiniteFrost";
+                worldName = "DeepDive";
                 break;
 
             case WorldName.Ice:

@@ -12,6 +12,7 @@ public class Rebounder : MonoBehaviour
     [SerializeField] SpriteRenderer sr;
     [SerializeField] TrailRenderer tr;
     [SerializeField] Material trMaterial;
+    [SerializeField] float minVelocity;
     Material currentMaterial;
     float currentScale = 1;
     int grounded;
@@ -19,6 +20,10 @@ public class Rebounder : MonoBehaviour
     public void InitializeRebounder(Vector2 velocity, PlayerStates playerState, float airborne)
     {
         rb.velocity = velocity;
+        if (rb.velocity.magnitude < minVelocity)
+        {
+            rb.velocity = rb.velocity.normalized * minVelocity;
+        }
         currentState = playerState;
         if (playerState == PlayerStates.Jumping)
         {
