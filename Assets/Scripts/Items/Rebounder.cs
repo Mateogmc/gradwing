@@ -16,8 +16,9 @@ public class Rebounder : MonoBehaviour
     Material currentMaterial;
     float currentScale = 1;
     int grounded;
+    Collider2D parentPlayer;
 
-    public void InitializeRebounder(Vector2 velocity, PlayerStates playerState, float airborne)
+    public void InitializeRebounder(Vector2 velocity, PlayerStates playerState, float airborne, Collider2D parentPlayer)
     {
         rb.velocity = velocity;
         if (rb.velocity.magnitude < minVelocity)
@@ -30,23 +31,21 @@ public class Rebounder : MonoBehaviour
             this.airborne = airborne;
             gameObject.layer = 9;
         }
+
+        this.parentPlayer = parentPlayer;
+        Physics2D.IgnoreCollision(GetComponent<CircleCollider2D>(), parentPlayer, true);
+
+        Physics2D.IgnoreLayerCollision(7, 6, false);
+        Physics2D.IgnoreLayerCollision(9, 8, false);
     }
 
     private void Start()
     {
-        Physics2D.IgnoreLayerCollision(7, 6, true);
-        Physics2D.IgnoreLayerCollision(9, 8, true);
+        //Physics2D.IgnoreLayerCollision(7, 6, true);
+        //Physics2D.IgnoreLayerCollision(9, 8, true);
         currentMaterial = new Material(trMaterial);
         currentMaterial.SetColor("_TrailColor", new Vector4(100, 20, 35, 0.1f));
         tr.material = currentMaterial;
-        StartCoroutine(IgnoreCollision());
-    }
-
-    IEnumerator IgnoreCollision()
-    {
-        yield return new WaitForSeconds(0.05f);
-        Physics2D.IgnoreLayerCollision(7, 6, false);
-        Physics2D.IgnoreLayerCollision(9, 8, false);
     }
 
     private void Update()
@@ -119,7 +118,6 @@ public class Rebounder : MonoBehaviour
             {
                 bouncesLeft--;
 
-                transform.position += new Vector3(collision.contacts[0].normal.x, collision.contacts[0].normal.y, 0);
                 rb.velocity = Vector2.Reflect(lastSpeed, collision.contacts[0].normal);
             } else
             {
@@ -127,6 +125,7 @@ public class Rebounder : MonoBehaviour
                 tr.gameObject.GetComponent<DestroyDelay>().DestroyAfterDelay(1);
                 Destroy(gameObject);
             }
+            Physics2D.IgnoreCollision(GetComponent<CircleCollider2D>(), parentPlayer, false);
         } 
         else if (collision.gameObject.tag == "Rebounder")
         {

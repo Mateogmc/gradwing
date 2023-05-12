@@ -160,11 +160,15 @@ public class MultiplayerController : FSM
         username.text = usernameText;
         CmdSetName(usernameText);
         playerInterface.gameObject.SetActive(true);
+        AudioManager.instance.Stop("Ice");
+        AudioManager.instance.Stop("Gravel");
+        AudioManager.instance.Stop("Heal");
         MusicManager.instance.Stop("Lobby");
         if (SceneManager.GetActiveScene().name == "Lobby")
         {
             MusicManager.instance.Play(FindObjectOfType<LevelData>().GetWorld());
             currentState = PlayerStates.Grounded;
+            placement = 3;
         }
         else
         {
@@ -199,7 +203,7 @@ public class MultiplayerController : FSM
             LaserUpdate();
         }
 
-        if (currentSpeed < 0.1f && !accelerating)
+        if (currentSpeed < 0.1f && !accelerating && bounceTime < Time.time)
         {
             rb.velocity = Vector2.zero;
         }
@@ -595,7 +599,7 @@ public class MultiplayerController : FSM
     {
         if (pauseMenu.activeSelf)
         {
-            if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Escape) || (xboxController ? Input.GetKeyDown(KeyCode.Joystick1Button7) : Input.GetKeyDown(KeyCode.Joystick1Button8)))
+            if (Input.GetKeyDown(KeyCode.Escape) || (xboxController ? Input.GetKeyDown(KeyCode.Joystick1Button7) : Input.GetKeyDown(KeyCode.Joystick1Button8)))
             {
                 pauseMenu.SetActive(false);
             }
@@ -605,7 +609,7 @@ public class MultiplayerController : FSM
             if (xboxController)
             {
 
-                if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Joystick1Button7))
+                if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Joystick1Button7))
                 {
                     pauseMenu.SetActive(true);
                 }
@@ -707,7 +711,7 @@ public class MultiplayerController : FSM
             }
             else
             {
-                if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Joystick1Button8))
+                if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Joystick1Button8))
                 {
                     pauseMenu.SetActive(true);
                 }
@@ -899,7 +903,7 @@ public class MultiplayerController : FSM
 
                 if (currentMaxSpeed < maxSpeed)
                 {
-                    rb.AddForce(rb.velocity.normalized * -(currentDrag * 5));
+                    rb.AddForce(rb.velocity.normalized * -(currentDrag * ((strafingLeft || strafingRight) ? 1 : 5)));
                 }
 
                 if (!rolling && bounceTime < Time.time)
@@ -1346,7 +1350,7 @@ public class MultiplayerController : FSM
     private void RpcRebounder(Vector3 pos, Vector2 initialVelocity, PlayerStates state, float airborne)
     {
         GameObject reb = Instantiate(rebounderPrefab, pos, Quaternion.identity);
-        reb.GetComponent<Rebounder>().InitializeRebounder(initialVelocity, state, airborne);
+        reb.GetComponent<Rebounder>().InitializeRebounder(initialVelocity, state, airborne, bc);
     }
 
     #region LASER
@@ -1514,7 +1518,7 @@ public class MultiplayerController : FSM
                 break;
 
             case Items.Rebounder:
-                itemPosition = transform.position + new Vector3(direction.x, direction.y, 0) * 5;
+                itemPosition = transform.position + new Vector3(direction.x, direction.y, 0);
                 CmdRebounder(itemPosition, direction * maxSpeed + rb.velocity, currentState, airborne);
                 break;
 
@@ -1762,25 +1766,32 @@ public class MultiplayerController : FSM
 
         int tempPlacement = 1;
 
-        foreach (GameObject player in players)
+        if (SceneManager.GetActiveScene().name == "Lobby")
         {
-            if (player != gameObject)
+            tempPlacement = 4;
+        }
+        else
+        {
+            foreach (GameObject player in players)
             {
-                MultiplayerController controller = player.GetComponent<MultiplayerController>();
-                if (controller.currentLap == currentLap)
+                if (player != gameObject)
                 {
-                    if (controller.currentCheckpoint > currentCheckpoint)
+                    MultiplayerController controller = player.GetComponent<MultiplayerController>();
+                    if (controller.currentLap == currentLap)
+                    {
+                        if (controller.currentCheckpoint > currentCheckpoint)
+                        {
+                            tempPlacement++;
+                        }
+                        else if (controller.currentCheckpoint == currentCheckpoint && controller.placement < placement)
+                        {
+                            tempPlacement++;
+                        }
+                    }
+                    else if (controller.currentLap > currentLap)
                     {
                         tempPlacement++;
                     }
-                    else if (controller.currentCheckpoint == currentCheckpoint && controller.placement < placement)
-                    {
-                        tempPlacement++;
-                    }
-                }
-                else if (controller.currentLap > currentLap)
-                {
-                    tempPlacement++;
                 }
             }
         }
@@ -1788,8 +1799,8 @@ public class MultiplayerController : FSM
         if (isLocalPlayer)
         {
             CmdSetPlacement(tempPlacement);
-            SetPlacementImage();
         }
+        SetPlacementImage();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -1983,11 +1994,18 @@ public class MultiplayerController : FSM
             SetPlacementImage();
             CmdSetCheckpoint(-placement);
         }
-        else if (collision.tag == "Missile")
+        else if (collision.tag == "Missile" || collision.tag == "Bomb")
         {
             if (!isLocalPlayer) { return; }
             rb.velocity = Vector2.zero;
-            collision.gameObject.GetComponent<Missile>().CmdExplode(new Vector3(collision.ClosestPoint(transform.position).x, collision.ClosestPoint(transform.position).y, transform.position.z));
+            if (collision.tag == "Missile")
+            {
+                collision.gameObject.GetComponent<Missile>().CmdExplode(new Vector3(collision.ClosestPoint(transform.position).x, collision.ClosestPoint(transform.position).y, transform.position.z));
+            }
+            else
+            {
+                collision.gameObject.GetComponent<Bomb>().CmdExplode();
+            }
         }
         else if (collision.tag == "Explosion")
         {
@@ -1995,7 +2013,7 @@ public class MultiplayerController : FSM
             explosion = collision.gameObject;
             Vector2 collisionNormal = (new Vector2(transform.position.x, transform.position.y) - (Vector2)collision.transform.position).normalized;
             Debug.DrawRay(transform.position, collisionNormal * 30, Color.red, 10);
-            Hit(Mathf.Lerp(20, 100, collision.gameObject.GetComponentInParent<Explosion>().Damage()), 40, 5);
+            Hit(Mathf.Lerp(20, collision.gameObject.GetComponentInParent<Explosion>().maxDamage, collision.gameObject.GetComponentInParent<Explosion>().Damage()), 40, 5);
             rb.AddForce(collisionNormal * Mathf.Lerp(500, 3000, collision.gameObject.GetComponentInParent<Explosion>().Damage()));
             bounceTime = Time.time + bounceDuration;
         }
@@ -2008,8 +2026,8 @@ public class MultiplayerController : FSM
             Jump(false);
         } else if (collision.tag == "Heal" && currentState == PlayerStates.Grounded)
         {
-            if (health <= 0 || !isLocalPlayer || bounceTime > Time.time) { return; }
-            health = health + maxHealth / 200;
+            if (health <= 0 || !isLocalPlayer) { return; }
+            health = health + maxHealth / 150;
             playerHealthBar.value = maxHealth - health;
             healthBar.value = maxHealth - health;
             CmdChangeHealth(health);
@@ -2033,7 +2051,7 @@ public class MultiplayerController : FSM
         else if (collision.tag == "Blaster" && currentState == PlayerStates.Grounded)
         {
             if (shielded > Time.time) { return; }
-            health = health - 0.3f;
+            health = health - 0.5f;
             playerHealthBar.value = maxHealth - health;
             healthBar.value = maxHealth - health;
             CmdChangeHealth(health);

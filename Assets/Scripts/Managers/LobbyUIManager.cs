@@ -55,6 +55,8 @@ public class LobbyUIManager : MonoBehaviour
         level3.onClick.AddListener(() => SelectLevel(3));
 
         dataManager = GameObject.FindGameObjectWithTag("DataManager").GetComponent<DataManager>();
+        DataManager.GetInstance().InitializeStats();
+        Debug.Log(DataManager.GetInstance().initSpeed);
         velocity.value = dataManager.initSpeed;
         acceleration.value = dataManager.initAcceleration;
         weight.value = dataManager.initWeight * 5;

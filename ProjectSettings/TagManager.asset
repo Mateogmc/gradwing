@@ -28,6 +28,8 @@ TagManager:
   - GameManager
   - LevelData
   - Ice
+  - GlobalVolume
+  - Bomb
   layers:
   - Default
   - TransparentFX

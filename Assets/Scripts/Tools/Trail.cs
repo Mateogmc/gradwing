@@ -24,13 +24,14 @@ public class Trail : MonoBehaviour
     private void Update()
     {
         currentSpeed = controller.lastSpeedMagnitude;
+        float widthMultiplier = 0.6f;
 
         if (controller.rollingSync)
         {
             red = 255;
             green = 0;
             blue = 255;
-            GetComponent<TrailRenderer>().widthMultiplier = 0.6f;
+            widthMultiplier = 0.6f;
         }
         else if (currentSpeed < 30)
         {
@@ -38,7 +39,7 @@ public class Trail : MonoBehaviour
             blue = 0;
 
             green = Mathf.Lerp(50, 100, currentSpeed / 30);
-            GetComponent<TrailRenderer>().widthMultiplier = 0.6f;
+            widthMultiplier = 0.6f;
         }
         else if (currentSpeed < 50)
         {
@@ -47,7 +48,7 @@ public class Trail : MonoBehaviour
 
 
             red = Mathf.Lerp(200, 0, (currentSpeed - 30) / 20);
-            GetComponent<TrailRenderer>().widthMultiplier = 0.6f;
+            widthMultiplier = 0.6f;
         }
         else if (currentSpeed < 70)
         {
@@ -55,7 +56,7 @@ public class Trail : MonoBehaviour
             red = 0;
 
             blue = Mathf.Lerp(0, 100, (currentSpeed - 50) / 20);
-            GetComponent<TrailRenderer>().widthMultiplier = 0.6f;
+            widthMultiplier = 0.6f;
         }
         else if (controller.maxSpeed < currentSpeed)
         {
@@ -64,15 +65,17 @@ public class Trail : MonoBehaviour
 
             red = Mathf.Lerp(0, 150, (currentSpeed - controller.maxSpeed) / 40);
 
-            GetComponent<TrailRenderer>().widthMultiplier = Mathf.Lerp(0.6f, 1.5f, (currentSpeed - controller.maxSpeed) / 40);
+            widthMultiplier = Mathf.Lerp(0.6f, 1.5f, (currentSpeed - controller.maxSpeed) / 40);
         }
+
         if (controller.boostTime > NetworkTime.time)
         {
             red = Mathf.Lerp(red, 255, (controller.boostTime - (float)NetworkTime.time) / 1.5f);
-            GetComponent<TrailRenderer>().widthMultiplier = Mathf.Lerp(GetComponent<TrailRenderer>().widthMultiplier, 3f,  (controller.boostTime - (float)NetworkTime.time) / 1.5f);
+            widthMultiplier = Mathf.Lerp(widthMultiplier, 3f,  (controller.boostTime - (float)NetworkTime.time) / 1.5f);
         }
 
         currentMaterial.SetColor("_TrailColor", new Vector4(red, green, blue, 0.2f));
+        GetComponent<TrailRenderer>().widthMultiplier = widthMultiplier;
 
         if (controller.currentScale > 1)
         {

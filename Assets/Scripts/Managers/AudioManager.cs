@@ -14,10 +14,9 @@ public class AudioManager : MonoBehaviour
         {
             instance = this;
         }
-
         else
         {
-            Destroy(this);
+            Destroy(gameObject);
             return;
         }
 
@@ -39,8 +38,15 @@ public class AudioManager : MonoBehaviour
         Sound s = Array.Find(sounds, sound => sound.name == name);
         if (s == null || (s.loop && s.source.isPlaying)) { return; }
         s.source.volume = s.volume * DataManager.soundVolume;
-        Debug.Log(s.source.volume);
         s.source.Play();
+    }
+
+    public void Stop()
+    {
+        foreach (Sound s in sounds)
+        {
+            s.source.Stop();
+        }
     }
 
     public void Stop(string name)

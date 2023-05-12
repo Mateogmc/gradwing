@@ -176,7 +176,7 @@ public class PauseMenu : MonoBehaviour
                 pressedRight = false;
             }
         }
-        else if ((Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.KeypadEnter)) && selectedIndex == 2)
+        else if ((Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.KeypadEnter) || (DataManager.GetInstance().xboxController ? Input.GetKeyDown(KeyCode.Joystick1Button0) : Input.GetKeyDown(KeyCode.Joystick1Button1))) && selectedIndex == 2)
         {
             Application.Quit();
         }

@@ -192,8 +192,24 @@
 	- Sky
 	- Illusion
 - Made backgrounds and ambience for Water, Lightning and Illusion settings
+- Created new level: Fake Pathway
 
 *Version 0.16.1*
 - Composed new music track:
 	- Deep Dive
+	- Dry Oasis
 - Made backgrounds and ambience for Snow and Sand settings
+- Created new level: Permafrost
+
+*Version 0.16.2*
+- Composed new music track:
+	- Scorched Future
+- Made background and ambience for Fire setting
+- Made new levels:
+	- Heat Wave
+	- Shifting Highway
+	
+*Version 0.17*
+- Fixed tunneling on players and rebounders
+- Improved missile AI
+- Added level thumbnails

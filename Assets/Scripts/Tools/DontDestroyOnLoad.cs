@@ -6,6 +6,20 @@ public class DontDestroyOnLoad : MonoBehaviour
 {
     void Start()
     {
-        DontDestroyOnLoad(gameObject);
+        if (gameObject.tag == "GlobalVolume")
+        {
+            if (GameObject.FindGameObjectsWithTag("GlobalVolume").Length > 1)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                DontDestroyOnLoad(gameObject);
+            }
+        }
+        else
+        {
+            DontDestroyOnLoad(gameObject);
+        }
     }
 }

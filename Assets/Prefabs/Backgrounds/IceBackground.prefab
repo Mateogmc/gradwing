@@ -157,6 +157,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 2100000, guid: 3b99c63f7fae1484680e59f455d3ef48, type: 2}
+  roadMaterial: {fileID: 2100000, guid: 9fa0cf04543c00f4a91665cf6e6ad7c0, type: 2}
   parallaxValue: 250
 --- !u!212 &7159213520076378716
 SpriteRenderer:

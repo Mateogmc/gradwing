@@ -20,6 +20,7 @@ public class CameraMovement : MonoBehaviour
 
     public void Initialize(GameObject player)
     {
+        Debug.Log("camera");
         this.player = player;
         pC = player.GetComponent<MultiplayerController>();
         localPC = pC;

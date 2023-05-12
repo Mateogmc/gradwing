@@ -16,10 +16,10 @@ public class MusicManager : MonoBehaviour
         {
             instance = this;
         }
-
         else
         {
-            Destroy(this);
+            Destroy(gameObject);
+            instance.Stop();
             return;
         }
 
@@ -49,6 +49,14 @@ public class MusicManager : MonoBehaviour
         s.source.volume = s.volume * DataManager.musicVolume;
         s.source.Play();
         currentSong = name;
+    }
+
+    public void Stop()
+    {
+        foreach (Music s in tracks)
+        {
+            s.source.Stop();
+        }
     }
 
     public void Stop(string name)

@@ -40,7 +40,7 @@ public class Sight : NetworkBehaviour
     {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
-        for (int i = 1; i <= players.Length; i++)
+        for (int i = 1; i <= 8; i++)
         {
             foreach (GameObject p in players)
             {

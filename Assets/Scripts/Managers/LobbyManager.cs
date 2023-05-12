@@ -140,6 +140,12 @@ public class LobbyManager : NetworkBehaviour
         NetworkManager.singleton.ServerChangeScene(levelSelected);
     }
 
+    [Command(requiresAuthority = false)]
+    public void CmdStartGame(string level)
+    {
+        NetworkManager.singleton.ServerChangeScene(level);
+    }
+
     [ClientRpc]
     private void RpcStartGame()
     {

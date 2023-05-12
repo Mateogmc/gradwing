@@ -32,4 +32,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Permafrost.unity
     guid: a2e6ee8edb2f75246805cd9f1e07e559
+  - enabled: 1
+    path: Assets/Scenes/Heat Wave.unity
+    guid: 36053916776691c45836a739477494a4
+  - enabled: 1
+    path: Assets/Scenes/Shifting Highway.unity
+    guid: 35bc16fe37b7b924ab8d06edce47748a
   m_configObjects: {}

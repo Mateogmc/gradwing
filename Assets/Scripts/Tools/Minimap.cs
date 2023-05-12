@@ -49,22 +49,32 @@ public class Minimap : MonoBehaviour
     private void MovePlayers()
     {
         int i = 0;
-        foreach (GameObject player in players)
+        if (players != null)
         {
-            if (!playerIcons[i].gameObject.activeSelf)
+            foreach (GameObject player in players)
             {
-                playerIcons[i].gameObject.SetActive(true);
+                if (!playerIcons[i].gameObject.activeSelf)
+                {
+                    playerIcons[i].gameObject.SetActive(true);
+                }
+                if (player == NetworkClient.localPlayer.gameObject)
+                {
+                    playerIcons[i].GetComponent<Image>().color = Color.green;
+                }
+                else
+                {
+                    playerIcons[i].GetComponent<Image>().color = Color.red;
+                }
+                playerIcons[i].position = new Vector2(minimapRef1.position.x, minimapRef1.position.y) + new Vector2((player.transform.position.x - worldRef1.position.x) * minimapRatio, (player.transform.position.y - worldRef1.position.y) * minimapRatio);
+                i++;
             }
-            if (player == NetworkClient.localPlayer.gameObject)
+            for (; i < 8; i++)
             {
-                playerIcons[i].GetComponent<Image>().color = Color.green;
+                if (playerIcons[i].gameObject.activeSelf)
+                {
+                    playerIcons[i].gameObject.SetActive(false);
+                }
             }
-            else
-            {
-                playerIcons[i].GetComponent<Image>().color = Color.red;
-            }
-            playerIcons[i].position = new Vector2(minimapRef1.position.x, minimapRef1.position.y) + new Vector2((player.transform.position.x - worldRef1.position.x) * minimapRatio, (player.transform.position.y - worldRef1.position.y) * minimapRatio);
-            i++;
         }
     }
 
@@ -101,8 +111,8 @@ public class Minimap : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(1);
             players = GameObject.FindGameObjectsWithTag("Player");
+            yield return new WaitForSeconds(1);
         }
     }
 }

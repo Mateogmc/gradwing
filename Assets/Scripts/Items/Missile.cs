@@ -36,7 +36,7 @@ public class Missile : NetworkBehaviour
 
     private IEnumerator Activate()
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.5f);
         cc.enabled = true;
         while (true)
         {
@@ -61,7 +61,7 @@ public class Missile : NetworkBehaviour
     {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
-        for (int i = 1; i <= players.Length; i++)
+        for (int i = 1; i <= 8; i++)
         {
             foreach (GameObject p in players)
             {
@@ -85,7 +85,14 @@ public class Missile : NetworkBehaviour
         distance = distance / maxSpeedDistance;
         if (distance > 1) { distance = 1; }
         float currentSpeed = minSpeed + Mathf.Lerp(0, maxExtraSpeed, distance);
-        rb.velocity = transform.up * (minSpeed + Mathf.Lerp(0, maxExtraSpeed, distance));
+        if (cc.enabled)
+        {
+            rb.velocity = transform.up * (minSpeed + Mathf.Lerp(0, maxExtraSpeed, distance));
+        }
+        else
+        {
+            rb.velocity = transform.up * (minSpeed + maxExtraSpeed);
+        }
     }
 
     [Command(requiresAuthority = false)]

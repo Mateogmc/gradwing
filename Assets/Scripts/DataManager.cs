@@ -60,14 +60,27 @@ public class DataManager : MonoBehaviour
 
     void Start()
     {
-        DontDestroyOnLoad(this);
         host.onClick.AddListener(Host);
         connect.onClick.AddListener(Connect);
         exit.onClick.AddListener(Exit);
         controller.onClick.AddListener(ChangeController);
         strafe.onClick.AddListener(ChangeStrafeMode);
 
+        if (instance == null)
+        {
+            DontDestroyOnLoad(this);
+            Initialize();
+        }
+        else
+        {
+            instance.Initialize();
+            Destroy(instance.gameObject);
+            DontDestroyOnLoad(this);
+        }
+    }
 
+    void Initialize()
+    {
         using (StreamReader sr = new StreamReader(Application.streamingAssetsPath + "/stats.dat"))
         {
             initSpeed = float.Parse(sr.ReadLine());
@@ -104,6 +117,17 @@ public class DataManager : MonoBehaviour
             strafe.GetComponent<TextMeshProUGUI>().text = "Classic Strafing";
         }
         instance = this;
+    }
+
+    public void InitializeStats()
+    {
+        using (StreamReader sr = new StreamReader(Application.streamingAssetsPath + "/stats.dat"))
+        {
+            initSpeed = float.Parse(sr.ReadLine());
+            initAcceleration = float.Parse(sr.ReadLine());
+            initWeight = float.Parse(sr.ReadLine());
+            initHandling = float.Parse(sr.ReadLine());
+        }
     }
 
     private void Update()

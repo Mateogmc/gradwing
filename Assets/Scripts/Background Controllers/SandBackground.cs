@@ -12,6 +12,7 @@ public class SandBackground : MonoBehaviour
     void Start()
     {
         camera = GameObject.FindGameObjectWithTag("MainCamera").transform;
+        AudioManager.instance.Play("Sandstorm");
     }
 
     void Update()
