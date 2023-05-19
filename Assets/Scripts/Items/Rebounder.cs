@@ -41,8 +41,7 @@ public class Rebounder : MonoBehaviour
 
     private void Start()
     {
-        //Physics2D.IgnoreLayerCollision(7, 6, true);
-        //Physics2D.IgnoreLayerCollision(9, 8, true);
+        GetComponent<AudioSource>().volume = DataManager.soundVolume;
         currentMaterial = new Material(trMaterial);
         currentMaterial.SetColor("_TrailColor", new Vector4(100, 20, 35, 0.1f));
         tr.material = currentMaterial;
@@ -143,7 +142,7 @@ public class Rebounder : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Trap")
+        if (collision.tag == "Trap" || collision.tag == "Explosion")
         {
             Destroy(collision.gameObject);
             tr.gameObject.transform.parent = null;

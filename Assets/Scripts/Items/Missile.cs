@@ -103,4 +103,12 @@ public class Missile : NetworkBehaviour
         trail.GetComponent<DestroyDelay>().DestroyAfterDelay();
         NetworkServer.Destroy(gameObject);
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Explosion"))
+        {
+            CmdExplode(transform.position);
+        }
+    }
 }

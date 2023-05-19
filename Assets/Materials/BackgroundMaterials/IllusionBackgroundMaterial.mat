@@ -56,5 +56,5 @@ Material:
     m_Colors:
     - _BackgroundNoiseColor: {r: 0.09982684, g: 0.26481843, b: 0.1206241, a: 0}
     - _Color: {r: 0, g: 0.39846346, b: 0.31501564, a: 0}
-    - _Displacement: {r: -0.04, g: 0.092, b: 0, a: 0}
+    - _Displacement: {r: -0.04794751, g: -0.044229753, b: 0, a: 0}
   m_BuildTextureStacks: []

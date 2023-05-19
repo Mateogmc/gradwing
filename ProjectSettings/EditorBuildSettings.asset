@@ -38,4 +38,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Shifting Highway.unity
     guid: 35bc16fe37b7b924ab8d06edce47748a
+  - enabled: 1
+    path: Assets/Scenes/Delta.unity
+    guid: fbc36561ff0bad94cace376a5ee8279b
+  - enabled: 1
+    path: Assets/Scenes/Anticyclone.unity
+    guid: a5ba4699ba91194418a9e91dec28d8d1
+  - enabled: 1
+    path: Assets/Scenes/Converge.unity
+    guid: 08596f45cabb92746b54b34f62c8603d
   m_configObjects: {}

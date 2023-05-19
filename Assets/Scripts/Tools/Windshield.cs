@@ -6,6 +6,7 @@ public class Windshield : MonoBehaviour
 {
     [SerializeField] MultiplayerController controller;
     [SerializeField] Material vehicleMaterial;
+    [SerializeField] SpriteRenderer vehicleRenderer;
     Material currentMaterial;
     public Color color = new Color(0, 0, 0);
     Color colorAlt = new Color(0, 0, 0);
@@ -13,7 +14,7 @@ public class Windshield : MonoBehaviour
     private void Start()
     {
         currentMaterial = new Material(vehicleMaterial);
-        GetComponent<SpriteRenderer>().material = currentMaterial;
+        vehicleRenderer.material = currentMaterial;
         Color wallColor = GameObject.FindGameObjectWithTag("LevelData").GetComponent<LevelData>().GetColor() / 60;
         color.r = wallColor.r;
         color.g = wallColor.g;

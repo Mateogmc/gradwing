@@ -89,7 +89,7 @@ public class LevelData : MonoBehaviour
                 break;
 
             case WorldName.City:
-                worldName = "NoBarriers";
+                worldName = "Everage";
                 break;
 
             case WorldName.Sand:
@@ -113,7 +113,7 @@ public class LevelData : MonoBehaviour
                 break;
 
             case WorldName.Clouds:
-                worldName = "HeavyLight";
+                worldName = "Hyperdrive";
                 break;
 
             case WorldName.Illusion:

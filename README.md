@@ -213,3 +213,18 @@
 - Fixed tunneling on players and rebounders
 - Improved missile AI
 - Added level thumbnails
+
+*Version 0.17.1*
+- Added new item: Shockwave
+- Made background and ambience for City and Clouds settings
+- Made new levels: 
+	- Delta
+	- Anticyclone
+	- Converge
+- Composed new music track: Hyperdrive
+- Added sound effects:
+	- Death
+	- ItemHit
+	- Shockwave
+	- Shield
+	- FireFloor

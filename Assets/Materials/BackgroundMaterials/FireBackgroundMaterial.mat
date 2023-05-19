@@ -56,5 +56,5 @@ Material:
     m_Colors:
     - _ColorDull: {r: 0.16037735, g: 0.06749029, b: 0, a: 0}
     - _ColorGlow: {r: 3.6886053, g: 0.5407379, b: 0.1931207, a: 0}
-    - _Displacement: {r: -0.55499995, g: -0.57500005, b: 0, a: 0}
+    - _Displacement: {r: 1.4689401, g: 8.529444, b: 0, a: 0}
   m_BuildTextureStacks: []

@@ -8,6 +8,7 @@ public class FSM : NetworkBehaviour
     protected virtual void Initialize() { }
     protected virtual void FSMUpdate() { }
     protected virtual void FSMFixedUpdate() { }
+    protected virtual void FSMLateUpdate() { }
 
     private void Start()
     {
@@ -22,5 +23,10 @@ public class FSM : NetworkBehaviour
     private void FixedUpdate()
     {
         FSMFixedUpdate();
+    }
+
+    private void LateUpdate()
+    {
+        FSMLateUpdate();
     }
 }

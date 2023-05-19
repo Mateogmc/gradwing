@@ -84,6 +84,7 @@ public class MultiplayerController : FSM
     [SerializeField] Sprite laser;
     [SerializeField] Sprite boost;
     [SerializeField] Sprite missile;
+    [SerializeField] Sprite shockwave;
     [SerializeField] Image itemSprite;
 
     [SyncVar(hook = nameof(OnShieldChange))] float shielded = 0f;
@@ -92,6 +93,7 @@ public class MultiplayerController : FSM
     [SerializeField] GameObject trapPrefab;
     [SerializeField] GameObject rebounderPrefab;
     [SerializeField] GameObject missilePrefab;
+    [SerializeField] GameObject shockwavePrefab;
     Vector3 itemPosition;
 
     bool gettingItem = false;
@@ -140,6 +142,8 @@ public class MultiplayerController : FSM
     [SerializeField] Canvas startingCanvas;
     [SerializeField] TextMeshProUGUI startingText;
     [SerializeField] GameObject pauseMenu;
+    [SerializeField] GameObject consoleMenu;
+    [SerializeField] TextMeshProUGUI velocityDisplay;
 
     // Audio
     [SerializeField] VehicleAudioManager vehicleAudioManager;
@@ -188,6 +192,7 @@ public class MultiplayerController : FSM
         startingCanvas.transform.parent = null;
         endgameInterface.transform.parent = null;
         lineRenderer.material = new Material(laserMaterial);
+        consoleMenu = dataManager.transform.GetChild(0).GetChild(1).gameObject;
         Restart();
     }
 
@@ -376,8 +381,19 @@ public class MultiplayerController : FSM
         {
             itemSprite.sprite = none;
         }
+        if (strafingLeft || strafingRight)
+        {
+            sr.transform.rotation = Quaternion.Euler(Mathf.Cos(rb.rotation * Mathf.Deg2Rad) * (40 * strafeValue), Mathf.Sin(rb.rotation * Mathf.Deg2Rad) * (40 * strafeValue), transform.rotation.eulerAngles.z);
+        }
+        else
+        {
+            sr.transform.rotation = Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z);
+        }
+
         sr.sprite = Resources.Load<Sprite>("Vehicles/Vehicle" + this.spriteValue);
         vehicle.SetColor();
+
+        velocityDisplay.text = ((int)Mathf.Floor(currentSpeed * 10)).ToString();
     }
 
     public void FollowPlayer()
@@ -406,9 +422,9 @@ public class MultiplayerController : FSM
 
     public void Restart()
     {
-        transform.position = spawnPos;
+        transform.position = new Vector3(spawnPos.x, spawnPos.y, -5);
         transform.eulerAngles = new Vector3(0, 0, spawnRotation);
-        CmdSetStats(DataManager.MAX_SPEED + dataManager.speed, DataManager.ACCELERATION + dataManager.acceleration, DataManager.WEIGHT + dataManager.weight, DataManager.HANDLING + dataManager.handling, dataManager.spriteValue);
+        SetStats(DataManager.MAX_SPEED + dataManager.speed, DataManager.ACCELERATION + dataManager.acceleration, DataManager.WEIGHT + dataManager.weight, DataManager.HANDLING + dataManager.handling, dataManager.spriteValue);
         CmdSetColor(DataManager.GetInstance().speed, DataManager.GetInstance().acceleration, DataManager.GetInstance().weight, DataManager.GetInstance().handling);
         healthBar.value = 0f;
         playerHealthBar.value = 0f;
@@ -592,12 +608,18 @@ public class MultiplayerController : FSM
                 itemSprite.sprite = missile;
                 playerItemSprite.sprite = missile;
                 break;
+
+            case Items.Shockwave:
+                currentItem = Items.Shockwave;
+                itemSprite.sprite = shockwave;
+                playerItemSprite.sprite = shockwave;
+                break;
         }
     }
 
     private void CheckInput()
     {
-        if (pauseMenu.activeSelf)
+        if (pauseMenu.activeSelf || consoleMenu.activeSelf)
         {
             if (Input.GetKeyDown(KeyCode.Escape) || (xboxController ? Input.GetKeyDown(KeyCode.Joystick1Button7) : Input.GetKeyDown(KeyCode.Joystick1Button8)))
             {
@@ -876,7 +898,7 @@ public class MultiplayerController : FSM
                 {
                     if (rb.velocity.magnitude < currentMaxSpeed)
                     {
-                        rb.AddForce(direction * acceleration);
+                        rb.AddForce(direction * (slowTimer > Time.time ? acceleration / 2 : acceleration));
                     } else
                     {
                         rb.AddForce(rb.velocity.normalized * -(currentDrag / 3));
@@ -1117,13 +1139,17 @@ public class MultiplayerController : FSM
     private void Boost(Vector2 direction, float force)
     {
         bounceTime = Time.time;
-        if (rb.velocity.magnitude < 60)
+        if (rb.velocity.magnitude < 40)
         {
             rb.velocity = direction * 60;
         }
         else
         {
             rb.velocity = direction * force + rb.velocity;
+        }
+        if (rb.velocity.magnitude > 200)
+        {
+            rb.velocity = direction * 200;
         }
         PlaySound("Boost");
     }
@@ -1133,6 +1159,23 @@ public class MultiplayerController : FSM
         boostTime = (float)NetworkTime.time + duration;
         CmdBoost(boostTime);
         Boost(direction, force);
+    }
+
+    private void Boost(Vector2 direction, float force, float duration, bool setSpeed)
+    {
+        if (setSpeed)
+        {
+            if (rb.velocity.magnitude < force)
+            {
+                rb.velocity = direction * force;
+            }
+            boostTime = (float)NetworkTime.time + duration;
+            CmdBoost(boostTime);
+        }
+        else
+        {
+            Boost(direction, force, duration);
+        }
     }
 
     [Command]
@@ -1157,6 +1200,24 @@ public class MultiplayerController : FSM
     private void RpcStopSound(string sound)
     {
         vehicleAudioManager.Stop(sound);
+    }
+
+    private void SetStats(float speed, float accel, float weight, float handling, int spriteValue)
+    {
+        if (currentState != PlayerStates.Starting)
+        {
+            currentState = PlayerStates.Grounded;
+        }
+        this.maxSpeed = (speed * 1.5f);
+        this.acceleration = accel;
+        this.weight = weight;
+        this.rotationSpeed = handling + 0.2f;
+        this.spriteValue = spriteValue;
+
+        maxHealth = 20 + weight * 40;
+
+        health = maxHealth;
+        CmdSetStats(speed, accel, weight, handling, spriteValue);
     }
 
     [Command]
@@ -1353,6 +1414,28 @@ public class MultiplayerController : FSM
         reb.GetComponent<Rebounder>().InitializeRebounder(initialVelocity, state, airborne, bc);
     }
 
+    [Command]
+    private void CmdShockwave()
+    {
+        RpcShockwave();
+    }
+
+    [ClientRpc]
+    private void RpcShockwave()
+    {
+        StartCoroutine(Shockwave());
+    }
+
+    private IEnumerator Shockwave()
+    {
+        for (int i = 3; i >= 0; i--)
+        {
+            GameObject reb = Instantiate(shockwavePrefab, transform.position, Quaternion.identity);
+            reb.GetComponent<Shockwave>().InitializeShockwave(bc);
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
     #region LASER
 
     [Command]
@@ -1468,6 +1551,10 @@ public class MultiplayerController : FSM
         if (shielded > Time.time || !isLocalPlayer) { return; }
         health = health - damage;
         CmdChangeHealth(health);
+        if (health <= 0)
+        {
+            AudioManager.instance.Play("Death");
+        }
     }
 
     public void Hit(float damage, float slow, float duration)
@@ -1499,6 +1586,7 @@ public class MultiplayerController : FSM
 
             case Items.Shield:
                 CmdShield();
+                CmdPlaySound("Shield");
                 break;
 
             case Items.Jump:
@@ -1535,6 +1623,10 @@ public class MultiplayerController : FSM
             case Items.Missile:
                 itemPosition = transform.position + new Vector3(direction.x, direction.y, 0) * 5;
                 CmdMissile(itemPosition);
+                break;
+
+            case Items.Shockwave:
+                CmdShockwave();
                 break;
         }
         currentItem = Items.None;
@@ -1578,6 +1670,10 @@ public class MultiplayerController : FSM
             case 7:
                 playerItemSprite.sprite = missile;
                 break;
+
+            case 8:
+                playerItemSprite.sprite = shockwave;
+                break;
         }
     }
 
@@ -1593,10 +1689,10 @@ public class MultiplayerController : FSM
         int oldRan = 0;
         for (int i = 0; i < 10; i++)
         {
-            int random = Random.Range(1, 8);
+            int random = Random.Range(1, 9);
             while (random == oldRan)
             {
-                random = Random.Range(1, 8);
+                random = Random.Range(1, 9);
             }
             oldRan = random;
             SetItemSprite(random);
@@ -1681,6 +1777,12 @@ public class MultiplayerController : FSM
                 itemSprite.sprite = missile;
                 playerItemSprite.sprite = missile;
                 break;
+
+            case "Shockwave":
+                currentItem = Items.Shockwave;
+                itemSprite.sprite = shockwave;
+                playerItemSprite.sprite = shockwave;
+                break;
         }
     }
 
@@ -1698,6 +1800,13 @@ public class MultiplayerController : FSM
         if (newHealth > maxHealth) { newHealth = maxHealth; }
         if (newHealth < 0) { newHealth = 0; }
         health = newHealth;
+        RpcChangeHealth(newHealth);
+    }
+    
+    [ClientRpc]
+    private void RpcChangeHealth(float newHealth)
+    {
+        playerHealthBar.value = maxHealth - newHealth;
     }
 
     [Command]
@@ -1822,7 +1931,7 @@ public class MultiplayerController : FSM
             {
                 rb.AddForce(collision.contacts[0].normal * 500);
             }
-            CmdChangeHealth(health - 10);
+            Hit(10);
             vehicleAudioManager.Play("Hit" + Random.Range(1, 6));
             //rb.rotation = Vector2.SignedAngle(Vector2.right, rb.velocity);
         }
@@ -1840,13 +1949,13 @@ public class MultiplayerController : FSM
                 {
                     bounceTime = Time.time + bounceDuration;
                     rb.AddForce(collision.contacts[0].normal * 800 * weightDifference);
-                    CmdChangeHealth(health - 10 - (6 * weightDifference));
+                    Hit(10 + (6 * weightDifference));
                 }
                 else if (currentState == PlayerStates.Grounded)
                 {
                     bounceTime = Time.time + bounceDuration;
                     rb.AddForce(collision.contacts[0].normal * 500 * weightDifference);
-                    CmdChangeHealth(health - 5 - (3 * weightDifference));
+                    Hit(5 + (3 * weightDifference));
                 }
             }
             else
@@ -1857,13 +1966,13 @@ public class MultiplayerController : FSM
                     {
                         bounceTime = Time.time + bounceDuration;
                         rb.AddForce(collision.contacts[0].normal * 800 * weightDifference);
-                        CmdChangeHealth(health - 6 - (2 * weightDifference));
+                        Hit(6 + (2 * weightDifference));
                     }
                     else if (currentState == PlayerStates.Grounded)
                     {
                         bounceTime = Time.time + bounceDuration;
                         rb.AddForce(collision.contacts[0].normal * 500 * weightDifference);
-                        CmdChangeHealth(health - 3 - (1 * weightDifference));
+                        Hit(3 + (1 * weightDifference));
                     }
                     boostTime = 0f;
                 }
@@ -1873,13 +1982,13 @@ public class MultiplayerController : FSM
                     {
                         bounceTime = Time.time + bounceDuration;
                         rb.AddForce(collision.contacts[0].normal * 800 * weightDifference);
-                        CmdChangeHealth(health - 25 - (20 * weightDifference));
+                        Hit(25 + (20 * weightDifference));
                     }
                     else if (currentState == PlayerStates.Grounded)
                     {
                         bounceTime = Time.time + bounceDuration;
                         rb.AddForce(collision.contacts[0].normal * 500 * weightDifference);
-                        CmdChangeHealth(health - 15 - (10 * weightDifference));
+                        Hit(15 + (10 * weightDifference));
                     }
                 }
             }
@@ -1901,6 +2010,7 @@ public class MultiplayerController : FSM
                 Hit(40, 10, 5);
                 rb.AddForce(collision.contacts[0].normal * 1000);
             }
+            CmdPlaySound("ItemHit");
         }
     }
 
@@ -1914,6 +2024,7 @@ public class MultiplayerController : FSM
         {
             if (currentState == PlayerStates.Jumping || !isLocalPlayer) { return; }
             Hit(20, 30, 6);
+            CmdPlaySound("ItemHit");
         }
         else if (collision.tag == "Laser")
         {
@@ -1926,8 +2037,9 @@ public class MultiplayerController : FSM
         }
         else if (collision.tag == "Booster")
         {
+            Boost boost = collision.GetComponent<Boost>();
             rb.rotation = Mathf.Asin(collision.gameObject.transform.rotation.z) * Mathf.Rad2Deg * 2 * Mathf.Sign(collision.gameObject.transform.rotation.w);
-            Boost(new Vector2(Mathf.Cos(rb.rotation * Mathf.Deg2Rad), Mathf.Sin(rb.rotation * Mathf.Deg2Rad)), 20, 1.5f);
+            Boost(new Vector2(Mathf.Cos(rb.rotation * Mathf.Deg2Rad), Mathf.Sin(rb.rotation * Mathf.Deg2Rad)), boost.boostForce, boost.boostDuration, boost.setSpeed);
         }
         else if (collision.tag == "FrontLine")
         {
@@ -2013,9 +2125,22 @@ public class MultiplayerController : FSM
             explosion = collision.gameObject;
             Vector2 collisionNormal = (new Vector2(transform.position.x, transform.position.y) - (Vector2)collision.transform.position).normalized;
             Debug.DrawRay(transform.position, collisionNormal * 30, Color.red, 10);
-            Hit(Mathf.Lerp(20, collision.gameObject.GetComponentInParent<Explosion>().maxDamage, collision.gameObject.GetComponentInParent<Explosion>().Damage()), 40, 5);
-            rb.AddForce(collisionNormal * Mathf.Lerp(500, 3000, collision.gameObject.GetComponentInParent<Explosion>().Damage()));
-            bounceTime = Time.time + bounceDuration;
+            if (collision.gameObject.GetComponentInParent<Explosion>() != null)
+            {
+                Hit(Mathf.Lerp(20, collision.gameObject.GetComponentInParent<Explosion>().maxDamage, collision.gameObject.GetComponentInParent<Explosion>().Damage()), 40, 5);
+                rb.AddForce(collisionNormal * Mathf.Lerp(500, 3000, collision.gameObject.GetComponentInParent<Explosion>().Damage()));
+                bounceTime = Time.time + bounceDuration;
+            }
+            else if (collision.gameObject.GetComponentInParent<Shockwave>() != null)
+            {
+                Hit(Mathf.Lerp(20, collision.gameObject.GetComponentInParent<Shockwave>().maxDamage, collision.gameObject.GetComponentInParent<Shockwave>().Damage()), 70, 4);
+                rb.AddForce(collisionNormal * Mathf.Lerp(1000, 3500, collision.gameObject.GetComponentInParent<Shockwave>().Damage()));
+                bounceTime = Time.time + bounceDuration * 1.5f;
+            }
+        }
+        else if (collision.tag == "Blaster")
+        {
+            AudioManager.instance.Play("Fire");
         }
     }
 
@@ -2042,10 +2167,10 @@ public class MultiplayerController : FSM
         {
             if (boostTime > NetworkTime.time) { return;}
             PlaySound("Gravel");
-            AudioManager.instance.SetPitch("Gravel", Mathf.Lerp(0f, 1f, currentSpeed / 30));
+            AudioManager.instance.SetPitch("Gravel", Mathf.Lerp(0f, 1f, currentSpeed / 40));
             if (rb.velocity.magnitude > currentMaxSpeed / 2)
             {
-                rb.AddForce(rb.velocity.normalized * -(currentDrag * 6));
+                rb.AddForce(rb.velocity.normalized * -(currentDrag * 8));
             }
         }
         else if (collision.tag == "Blaster" && currentState == PlayerStates.Grounded)
@@ -2086,6 +2211,10 @@ public class MultiplayerController : FSM
         else if (collision.tag == "Gravel")
         {
             StopSound("Gravel");
+        }
+        else if (collision.tag == "Blaster")
+        {
+            AudioManager.instance.Stop("Fire");
         }
     }
 }
