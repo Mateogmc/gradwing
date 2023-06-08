@@ -57,6 +57,8 @@ public class DataManager : MonoBehaviour
     public static float soundVolume;
     public static float musicVolume;
 
+    public bool rumble;
+
 
     void Start()
     {
@@ -92,6 +94,7 @@ public class DataManager : MonoBehaviour
             spriteValue = int.Parse(sr.ReadLine());
             soundVolume = float.Parse(sr.ReadLine());
             musicVolume = float.Parse(sr.ReadLine());
+            rumble = sr.ReadLine() == "1";
         }
         using (StreamReader sr = new StreamReader(Application.streamingAssetsPath + "/levels.dat"))
         {
@@ -233,6 +236,7 @@ public class DataManager : MonoBehaviour
             sw.WriteLine(this.spriteValue);
             sw.WriteLine(soundVolume);
             sw.WriteLine(musicVolume);
+            sw.WriteLine(rumble ? 1 : 0);
         }
     }
 }

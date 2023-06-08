@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D;
+using UnityEngine.SceneManagement;
 
 public class LevelData : MonoBehaviour
 {
     [SerializeField] Material illusionGroundMaterial;
+    [SerializeField] Material[] textMaterials;
 
     private void Awake()
     {
@@ -121,5 +123,82 @@ public class LevelData : MonoBehaviour
                 break;
         }
         return worldName;
+    }
+
+    public string GetCourse()
+    {
+        string courseName = "";
+        switch (world)
+        {
+            case WorldName.Lobby:
+                courseName = "Lobby";
+                break;
+
+            case WorldName.City:
+                courseName = "Metropolis";
+                break;
+
+            case WorldName.Sand:
+                courseName = "Sand Flow";
+                break;
+
+            case WorldName.Water:
+                courseName = "Aquatic Expanse";
+                break;
+
+            case WorldName.Ice:
+                courseName = "Freeze Torrent";
+                break;
+
+            case WorldName.Fire:
+                courseName = "Basalt Ridge";
+                break;
+
+            case WorldName.Lightning:
+                courseName = "High Voltage";
+                break;
+
+            case WorldName.Clouds:
+                courseName = "Cyclone";
+                break;
+
+            case WorldName.Illusion:
+                courseName = "Cyberia";
+                break;
+        }
+
+        courseName += " - " + SceneManager.GetActiveScene().name;
+        return courseName;
+    }
+
+    public Material GetMaterial()
+    {
+        switch (world)
+        {
+            case WorldName.City:
+                return textMaterials[0];
+
+            case WorldName.Sand:
+                return textMaterials[1];
+
+            case WorldName.Water:
+                return textMaterials[2];
+
+            case WorldName.Ice:
+                return textMaterials[3];
+
+            case WorldName.Fire:
+                return textMaterials[4];
+
+            case WorldName.Lightning:
+                return textMaterials[5];
+
+            case WorldName.Clouds:
+                return textMaterials[6];
+
+            case WorldName.Illusion:
+                return textMaterials[7];
+        }
+        return textMaterials[7];
     }
 }

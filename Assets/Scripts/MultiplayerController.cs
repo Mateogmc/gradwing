@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.VFX;
@@ -69,6 +68,7 @@ public class MultiplayerController : FSM
     [HideInInspector] public bool strafingRight = false;
     [HideInInspector] public bool strafingLeft = false;
     [HideInInspector] public float strafeValue;
+    [HideInInspector] public float verticalValue;
     [HideInInspector] public bool rolling;
     [HideInInspector] [SyncVar(hook = nameof(OnRollingChange))] public bool rollingSync;
 
@@ -85,6 +85,7 @@ public class MultiplayerController : FSM
     [SerializeField] Sprite boost;
     [SerializeField] Sprite missile;
     [SerializeField] Sprite shockwave;
+    [SerializeField] Sprite equalizer;
     [SerializeField] Image itemSprite;
 
     [SyncVar(hook = nameof(OnShieldChange))] float shielded = 0f;
@@ -94,6 +95,7 @@ public class MultiplayerController : FSM
     [SerializeField] GameObject rebounderPrefab;
     [SerializeField] GameObject missilePrefab;
     [SerializeField] GameObject shockwavePrefab;
+    [SerializeField] GameObject equalizerPrefab;
     Vector3 itemPosition;
 
     bool gettingItem = false;
@@ -141,6 +143,7 @@ public class MultiplayerController : FSM
     [SerializeField] Image endgamePlacementImage;
     [SerializeField] Canvas startingCanvas;
     [SerializeField] TextMeshProUGUI startingText;
+    [SerializeField] TextMeshProUGUI courseName;
     [SerializeField] GameObject pauseMenu;
     [SerializeField] GameObject consoleMenu;
     [SerializeField] TextMeshProUGUI velocityDisplay;
@@ -193,6 +196,12 @@ public class MultiplayerController : FSM
         endgameInterface.transform.parent = null;
         lineRenderer.material = new Material(laserMaterial);
         consoleMenu = dataManager.transform.GetChild(0).GetChild(1).gameObject;
+        if (FindObjectOfType<LevelData>() != null)
+        {
+            courseName.text = FindObjectOfType<LevelData>().GetCourse();
+            courseName.fontMaterial = GameObject.FindGameObjectWithTag("LevelData").GetComponent<LevelData>().GetMaterial();
+            startingText.fontMaterial = GameObject.FindGameObjectWithTag("LevelData").GetComponent<LevelData>().GetMaterial();
+        }
         Restart();
     }
 
@@ -250,6 +259,7 @@ public class MultiplayerController : FSM
             {
                 if (startingText.text == "READY?")
                 {
+                    courseName.gameObject.SetActive(false);
                     PlaySound("RaceStart");
                 }
                 startingText.text = currentCountdown.ToString();
@@ -279,10 +289,13 @@ public class MultiplayerController : FSM
                 if (grounded > 0)
                 {
                     currentState = PlayerStates.Grounded;
+                    HapticsManager.instance.RumbleLinear(0.3f, 0.3f, 0.1f);
+                    vehicleAudioManager.Play("RollingEnd");
                 }
                 else
                 {
                     CmdChangeHealth(0);
+                    HapticsManager.instance.RumbleLinear(1, 1, 1f);
                     PlaySound("Fall");
                 }
             }
@@ -312,12 +325,13 @@ public class MultiplayerController : FSM
             {
                 SetLayer(10);
             }
-            if (firingLaser && laserCountdown < Time.time)
+            if (firingLaser && laserCountdown < NetworkTime.time)
             {
                 CmdLaserHit(transform.position + new Vector3(direction.x, direction.y, 0) * 2, direction, laserPosition.position, transform.rotation);
                 firingLaser = false;
                 lineRenderer.enabled = false;
                 CmdUseItem();
+                HapticsManager.instance.Rumble(0.6f, 0.4f, 0.1f);
                 currentItem = Items.None;
                 itemSprite.sprite = none;
             }
@@ -334,11 +348,11 @@ public class MultiplayerController : FSM
         {
             shieldRenderer.enabled = false;
         }
-        if (currentItem == Items.Laser && laserCountdown < Time.time)
+        if (currentItem == Items.Laser && laserCountdown < NetworkTime.time)
         {
             lineRenderer.enabled = true;
         }
-        if (firingLaser && laserCountdown > Time.time)
+        if (firingLaser && laserCountdown > NetworkTime.time)
         {
             lineRenderer.enabled = !lineRenderer.enabled;
         } else if (currentItem != Items.Laser)
@@ -480,7 +494,7 @@ public class MultiplayerController : FSM
 
     private void OnLaserCountdownChange(float oldCountdown, float newCountdown)
     {
-        laserCountdown = Time.time + 0.5f;
+        laserCountdown = newCountdown;
     }
 
     private void OnLayerChange(int oldLayer, int newLayer)
@@ -670,6 +684,7 @@ public class MultiplayerController : FSM
                     if (rolling)
                     {
                         rolling = false;
+                        HapticsManager.instance.Rumble(0.1f, 0.4f, 0.1f);
                         vehicleAudioManager.Play("RollingEnd");
                     }
                 }
@@ -691,6 +706,8 @@ public class MultiplayerController : FSM
                 {
                     rotatingRight = false;
                 }
+
+                verticalValue = Input.GetKey(KeyCode.UpArrow) ? 1 : (Input.GetKey(KeyCode.DownArrow) ? -1 : Input.GetAxis("Vertical1"));
 
                 strafeValue = Input.GetAxis("Strafe1");
 
@@ -729,6 +746,11 @@ public class MultiplayerController : FSM
                 if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Joystick1Button2))
                 {
                     CmdPlaySound("Honk" + spriteValue);
+                }
+
+                if (InputManager.instance.controls.Rumble.RumbleAction.WasPressedThisFrame())
+                {
+                    HapticsManager.instance.Rumble(Input.GetAxis("LTrigger"), Input.GetAxis("RTrigger"), 2);
                 }
             }
             else
@@ -772,6 +794,7 @@ public class MultiplayerController : FSM
                     if (rolling)
                     {
                         rolling = false;
+                        HapticsManager.instance.Rumble(0.1f, 0.4f, 0.1f);
                         vehicleAudioManager.Play("RollingEnd");
                     }
                 }
@@ -793,6 +816,8 @@ public class MultiplayerController : FSM
                 {
                     rotatingRight = false;
                 }
+
+                verticalValue = Input.GetKeyDown(KeyCode.UpArrow) ? 1 : Input.GetAxis("Vertical1");
 
                 strafeValue = Mathf.Lerp(0, 1, (Input.GetAxis("StrafeR") + 1) / 2) - Mathf.Lerp(0, 1, (Input.GetAxis("StrafeL") + 1) / 2);
 
@@ -1128,6 +1153,7 @@ public class MultiplayerController : FSM
             airborne = Mathf.PI;
             SetLayer(8);
             sr.sortingLayerID = SortingLayer.NameToID("Foreground");
+            HapticsManager.instance.RumbleLinear(0.2f, 0.4f, 0.5f);
             CmdPlaySound("Jump" + Random.Range(1, 4));
         } else if (currentState == PlayerStates.Jumping && item)
         {
@@ -1147,10 +1173,11 @@ public class MultiplayerController : FSM
         {
             rb.velocity = direction * force + rb.velocity;
         }
-        if (rb.velocity.magnitude > 200)
+        if (rb.velocity.magnitude > 130)
         {
-            rb.velocity = direction * 200;
+            rb.velocity = direction * 130;
         }
+        HapticsManager.instance.RumbleLinear(0.2f, 0.4f, 1f);
         PlaySound("Boost");
     }
 
@@ -1171,6 +1198,7 @@ public class MultiplayerController : FSM
             }
             boostTime = (float)NetworkTime.time + duration;
             CmdBoost(boostTime);
+            PlaySound("Boost");
         }
         else
         {
@@ -1217,6 +1245,7 @@ public class MultiplayerController : FSM
         maxHealth = 20 + weight * 40;
 
         health = maxHealth;
+        playerHealthBar.maxValue = maxHealth;
         CmdSetStats(speed, accel, weight, handling, spriteValue);
     }
 
@@ -1390,15 +1419,16 @@ public class MultiplayerController : FSM
     }
 
     [Command]
-    private void CmdTrap(Vector2 pos)
+    private void CmdTrap(Vector2 pos, PlayerStates state, float airborne, bool thrown, Vector2 velocity)
     {
-        RpcTrap(pos);
+        RpcTrap(pos, state, airborne, thrown, velocity);
     }
 
     [ClientRpc]
-    private void RpcTrap(Vector2 pos)
+    private void RpcTrap(Vector2 pos, PlayerStates state, float airborne, bool thrown, Vector2 velocity)
     {
         GameObject trp = Instantiate(trapPrefab, pos, Quaternion.identity);
+        trp.GetComponent<Trap>().Initialize(state, airborne, thrown, velocity, bc);
     }
 
     [Command]
@@ -1432,7 +1462,31 @@ public class MultiplayerController : FSM
         {
             GameObject reb = Instantiate(shockwavePrefab, transform.position, Quaternion.identity);
             reb.GetComponent<Shockwave>().InitializeShockwave(bc);
+            if (isLocalPlayer)
+            {
+                HapticsManager.instance.Rumble(0.5f, 0.3f, 0.05f);
+            }
             yield return new WaitForSeconds(0.1f);
+        }
+    }
+
+    [Command]
+    private void CmdEqualizer(GameObject parentPlayer)
+    {
+        RpcEqualizer(parentPlayer, Random.Range(10, 50));
+    }
+
+    [ClientRpc]
+    private void RpcEqualizer(GameObject parentPlayer, int ranVal)
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject player in players)
+        {
+            if (player != parentPlayer)
+            {
+                GameObject eq = Instantiate(equalizerPrefab, player.transform.position, Quaternion.identity);
+                eq.GetComponent<Equalizer>().Initialize(player, ranVal);
+            }
         }
     }
 
@@ -1441,7 +1495,7 @@ public class MultiplayerController : FSM
     [Command]
     private void CmdLaser()
     {
-        laserCountdown = Time.time + 0.5f;
+        laserCountdown = (float)NetworkTime.time + 0.3f;
         firingLaser = true;
     }
 
@@ -1452,7 +1506,7 @@ public class MultiplayerController : FSM
         RaycastHit2D hit = Physics2D.Raycast(pos, dir, 10000, layerMask);
         if (Physics2D.Raycast(pos, dir, 10000, layerMask))
         {
-            RpcLaserHit(hit.point);
+            RpcLaserHit(hit.collider.gameObject);
             distance = hit.distance * 10;
         }
         RpcShootLaser(laserPos, laserRotation, distance);
@@ -1460,9 +1514,13 @@ public class MultiplayerController : FSM
     }
 
     [ClientRpc]
-    private void RpcLaserHit(Vector2 hitPoint)
+    private void RpcLaserHit(GameObject hit)
     {
-        GameObject las = Instantiate(laserHit, hitPoint, Quaternion.identity);
+        if (NetworkClient.localPlayer.gameObject == hit)
+        {
+            hit.GetComponent<MultiplayerController>().Hit(90, 40, 6);
+            CmdPlaySound("LaserHit");
+        }
     }
 
     [ClientRpc]
@@ -1504,16 +1562,28 @@ public class MultiplayerController : FSM
     [ClientRpc]
     private void RpcLaserUpdate(bool firingLaser, bool hit, Vector3 pos1, Vector3 pos2)
     {
-        float countdown = laserCountdown - Time.time;
+        float countdown = laserCountdown - (float)NetworkTime.time;
         if (hit)
         {
+            if (firingLaser)
+            {
+                laserCountdown = 0;
+            }
             lineRenderer.startColor = firingLaser ? Color.cyan : Color.green;
-            lineRenderer.material.SetColor("_Color", firingLaser ? new Vector4(Mathf.Lerp(150, 0, countdown - 0.1f / 0.4f), Mathf.Lerp(150, 50, countdown - 0.1f / 0.4f), 200, 2) : new Vector4(0, 150, 0, 2));
+            lineRenderer.material.SetColor("_Color", firingLaser ? new Vector4(Mathf.Lerp(0, 0, countdown - 0.1f / 0.4f), Mathf.Lerp(150, 50, countdown - 0.1f / 0.4f), 200, 2) : new Vector4(0, 150, 0, 2));
         }
         else
         {
             lineRenderer.startColor = firingLaser ? Color.cyan : Color.red;
-            lineRenderer.material.SetColor("_Color", firingLaser ? new Vector4(Mathf.Lerp(150, 0, countdown - 0.1f / 0.4f), Mathf.Lerp(150, 50, countdown - 0.1f / 0.4f), 200, 2) : new Vector4(150, 0, 0, 2));
+            lineRenderer.material.SetColor("_Color", firingLaser ? new Vector4(Mathf.Lerp(100, 0, (countdown - 0.1f) / 0.2f), Mathf.Lerp(50, 100, (countdown - 0.1f) / 0.2f), 200, 2) : new Vector4(150, 0, 0, 2));
+            if (firingLaser)
+            {
+                lineRenderer.widthMultiplier = Mathf.Lerp(0, 3, countdown / 0.3f);
+            }
+            else
+            {
+                lineRenderer.widthMultiplier = 1f;
+            }
         }
         lineRenderer.SetPosition(0, pos1);
         lineRenderer.SetPosition(1, pos2);
@@ -1554,6 +1624,11 @@ public class MultiplayerController : FSM
         if (health <= 0)
         {
             AudioManager.instance.Play("Death");
+            HapticsManager.instance.RumbleLinear(1, 1, 1f);
+        }
+        else
+        {
+            HapticsManager.instance.Rumble(Mathf.Lerp(0.4f, 1, damage / 80), Mathf.Lerp(0.4f, 1, damage / 80), Mathf.Lerp(0.1f, 1, (damage - 20) / 60));
         }
     }
 
@@ -1587,6 +1662,7 @@ public class MultiplayerController : FSM
             case Items.Shield:
                 CmdShield();
                 CmdPlaySound("Shield");
+                HapticsManager.instance.RumbleLinear(0.1f, 0.5f, 0.75f);
                 break;
 
             case Items.Jump:
@@ -1594,20 +1670,32 @@ public class MultiplayerController : FSM
                 break;
 
             case Items.Trap:
-                if (currentSpeed > 1)
+                if (verticalValue > 0.4f)
                 {
-                    itemPosition = transform.position - new Vector3(rb.velocity.normalized.x, rb.velocity.normalized.y, 1) * 5;
+                    itemPosition = transform.position + new Vector3(direction.x, direction.y, 0);
                 }
                 else
                 {
                     itemPosition = transform.position - new Vector3(direction.x, direction.y, 1) * 3;
                 }
-                CmdTrap(itemPosition);
+                itemPosition = transform.position - new Vector3(direction.x, direction.y, 1) * 3;
+                CmdTrap(itemPosition, currentState, airborne, verticalValue > 0.5f, direction * maxSpeed + rb.velocity);
                 break;
 
             case Items.Rebounder:
+                Vector3 velocity;
+                if (verticalValue < -0.4f)
+                {
+                    itemPosition = transform.position - new Vector3(direction.x, direction.y, 1) * 3;
+                    velocity = -direction * maxSpeed + rb.velocity;
+                }
+                else
+                {
+                    itemPosition = transform.position + new Vector3(direction.x, direction.y, 0);
+                    velocity = direction * maxSpeed + rb.velocity;
+                }
                 itemPosition = transform.position + new Vector3(direction.x, direction.y, 0);
-                CmdRebounder(itemPosition, direction * maxSpeed + rb.velocity, currentState, airborne);
+                CmdRebounder(itemPosition, velocity, currentState, airborne);
                 break;
 
             case Items.Laser:
@@ -1627,6 +1715,10 @@ public class MultiplayerController : FSM
 
             case Items.Shockwave:
                 CmdShockwave();
+                break;
+
+            case Items.Equalizer:
+                CmdEqualizer(gameObject);
                 break;
         }
         currentItem = Items.None;
@@ -1673,6 +1765,10 @@ public class MultiplayerController : FSM
 
             case 8:
                 playerItemSprite.sprite = shockwave;
+                break;
+
+            case 9:
+                playerItemSprite.sprite = equalizer;
                 break;
         }
     }
@@ -1782,6 +1878,12 @@ public class MultiplayerController : FSM
                 currentItem = Items.Shockwave;
                 itemSprite.sprite = shockwave;
                 playerItemSprite.sprite = shockwave;
+                break;
+
+            case "Equalizer":
+                currentItem = Items.Equalizer;
+                itemSprite.sprite = equalizer;
+                playerItemSprite.sprite = equalizer;
                 break;
         }
     }
@@ -2019,6 +2121,7 @@ public class MultiplayerController : FSM
         if (collision.tag == "Item")
         {
             collision.gameObject.GetComponent<ItemBox>().Use(this, placement);
+            HapticsManager.instance.Rumble(0.1f, 0.3f, 0.1f);
         }
         else if (collision.tag == "Trap")
         {
@@ -2094,6 +2197,7 @@ public class MultiplayerController : FSM
         {
             currentDrag = 0;
             currentRotationSpeed = rotationSpeed + (1 - dataManager.handling);
+            HapticsManager.instance.ice = true;
             AudioManager.instance.Play("Ice");
         }
         else if (collision.tag == "Ground" || collision.tag == "Ramp")
@@ -2137,10 +2241,24 @@ public class MultiplayerController : FSM
                 rb.AddForce(collisionNormal * Mathf.Lerp(1000, 3500, collision.gameObject.GetComponentInParent<Shockwave>().Damage()));
                 bounceTime = Time.time + bounceDuration * 1.5f;
             }
+            else if (collision.gameObject.GetComponentInParent<Equalizer>() != null)
+            {
+                Hit(collision.gameObject.GetComponentInParent<Equalizer>().maxDamage / placement, 80 / placement, 5);
+                rb.velocity = rb.velocity / 10;
+            }
         }
         else if (collision.tag == "Blaster")
         {
+            HapticsManager.instance.fire = true;
             AudioManager.instance.Play("Fire");
+        }
+        else if (collision.tag == "Gravel")
+        {
+            HapticsManager.instance.gravel = true;
+        }
+        else if (collision.tag == "Heal")
+        {
+            HapticsManager.instance.heal = true;
         }
     }
 
@@ -2195,6 +2313,7 @@ public class MultiplayerController : FSM
             if (currentState == PlayerStates.Grounded && grounded <= 0 && airborne <= 0 && !fallProtection)
             {
                 CmdChangeHealth(0);
+                HapticsManager.instance.RumbleLinear(1, 1, 1f);
                 PlaySound("Fall");
             }
         }
@@ -2202,18 +2321,22 @@ public class MultiplayerController : FSM
         {
             currentDrag = drag;
             currentRotationSpeed = rotationSpeed;
+            HapticsManager.instance.ice = false;
             AudioManager.instance.Stop("Ice");
         }
         else if (collision.tag == "Heal")
         {
+            HapticsManager.instance.heal = false;
             StopSound("Heal");
         }
         else if (collision.tag == "Gravel")
         {
+            HapticsManager.instance.gravel = false;
             StopSound("Gravel");
         }
         else if (collision.tag == "Blaster")
         {
+            HapticsManager.instance.fire = false;
             AudioManager.instance.Stop("Fire");
         }
     }

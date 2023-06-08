@@ -228,3 +228,13 @@
 	- Shockwave
 	- Shield
 	- FireFloor
+	
+*Version 0.18*
+- Buffed Laser: Now autofires when a player is in the line of fire
+	- Nerfed aim duration to compensate; Now it lasts 0.3 seconds before firing
+- Traps now can be thrown forward
+- Rebounders now can be thrown backwards
+- Added new item: Equalizer
+
+*Version 0.18.1*
+- Added controller rumble support

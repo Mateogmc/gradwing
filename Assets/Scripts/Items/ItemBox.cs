@@ -14,7 +14,8 @@ public enum Items
     Laser,
     Boost,
     Missile,
-    Shockwave
+    Shockwave,
+    Equalizer
 }
 
 public class ItemBox : NetworkBehaviour
@@ -28,20 +29,20 @@ public class ItemBox : NetworkBehaviour
     [SerializeField] AudioSource itemSpawn;
     float respawnTimer = 0f;
 
-    private string[] items = { "Shield", "Jump", "Trap", "Rebounder", "Laser", "Boost", "Missile", "Shockwave"};
+    private string[] items = { "Shield", "Jump", "Trap", "Rebounder", "Laser", "Boost", "Missile", "Shockwave", "Equalizer"};
 
     //private float[] itemWeights = { 0.2f, 0.1f, 0.15f, 0.15f, 0.10f, 0.2f, 0.1f };
 
     private float[,] itemWeights = new float[,]
     {
-        { 0.25f, 0f, 0.45f, 0.2f, 0f, 0.1f, 0f, 0.1f },
-        { 0.2f, 0.05f, 0.3f, 0.25f, 0.1f, 0.1f, 0f, 0.1f },
-        { 0.3f, 0.05f, 0.2f, 0.2f, 0.1f, 0.15f, 0.1f, 0.3f },
-        { 0.25f, 0.1f, 0.1f, 0.2f, 0.1f, 0.15f, 0.2f, 0.3f },
-        { 0.1f, 0.15f, 0.1f, 0.2f, 0.2f, 0.2f, 0.1f, 0.2f },
-        { 0.1f, 0.20f, 0.1f, 0.15f, 0.2f, 0.2f, 0.1f, 0.2f },
-        { 0f, 0.25f, 0f, 0f, 0.30f, 0.2f, 0.2f, 0f },
-        { 0f, 0.30f, 0f, 0f, 0.30f, 0.2f, 0.1f, 0f }
+        { 0.25f, 0f, 0.45f, 0.2f, 0f, 0.1f, 0f, 0.1f, 0f },
+        { 0.2f, 0.05f, 0.3f, 0.25f, 0.1f, 0.1f, 0f, 0.1f, 0f },
+        { 0.3f, 0.05f, 0.2f, 0.2f, 0.1f, 0.15f, 0.1f, 0.3f, 0f, },
+        { 0.25f, 0.1f, 0.1f, 0.2f, 0.1f, 0.15f, 0.2f, 0.3f, 0f },
+        { 0.1f, 0.15f, 0.1f, 0.2f, 0.2f, 0.2f, 0.1f, 0.2f, 0f },
+        { 0.1f, 0.20f, 0.1f, 0.15f, 0.2f, 0.2f, 0.1f, 0.2f, 0.05f },
+        { 0f, 0.25f, 0f, 0f, 0.30f, 0.2f, 0.2f, 0f, 0.05f },
+        { 0f, 0.30f, 0f, 0f, 0.30f, 0.2f, 0.1f, 0f, 0.1f }
     };
 
     private void Awake()

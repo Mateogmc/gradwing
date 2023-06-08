@@ -30,6 +30,7 @@ TagManager:
   - Ice
   - GlobalVolume
   - Bomb
+  - Equalizer
   layers:
   - Default
   - TransparentFX

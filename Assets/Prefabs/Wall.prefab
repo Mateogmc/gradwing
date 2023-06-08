@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 7790654593593799193}
   - component: {fileID: 1209141353968240660}
   - component: {fileID: 3829700946308891839}
-  - component: {fileID: -4610320773636350800}
   m_Layer: 3
   m_Name: Wall
   m_TagString: Wall
@@ -352,16 +351,3 @@ EdgeCollider2D:
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
   m_UseAdjacentEndPoint: 0
---- !u!114 &-4610320773636350800
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6484043542403708814}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34df2797ce66d7d4681244c5cdbd0591, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  wallMaterial: {fileID: 2100000, guid: cc5931fd9647f6a49b5367ee67e7443a, type: 2}

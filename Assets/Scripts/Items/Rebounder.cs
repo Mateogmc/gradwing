@@ -83,9 +83,13 @@ public class Rebounder : MonoBehaviour
             }
             else
             {
-                if (grounded < 0)
+                if (grounded <= 0)
                 {
-                    currentState = PlayerStates.Dead;
+                    if (currentScale < 1)
+                    {
+                        currentState = PlayerStates.Dead;
+                    }
+                    currentScale -= 0.05f;
                 }
                 else
                 {

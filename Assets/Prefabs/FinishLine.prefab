@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2888074781408154863}
   - component: {fileID: 6018133321219877752}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: FrontLine
   m_TagString: FrontLine
   m_Icon: {fileID: 0}
@@ -70,7 +70,7 @@ GameObject:
   - component: {fileID: 7711976896704374362}
   - component: {fileID: 7711976896704374357}
   - component: {fileID: 3708404201092308454}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: FinishLine
   m_TagString: FinishLine
   m_Icon: {fileID: 0}
