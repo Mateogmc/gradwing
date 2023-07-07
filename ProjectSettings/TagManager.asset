@@ -31,6 +31,7 @@ TagManager:
   - GlobalVolume
   - Bomb
   - Equalizer
+  - TutorialBox
   layers:
   - Default
   - TransparentFX
@@ -48,7 +49,7 @@ TagManager:
   - PlayerFinish
   - Checkpoint
   - Shockwave
-  - 
+  - BlackHoleEffect
   - 
   - 
   - 

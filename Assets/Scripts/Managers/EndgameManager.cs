@@ -10,7 +10,8 @@ public class EndgameManager : MonoBehaviour
     public GameObject[] playerList = new GameObject[8];
     public Image[] placementList = new Image[8];
     public TextMeshProUGUI[] usernameList = new TextMeshProUGUI[8];
-    public Dictionary<int, string> playerDictionary = new Dictionary<int, string>(8);
+    public TextMeshProUGUI[] timerList = new TextMeshProUGUI[8];
+    public Dictionary<int, GameObject> playerDictionary = new Dictionary<int, GameObject>(8);
     public Button returnToLobby;
     bool returning = true;
 
@@ -36,7 +37,8 @@ public class EndgameManager : MonoBehaviour
             }
 
             placementList[i].sprite = Resources.Load<Sprite>("UI/placement" + (i + 1));
-            usernameList[i].text = playerDictionary[i + 1];
+            usernameList[i].text = playerDictionary[i + 1].GetComponent<MultiplayerController>().usernameText;
+            timerList[i].text = playerDictionary[i + 1].GetComponent<MultiplayerController>().timer;
         }
         if (GameStateManager.GetInstance().gameState == GameStateManager.GameState.Running && NetworkServer.active)
         {
@@ -48,20 +50,20 @@ public class EndgameManager : MonoBehaviour
         }
     }
 
-    public void AddDictionaryEntry(int placement, string username)
+    public void AddDictionaryEntry(int placement, GameObject player)
     {
         while (playerDictionary.ContainsKey(placement))
         {
             placement++;
         }
-        playerDictionary[placement] = username;
+        playerDictionary[placement] = player;
     }
 
     public int GetPlacement(string username)
     {
         for (int i = 1; i <= playerDictionary.Count; i++)
         {
-            if (playerDictionary[i] == username)
+            if (playerDictionary[i].GetComponent<MultiplayerController>().usernameText == username)
             {
                 return i;
             }

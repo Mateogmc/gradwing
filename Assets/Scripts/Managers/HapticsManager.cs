@@ -39,7 +39,7 @@ public class HapticsManager : MonoBehaviour
     private void RumbleState()
     {
         pad = Gamepad.current;
-        if (pad != null && !reservedVibration)
+        if (pad != null && !reservedVibration && DataManager.GetInstance().rumble)
         {
             if (fire)
             {

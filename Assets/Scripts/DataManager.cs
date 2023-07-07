@@ -27,7 +27,7 @@ public class DataManager : MonoBehaviour
     [SerializeField] private Sprite xbox; 
     [SerializeField] private Sprite ps4;
     [SerializeField] private NetworkManager networkManager;
-    [SerializeField] private TextMeshProUGUI connectionDisplay;
+    [SerializeField] public TextMeshProUGUI connectionDisplay;
 
     public const float MAX_SPEED = 45;
     public const float ACCELERATION = 10;
@@ -135,28 +135,22 @@ public class DataManager : MonoBehaviour
 
     private void Update()
     {
-        if (NetworkServer.active && NetworkClient.active)
-        {
-            connectionDisplay.text = "Hosting";
-        } else if (NetworkClient.active)
-        {
-            connectionDisplay.text = "Connected on " + ipAddress;
-        } else
-        {
-            connectionDisplay.text = "Not connected";
-        }
     }
 
     private void Host()
     {
-        Debug.Log(username);
         networkManager.StartHost();
+        connectionDisplay.text = "Hosting";
     }
 
     private void Connect()
     {
         networkManager.StartClient();
         networkManager.networkAddress = ipAddress;
+        if (NetworkClient.active)
+        {
+            connectionDisplay.text = "Connected on " + ipAddress;
+        }
     }
 
     private void Exit()

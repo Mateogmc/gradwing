@@ -76,6 +76,6 @@ Material:
     - _Tiling: 10
     m_Colors:
     - _Color: {r: 0.41693613, g: 0.41693613, b: 0.41693613, a: 0}
-    - _Displacement: {r: 1.0471798, g: 2.0071316, b: 0, a: 0}
+    - _Displacement: {r: -0.1712411, g: -0.1579634, b: 0, a: 0}
     - _LightsColor: {r: 1.8443027, g: 1.8443027, b: 1.8443027, a: 0}
   m_BuildTextureStacks: []

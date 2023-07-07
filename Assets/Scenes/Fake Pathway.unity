@@ -6160,6 +6160,10 @@ PrefabInstance:
       propertyPath: m_LocalAABB.m_Extent.y
       value: 178.8678
       objectReference: {fileID: 0}
+    - target: {fileID: 2726026126343603543, guid: 8d4966efc1c0b80438aa64d13c29c6ec, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5452581514825444d8eee512b8a596ce, type: 2}
     - target: {fileID: 5040327087199120531, guid: 8d4966efc1c0b80438aa64d13c29c6ec, type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.size
       value: 590

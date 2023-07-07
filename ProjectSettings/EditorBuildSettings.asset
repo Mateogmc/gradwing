@@ -47,4 +47,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Converge.unity
     guid: 08596f45cabb92746b54b34f62c8603d
+  - enabled: 1
+    path: Assets/Scenes/Deadlock.unity
+    guid: f85856c29e394b24fbdfb084cbb352f1
+  - enabled: 1
+    path: Assets/Scenes/Tutorial.unity
+    guid: 12f9b43556f98484a85bc609eac56284
   m_configObjects: {}

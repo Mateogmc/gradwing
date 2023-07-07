@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 using Mirror;
 
 public class Trail : MonoBehaviour
@@ -8,6 +9,7 @@ public class Trail : MonoBehaviour
     [SerializeField] MultiplayerController controller;
     [SerializeField] Material material;
     [SerializeField] TrailRenderer smoke;
+    [SerializeField] VisualEffect trailElectricity;
     Material currentMaterial;
 
     float currentSpeed;
@@ -25,6 +27,7 @@ public class Trail : MonoBehaviour
     {
         currentSpeed = controller.lastSpeedMagnitude;
         float widthMultiplier = 0.6f;
+        int particleCount = 0;
 
         if (controller.rollingSync)
         {
@@ -32,6 +35,7 @@ public class Trail : MonoBehaviour
             green = 0;
             blue = 255;
             widthMultiplier = 0.6f;
+            particleCount = 0;
         }
         else if (currentSpeed < 30)
         {
@@ -40,6 +44,7 @@ public class Trail : MonoBehaviour
 
             green = Mathf.Lerp(50, 100, currentSpeed / 30);
             widthMultiplier = 0.6f;
+            particleCount = 0;
         }
         else if (currentSpeed < 50)
         {
@@ -49,6 +54,7 @@ public class Trail : MonoBehaviour
 
             red = Mathf.Lerp(200, 0, (currentSpeed - 30) / 20);
             widthMultiplier = 0.6f;
+            particleCount = 0;
         }
         else if (currentSpeed < 70)
         {
@@ -57,6 +63,7 @@ public class Trail : MonoBehaviour
 
             blue = Mathf.Lerp(0, 100, (currentSpeed - 50) / 20);
             widthMultiplier = 0.6f;
+            particleCount = 0;
         }
         else if (controller.maxSpeed < currentSpeed)
         {
@@ -66,16 +73,21 @@ public class Trail : MonoBehaviour
             red = Mathf.Lerp(0, 150, (currentSpeed - controller.maxSpeed) / 40);
 
             widthMultiplier = Mathf.Lerp(0.6f, 1.5f, (currentSpeed - controller.maxSpeed) / 40);
+
+            particleCount = (int)Mathf.Lerp(0, 300, (currentSpeed - 100) / 30);
+            
         }
 
         if (controller.boostTime > NetworkTime.time)
         {
             red = Mathf.Lerp(red, 255, (controller.boostTime - (float)NetworkTime.time) / 1.5f);
             widthMultiplier = Mathf.Lerp(widthMultiplier, 3f,  (controller.boostTime - (float)NetworkTime.time) / 1.5f);
+            particleCount = (int)Mathf.Lerp(particleCount, 300, (controller.boostTime - (float)NetworkTime.time) / 1.5f);
         }
 
         currentMaterial.SetColor("_TrailColor", new Vector4(red, green, blue, 0.2f));
         GetComponent<TrailRenderer>().widthMultiplier = widthMultiplier;
+        trailElectricity.SetInt("ParticleCount", particleCount);
 
         if (controller.currentScale > 1)
         {

@@ -1646,6 +1646,7 @@ MonoBehaviour:
   xboxController: 0
   strafeMode: 0
   gameStarted: 0
+  rumble: 0
 --- !u!4 &786048047
 Transform:
   m_ObjectHideFlags: 0
@@ -2645,7 +2646,7 @@ MonoBehaviour:
   m_CharacterValidation: 0
   m_RegexValue: 
   m_GlobalPointSize: 14
-  m_CharacterLimit: 0
+  m_CharacterLimit: 25
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
@@ -2911,6 +2912,51 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1131678379
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1131678381}
+  - component: {fileID: 1131678380}
+  m_Layer: 0
+  m_Name: FpsLimiter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1131678380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1131678379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db17b2d5842ed9d4bb16520933c6a721, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: 60
+--- !u!4 &1131678381
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1131678379}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 9.379372, y: -98.733536, z: -184.92233}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1161852241
 GameObject:
@@ -4486,6 +4532,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2eb2aed0c86d0b741b4cd1adfd6cc01a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gravel: 0
+  heal: 0
+  ice: 0
+  fire: 0
 --- !u!114 &2029129184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4498,6 +4548,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f84caa233272c746bcb225c8799a269, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  driftValue: 0
 --- !u!1 &2080148449
 GameObject:
   m_ObjectHideFlags: 0

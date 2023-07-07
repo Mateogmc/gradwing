@@ -61,6 +61,295 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Buttons"",
+            ""id"": ""3a18deff-cb2c-40dd-b347-935c37fa2975"",
+            ""actions"": [
+                {
+                    ""name"": ""Accelerate"",
+                    ""type"": ""Button"",
+                    ""id"": ""1d1cb612-0a0b-4972-b9b1-80aa15d011c6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Brake"",
+                    ""type"": ""Button"",
+                    ""id"": ""f65f7f51-eff5-4922-80a1-7975f1547291"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LBumper"",
+                    ""type"": ""Button"",
+                    ""id"": ""d52c00ac-277b-48f0-9701-0de70e5f67e7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RBumper"",
+                    ""type"": ""Button"",
+                    ""id"": ""1e9d90c7-c70d-4737-baaf-8bca59bc8f23"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LDrift"",
+                    ""type"": ""Value"",
+                    ""id"": ""1ebcf712-0c12-4293-8574-4c594535c277"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""RDrift"",
+                    ""type"": ""Value"",
+                    ""id"": ""4ed5484c-8afb-44c5-9cb6-075ae8f60f19"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Item"",
+                    ""type"": ""Button"",
+                    ""id"": ""1d3ca0ab-8ead-46d8-8ccc-70b4f75d8fc0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SetLang"",
+                    ""type"": ""Button"",
+                    ""id"": ""3c588978-399e-4837-b507-2c478678e250"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""c10ada85-73e3-4452-ad67-31649f7e2c5c"",
+                    ""path"": ""<XInputController>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""LBumper"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""640cffcc-f7c7-4d24-bc6f-63a226235aee"",
+                    ""path"": ""<DualShockGamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""LBumper"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b6d6cf74-36d4-4929-93a3-3e31cfa8c843"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""LBumper"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ad192a0c-1011-4590-9f3e-5b4ce9607cf4"",
+                    ""path"": ""<XInputController>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""RBumper"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d181ee94-5faa-4188-841a-d1ae94b0b61a"",
+                    ""path"": ""<DualShockGamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""RBumper"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f2a16e1b-35a2-4866-b3e9-3d1010474cf9"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""RBumper"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""26276292-8cc0-42dc-bc14-bc953648a73e"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Accelerate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""af50a657-bb1a-4ffa-b681-72918f7ea117"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Accelerate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a3d70354-f88d-4b0e-b8ba-dffde9b6ea48"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Brake"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""702395aa-5051-4241-b419-8dfe9dec4659"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Brake"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""14905671-6852-45c8-a894-a816d9ccf968"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""LDrift"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0386a532-bc47-4b0c-affb-8d3f2261cac7"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LDrift"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d82aa69b-642f-4d46-a8f7-13c2670d0b3f"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""RDrift"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""67753817-53a1-4bc1-81a3-94f4393fff5d"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RDrift"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c3ea56b6-fabc-46e0-b3bb-ff54ab515f23"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Item"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4d994b2e-d80e-461f-9f50-b3949a82fd67"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Item"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4f46e70d-3891-4edb-aa98-454fdab02dd9"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Item"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3a070ae6-e7f9-44d5-95ed-186d4d8a5b9a"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""SetLang"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c94296e1-d116-4028-92be-3e963ec4feb2"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""SetLang"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -79,6 +368,16 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         // Rumble
         m_Rumble = asset.FindActionMap("Rumble", throwIfNotFound: true);
         m_Rumble_RumbleAction = m_Rumble.FindAction("RumbleAction", throwIfNotFound: true);
+        // Buttons
+        m_Buttons = asset.FindActionMap("Buttons", throwIfNotFound: true);
+        m_Buttons_Accelerate = m_Buttons.FindAction("Accelerate", throwIfNotFound: true);
+        m_Buttons_Brake = m_Buttons.FindAction("Brake", throwIfNotFound: true);
+        m_Buttons_LBumper = m_Buttons.FindAction("LBumper", throwIfNotFound: true);
+        m_Buttons_RBumper = m_Buttons.FindAction("RBumper", throwIfNotFound: true);
+        m_Buttons_LDrift = m_Buttons.FindAction("LDrift", throwIfNotFound: true);
+        m_Buttons_RDrift = m_Buttons.FindAction("RDrift", throwIfNotFound: true);
+        m_Buttons_Item = m_Buttons.FindAction("Item", throwIfNotFound: true);
+        m_Buttons_SetLang = m_Buttons.FindAction("SetLang", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -182,6 +481,108 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         }
     }
     public RumbleActions @Rumble => new RumbleActions(this);
+
+    // Buttons
+    private readonly InputActionMap m_Buttons;
+    private List<IButtonsActions> m_ButtonsActionsCallbackInterfaces = new List<IButtonsActions>();
+    private readonly InputAction m_Buttons_Accelerate;
+    private readonly InputAction m_Buttons_Brake;
+    private readonly InputAction m_Buttons_LBumper;
+    private readonly InputAction m_Buttons_RBumper;
+    private readonly InputAction m_Buttons_LDrift;
+    private readonly InputAction m_Buttons_RDrift;
+    private readonly InputAction m_Buttons_Item;
+    private readonly InputAction m_Buttons_SetLang;
+    public struct ButtonsActions
+    {
+        private @Controls m_Wrapper;
+        public ButtonsActions(@Controls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Accelerate => m_Wrapper.m_Buttons_Accelerate;
+        public InputAction @Brake => m_Wrapper.m_Buttons_Brake;
+        public InputAction @LBumper => m_Wrapper.m_Buttons_LBumper;
+        public InputAction @RBumper => m_Wrapper.m_Buttons_RBumper;
+        public InputAction @LDrift => m_Wrapper.m_Buttons_LDrift;
+        public InputAction @RDrift => m_Wrapper.m_Buttons_RDrift;
+        public InputAction @Item => m_Wrapper.m_Buttons_Item;
+        public InputAction @SetLang => m_Wrapper.m_Buttons_SetLang;
+        public InputActionMap Get() { return m_Wrapper.m_Buttons; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ButtonsActions set) { return set.Get(); }
+        public void AddCallbacks(IButtonsActions instance)
+        {
+            if (instance == null || m_Wrapper.m_ButtonsActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_ButtonsActionsCallbackInterfaces.Add(instance);
+            @Accelerate.started += instance.OnAccelerate;
+            @Accelerate.performed += instance.OnAccelerate;
+            @Accelerate.canceled += instance.OnAccelerate;
+            @Brake.started += instance.OnBrake;
+            @Brake.performed += instance.OnBrake;
+            @Brake.canceled += instance.OnBrake;
+            @LBumper.started += instance.OnLBumper;
+            @LBumper.performed += instance.OnLBumper;
+            @LBumper.canceled += instance.OnLBumper;
+            @RBumper.started += instance.OnRBumper;
+            @RBumper.performed += instance.OnRBumper;
+            @RBumper.canceled += instance.OnRBumper;
+            @LDrift.started += instance.OnLDrift;
+            @LDrift.performed += instance.OnLDrift;
+            @LDrift.canceled += instance.OnLDrift;
+            @RDrift.started += instance.OnRDrift;
+            @RDrift.performed += instance.OnRDrift;
+            @RDrift.canceled += instance.OnRDrift;
+            @Item.started += instance.OnItem;
+            @Item.performed += instance.OnItem;
+            @Item.canceled += instance.OnItem;
+            @SetLang.started += instance.OnSetLang;
+            @SetLang.performed += instance.OnSetLang;
+            @SetLang.canceled += instance.OnSetLang;
+        }
+
+        private void UnregisterCallbacks(IButtonsActions instance)
+        {
+            @Accelerate.started -= instance.OnAccelerate;
+            @Accelerate.performed -= instance.OnAccelerate;
+            @Accelerate.canceled -= instance.OnAccelerate;
+            @Brake.started -= instance.OnBrake;
+            @Brake.performed -= instance.OnBrake;
+            @Brake.canceled -= instance.OnBrake;
+            @LBumper.started -= instance.OnLBumper;
+            @LBumper.performed -= instance.OnLBumper;
+            @LBumper.canceled -= instance.OnLBumper;
+            @RBumper.started -= instance.OnRBumper;
+            @RBumper.performed -= instance.OnRBumper;
+            @RBumper.canceled -= instance.OnRBumper;
+            @LDrift.started -= instance.OnLDrift;
+            @LDrift.performed -= instance.OnLDrift;
+            @LDrift.canceled -= instance.OnLDrift;
+            @RDrift.started -= instance.OnRDrift;
+            @RDrift.performed -= instance.OnRDrift;
+            @RDrift.canceled -= instance.OnRDrift;
+            @Item.started -= instance.OnItem;
+            @Item.performed -= instance.OnItem;
+            @Item.canceled -= instance.OnItem;
+            @SetLang.started -= instance.OnSetLang;
+            @SetLang.performed -= instance.OnSetLang;
+            @SetLang.canceled -= instance.OnSetLang;
+        }
+
+        public void RemoveCallbacks(IButtonsActions instance)
+        {
+            if (m_Wrapper.m_ButtonsActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IButtonsActions instance)
+        {
+            foreach (var item in m_Wrapper.m_ButtonsActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_ButtonsActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public ButtonsActions @Buttons => new ButtonsActions(this);
     private int m_KeyboardSchemeIndex = -1;
     public InputControlScheme KeyboardScheme
     {
@@ -203,5 +604,16 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     public interface IRumbleActions
     {
         void OnRumbleAction(InputAction.CallbackContext context);
+    }
+    public interface IButtonsActions
+    {
+        void OnAccelerate(InputAction.CallbackContext context);
+        void OnBrake(InputAction.CallbackContext context);
+        void OnLBumper(InputAction.CallbackContext context);
+        void OnRBumper(InputAction.CallbackContext context);
+        void OnLDrift(InputAction.CallbackContext context);
+        void OnRDrift(InputAction.CallbackContext context);
+        void OnItem(InputAction.CallbackContext context);
+        void OnSetLang(InputAction.CallbackContext context);
     }
 }

@@ -238,3 +238,10 @@
 
 *Version 0.18.1*
 - Added controller rumble support
+
+*Version 0.19*
+- Made background and ambience for Lobby
+- Added new illusion level: Deadlock
+- Revamped controls to work with Unity's new Input System
+- Implemented a locked camera system
+- Made a tutorial

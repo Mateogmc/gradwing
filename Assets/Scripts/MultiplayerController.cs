@@ -113,7 +113,7 @@ public class MultiplayerController : FSM
 
     [SerializeField] [SyncVar(hook = nameof(OnItemChange))] Items currentItem = Items.None;
 
-    [SyncVar(hook = nameof(OnUsernameChange))] string usernameText;
+    [SyncVar(hook = nameof(OnUsernameChange))] public string usernameText;
 
     // Lap Manager
     float raceCountdown;
@@ -126,6 +126,7 @@ public class MultiplayerController : FSM
     float spawnRotation = 0;
     [SyncVar(hook = nameof(OnPlacementChange))]public int placement;
     public EndgameManager endgameManager;
+    [SyncVar(hook = nameof(OnTimerChange))] public string timer;
 
     // Interface
     [SerializeField] TextMeshProUGUI lapRenderer;
@@ -171,6 +172,10 @@ public class MultiplayerController : FSM
         AudioManager.instance.Stop("Gravel");
         AudioManager.instance.Stop("Heal");
         MusicManager.instance.Stop("Lobby");
+        HapticsManager.instance.heal = false;
+        HapticsManager.instance.ice = false;
+        HapticsManager.instance.gravel = false;
+        HapticsManager.instance.fire = false;
         if (SceneManager.GetActiveScene().name == "Lobby")
         {
             MusicManager.instance.Play(FindObjectOfType<LevelData>().GetWorld());
@@ -209,6 +214,10 @@ public class MultiplayerController : FSM
     {
         ui.transform.rotation = Quaternion.Euler(0.0f, 0.0f, gameObject.transform.rotation.z * -1.0f);
         audioListener.transform.rotation = Quaternion.Euler(0.0f, 0.0f, gameObject.transform.rotation.z * -1.0f);
+        if (Mathf.FloorToInt(raceCountdown - Time.time) == 0 && currentState == PlayerStates.Starting)
+        {
+            GetComponent<Timer>().Initialize();
+        }
         if (!isLocalPlayer) { return; }
         CheckInput();
         CheckState();
@@ -289,13 +298,19 @@ public class MultiplayerController : FSM
                 if (grounded > 0)
                 {
                     currentState = PlayerStates.Grounded;
-                    HapticsManager.instance.RumbleLinear(0.3f, 0.3f, 0.1f);
+                    if (isLocalPlayer)
+                    {
+                        HapticsManager.instance.RumbleLinear(0.3f, 0.3f, 0.1f);
+                    }
                     vehicleAudioManager.Play("RollingEnd");
                 }
                 else
                 {
                     CmdChangeHealth(0);
-                    HapticsManager.instance.RumbleLinear(1, 1, 1f);
+                    if (isLocalPlayer)
+                    {
+                        HapticsManager.instance.RumbleLinear(1, 1, 1f);
+                    }
                     PlaySound("Fall");
                 }
             }
@@ -331,7 +346,10 @@ public class MultiplayerController : FSM
                 firingLaser = false;
                 lineRenderer.enabled = false;
                 CmdUseItem();
-                HapticsManager.instance.Rumble(0.6f, 0.4f, 0.1f);
+                if (isLocalPlayer)
+                {
+                    HapticsManager.instance.Rumble(0.6f, 0.4f, 0.1f);
+                }
                 currentItem = Items.None;
                 itemSprite.sprite = none;
             }
@@ -571,6 +589,11 @@ public class MultiplayerController : FSM
         boostTime = newBoost;
     }
 
+    private void OnTimerChange(string oldTimer, string newTimer)
+    {
+        timer = newTimer;
+    }
+
     private void OnItemChange(Items oldItem, Items newItem)
     {
         switch (newItem)
@@ -684,8 +707,14 @@ public class MultiplayerController : FSM
                     if (rolling)
                     {
                         rolling = false;
-                        HapticsManager.instance.Rumble(0.1f, 0.4f, 0.1f);
-                        vehicleAudioManager.Play("RollingEnd");
+                        if (currentState == PlayerStates.Grounded)
+                        {
+                            if (isLocalPlayer)
+                            {
+                                HapticsManager.instance.Rumble(0.1f, 0.4f, 0.1f);
+                            }
+                            vehicleAudioManager.Play("RollingEnd");
+                        }
                     }
                 }
 
@@ -738,7 +767,7 @@ public class MultiplayerController : FSM
                     strafeValue = 1;
                 }
 
-                if (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.Joystick1Button4) || Input.GetKeyDown(KeyCode.Joystick1Button5))
+                if (InputManager.instance.controls.Buttons.Item.WasPressedThisFrame())
                 {
                     UseItem();
                 }
@@ -750,7 +779,10 @@ public class MultiplayerController : FSM
 
                 if (InputManager.instance.controls.Rumble.RumbleAction.WasPressedThisFrame())
                 {
-                    HapticsManager.instance.Rumble(Input.GetAxis("LTrigger"), Input.GetAxis("RTrigger"), 2);
+                    if (isLocalPlayer)
+                    {
+                        HapticsManager.instance.Rumble(Input.GetAxis("LTrigger"), Input.GetAxis("RTrigger"), 2);
+                    }
                 }
             }
             else
@@ -794,8 +826,14 @@ public class MultiplayerController : FSM
                     if (rolling)
                     {
                         rolling = false;
-                        HapticsManager.instance.Rumble(0.1f, 0.4f, 0.1f);
-                        vehicleAudioManager.Play("RollingEnd");
+                        if (currentState == PlayerStates.Grounded)
+                        {
+                            if (isLocalPlayer)
+                            {
+                                HapticsManager.instance.Rumble(0.1f, 0.4f, 0.1f);
+                            }
+                            vehicleAudioManager.Play("RollingEnd");
+                        }
                     }
                 }
 
@@ -846,7 +884,7 @@ public class MultiplayerController : FSM
                     strafeValue = 1;
                 }
 
-                if (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.Joystick1Button4) || Input.GetKeyDown(KeyCode.Joystick1Button5))
+                if (InputManager.instance.controls.Buttons.Item.WasPressedThisFrame())
                 {
                     UseItem();
                 }
@@ -1085,7 +1123,7 @@ public class MultiplayerController : FSM
 
     public void StartRace()
     {
-        raceCountdown = Time.time + 6;
+        raceCountdown = Time.time + 8;
     }
 
     [Command]
@@ -1129,7 +1167,9 @@ public class MultiplayerController : FSM
         GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Player");
         foreach (GameObject go in gameObjects)
         {
-            go.GetComponent<MultiplayerController>().endgameManager.AddDictionaryEntry(placement, usernameText);
+            GetComponent<Timer>().Stop();
+            timer = GetComponent<Timer>().GetTime();
+            go.GetComponent<MultiplayerController>().endgameManager.AddDictionaryEntry(placement, gameObject);
         }
     }
 
@@ -1153,7 +1193,10 @@ public class MultiplayerController : FSM
             airborne = Mathf.PI;
             SetLayer(8);
             sr.sortingLayerID = SortingLayer.NameToID("Foreground");
-            HapticsManager.instance.RumbleLinear(0.2f, 0.4f, 0.5f);
+            if (isLocalPlayer)
+            {
+                HapticsManager.instance.RumbleLinear(0.1f, 0.2f, 0.5f);
+            }
             CmdPlaySound("Jump" + Random.Range(1, 4));
         } else if (currentState == PlayerStates.Jumping && item)
         {
@@ -1177,7 +1220,10 @@ public class MultiplayerController : FSM
         {
             rb.velocity = direction * 130;
         }
-        HapticsManager.instance.RumbleLinear(0.2f, 0.4f, 1f);
+        if (isLocalPlayer)
+        {
+            HapticsManager.instance.RumbleLinear(0.2f, 0.4f, 1f);
+        }
         PlaySound("Boost");
     }
 
@@ -1198,6 +1244,10 @@ public class MultiplayerController : FSM
             }
             boostTime = (float)NetworkTime.time + duration;
             CmdBoost(boostTime);
+            if (isLocalPlayer)
+            {
+                HapticsManager.instance.RumbleLinear(0.2f, 0.4f, 1f);
+            }
             PlaySound("Boost");
         }
         else
@@ -1624,11 +1674,17 @@ public class MultiplayerController : FSM
         if (health <= 0)
         {
             AudioManager.instance.Play("Death");
-            HapticsManager.instance.RumbleLinear(1, 1, 1f);
+            if (isLocalPlayer)
+            {
+                HapticsManager.instance.RumbleLinear(1, 1, 1f);
+            }
         }
         else
         {
-            HapticsManager.instance.Rumble(Mathf.Lerp(0.4f, 1, damage / 80), Mathf.Lerp(0.4f, 1, damage / 80), Mathf.Lerp(0.1f, 1, (damage - 20) / 60));
+            if (isLocalPlayer)
+            {
+                HapticsManager.instance.Rumble(Mathf.Lerp(0.4f, 1, damage / 80), Mathf.Lerp(0.4f, 1, damage / 80), Mathf.Lerp(0.1f, 1, (damage - 20) / 60));
+            }
         }
     }
 
@@ -1653,6 +1709,7 @@ public class MultiplayerController : FSM
 
     private void UseItem()
     {
+        if (currentState != PlayerStates.Grounded && currentState != PlayerStates.Jumping) { return; }
         switch (currentItem)
         {
             case Items.None:
@@ -1662,7 +1719,10 @@ public class MultiplayerController : FSM
             case Items.Shield:
                 CmdShield();
                 CmdPlaySound("Shield");
-                HapticsManager.instance.RumbleLinear(0.1f, 0.5f, 0.75f);
+                if (isLocalPlayer)
+                {
+                    HapticsManager.instance.RumbleLinear(0.1f, 0.5f, 0.75f);
+                }
                 break;
 
             case Items.Jump:
@@ -2019,13 +2079,16 @@ public class MultiplayerController : FSM
         if (!isLocalPlayer) { return; }
         if (collision.collider.tag == "Wall")
         {
-            if (bounceTime > Time.time)
+            if (!rolling)
             {
-                bounceTime = Time.time + bounceDuration / 2;
-            }
-            else
-            {
-                bounceTime = Time.time + bounceDuration;
+                if (bounceTime > Time.time)
+                {
+                    bounceTime = Time.time + bounceDuration / 2;
+                }
+                else
+                {
+                    bounceTime = Time.time + bounceDuration;
+                }
             }
             boostTime = 0f;
             rb.velocity = Vector2.Reflect(lastSpeed * 0.75f, collision.contacts[0].normal);
@@ -2121,7 +2184,10 @@ public class MultiplayerController : FSM
         if (collision.tag == "Item")
         {
             collision.gameObject.GetComponent<ItemBox>().Use(this, placement);
-            HapticsManager.instance.Rumble(0.1f, 0.3f, 0.1f);
+            if (isLocalPlayer)
+            {
+                HapticsManager.instance.Rumble(0.1f, 0.3f, 0.1f);
+            }
         }
         else if (collision.tag == "Trap")
         {
@@ -2197,7 +2263,10 @@ public class MultiplayerController : FSM
         {
             currentDrag = 0;
             currentRotationSpeed = rotationSpeed + (1 - dataManager.handling);
-            HapticsManager.instance.ice = true;
+            if (isLocalPlayer)
+            {
+                HapticsManager.instance.ice = true;
+            }
             AudioManager.instance.Play("Ice");
         }
         else if (collision.tag == "Ground" || collision.tag == "Ramp")
@@ -2249,16 +2318,25 @@ public class MultiplayerController : FSM
         }
         else if (collision.tag == "Blaster")
         {
-            HapticsManager.instance.fire = true;
+            if (isLocalPlayer)
+            {
+                HapticsManager.instance.fire = true;
+            }
             AudioManager.instance.Play("Fire");
         }
         else if (collision.tag == "Gravel")
         {
-            HapticsManager.instance.gravel = true;
+            if (isLocalPlayer)
+            {
+                HapticsManager.instance.gravel = true;
+            }
         }
         else if (collision.tag == "Heal")
         {
-            HapticsManager.instance.heal = true;
+            if (isLocalPlayer)
+            {
+                HapticsManager.instance.heal = true;
+            }
         }
     }
 
@@ -2310,7 +2388,7 @@ public class MultiplayerController : FSM
         if (collision.tag == "Ground" || collision.tag == "Ramp")
         {
             grounded--;
-            if (currentState == PlayerStates.Grounded && grounded <= 0 && airborne <= 0 && !fallProtection)
+            if (currentState == PlayerStates.Grounded && grounded <= 0 && airborne <= 0 && !fallProtection && isLocalPlayer)
             {
                 CmdChangeHealth(0);
                 HapticsManager.instance.RumbleLinear(1, 1, 1f);
@@ -2321,22 +2399,34 @@ public class MultiplayerController : FSM
         {
             currentDrag = drag;
             currentRotationSpeed = rotationSpeed;
-            HapticsManager.instance.ice = false;
+            if (isLocalPlayer)
+            {
+                HapticsManager.instance.ice = false;
+            }
             AudioManager.instance.Stop("Ice");
         }
         else if (collision.tag == "Heal")
         {
-            HapticsManager.instance.heal = false;
+            if (isLocalPlayer)
+            {
+                HapticsManager.instance.heal = false;
+            }
             StopSound("Heal");
         }
         else if (collision.tag == "Gravel")
         {
-            HapticsManager.instance.gravel = false;
+            if (isLocalPlayer)
+            {
+                HapticsManager.instance.gravel = false;
+            }
             StopSound("Gravel");
         }
         else if (collision.tag == "Blaster")
         {
-            HapticsManager.instance.fire = false;
+            if (isLocalPlayer)
+            {
+                HapticsManager.instance.fire = false;
+            }
             AudioManager.instance.Stop("Fire");
         }
     }

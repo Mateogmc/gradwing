@@ -9,17 +9,6 @@ public class LevelData : MonoBehaviour
     [SerializeField] Material illusionGroundMaterial;
     [SerializeField] Material[] textMaterials;
 
-    private void Awake()
-    {
-        if (world == WorldName.Illusion)
-        {
-            foreach (GameObject g in GameObject.FindGameObjectsWithTag("Ground"))
-            {
-                g.GetComponent<SpriteShapeRenderer>().material = illusionGroundMaterial;
-                g.GetComponent<SpriteShapeRenderer>().color = new Color(1, 1, 1, 0.2f);
-            }
-        }
-    }
 
     enum WorldName
     {
@@ -159,7 +148,7 @@ public class LevelData : MonoBehaviour
                 break;
 
             case WorldName.Clouds:
-                courseName = "Cyclone";
+                courseName = "Hydro Nova";
                 break;
 
             case WorldName.Illusion:

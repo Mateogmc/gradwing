@@ -9,6 +9,7 @@ public class LobbyUIManager : MonoBehaviour
 {
     [SerializeField] Button disconnect;
     [SerializeField] Button startGame;
+    [SerializeField] Button tutorial;
     [SerializeField] Button editStats;
     [SerializeField] Button setStats;
     [SerializeField] Button setVehicle;
@@ -41,6 +42,7 @@ public class LobbyUIManager : MonoBehaviour
     {
         disconnect.onClick.AddListener(() => Disconnect());
         startGame.onClick.AddListener(() => StartGame());
+        tutorial.onClick.AddListener(() => Tutorial());
         editStats.onClick.AddListener(() => EditStats());
         velocity.onValueChanged.AddListener(delegate { SliderChange(0); });
         acceleration.onValueChanged.AddListener(delegate { SliderChange(1); });
@@ -63,6 +65,7 @@ public class LobbyUIManager : MonoBehaviour
         handling.value = dataManager.initHandling * 10;
 
         startGame.gameObject.SetActive(NetworkServer.active && !DataManager.GetInstance().gameStarted);
+        tutorial.gameObject.SetActive(NetworkServer.active);
     }
 
     public void SetVehicleListeners()
@@ -161,6 +164,11 @@ public class LobbyUIManager : MonoBehaviour
         LobbyManager.GetInstance().CmdStartLobby(true);
     }
 
+    private void Tutorial()
+    {
+        LobbyManager.GetInstance().CmdStartGame("Tutorial");
+    }
+
     private void Disconnect()
     {
         if (NetworkServer.active && NetworkClient.isConnected)
@@ -171,5 +179,6 @@ public class LobbyUIManager : MonoBehaviour
         {
             NetworkManager.singleton.StopClient();
         }
+        DataManager.GetInstance().connectionDisplay.text = "Not connected";
     }
 }

@@ -62,5 +62,5 @@ Material:
     m_Colors:
     - _Color1: {r: 0.39848098, g: 0.8312866, b: 0.8679245, a: 0}
     - _Color2: {r: 1, g: 1, b: 1, a: 0}
-    - _Displacement: {r: -0.06820282, g: 0.4668934, b: 0, a: 0}
+    - _Displacement: {r: -0.005159977, g: 0.22136939, b: 0, a: 0}
   m_BuildTextureStacks: []

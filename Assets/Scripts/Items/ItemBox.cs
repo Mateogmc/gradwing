@@ -27,6 +27,8 @@ public class ItemBox : NetworkBehaviour
     [SerializeField] SpriteRenderer iconRenderer;
     [SerializeField] AudioSource itemTake;
     [SerializeField] AudioSource itemSpawn;
+    [SerializeField] bool forcedItem = false;
+    [SerializeField] Items containedItem = Items.None;
     float respawnTimer = 0f;
 
     private string[] items = { "Shield", "Jump", "Trap", "Rebounder", "Laser", "Boost", "Missile", "Shockwave", "Equalizer"};
@@ -73,6 +75,10 @@ public class ItemBox : NetworkBehaviour
     {
         if (player != null)
         {
+            if (forcedItem)
+            {
+                player.CmdGetItem(containedItem.ToString());
+            }
             int playerCount = GameObject.FindGameObjectsWithTag("Player").Length;
             if (playerCount <= 4 && placement != 1)
             {
