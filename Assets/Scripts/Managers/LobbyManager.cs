@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Mirror;
+using System.Linq;
 
 public class LobbyManager : NetworkBehaviour
 {
@@ -14,8 +15,10 @@ public class LobbyManager : NetworkBehaviour
 
     private void Awake()
     {
-        GameStateManager.GetInstance().gameState = GameStateManager.GameState.OnLobby;
-        Debug.Log("Lobby");
+        if (isServer)
+        {
+            GameStateManager.GetInstance().CmdSetState(GameStateManager.GameState.OnLobby);
+        }
         instance = this;
     }
 
@@ -124,18 +127,18 @@ public class LobbyManager : NetworkBehaviour
         random -= level1;
         if (random <= 0 && flag)
         {
-            levelSelected = DataManager.levelList[levels[0]];
+            levelSelected = DataManager.levelList.ElementAt(levels[0]).Key;
             flag = false;
         }
         random -= level2;
         if (random <= 0 && flag)
         {
-            levelSelected = DataManager.levelList[levels[1]];
+            levelSelected = DataManager.levelList.ElementAt(levels[1]).Key;
             flag = false;
         }
         if (flag)
         {
-            levelSelected = DataManager.levelList[levels[2]];
+            levelSelected = DataManager.levelList.ElementAt(levels[2]).Key;
         }
         RpcStartGame();
         NetworkManager.singleton.ServerChangeScene(levelSelected);
@@ -157,11 +160,11 @@ public class LobbyManager : NetworkBehaviour
     public void CmdStartLobby(bool startLobby)
     {
         lobbyReady = startLobby;
-        LobbyReady(playerCount);
+        LobbyReady(playerCount, startLobby);
     }
 
     [Server]
-    public void LobbyReady(int playerCount)
+    public void LobbyReady(int playerCount, bool startLobby)
     {
         this.playerCount = playerCount;
         levels.Clear();
@@ -176,12 +179,27 @@ public class LobbyManager : NetworkBehaviour
                 levels.Add(val);
             }
         }
-        RpcLobbyReady(playerCount, levels);
+        if (!startLobby)
+        {
+            countdownValue = 30;
+            level1 = 0;
+            level2 = 0;
+            level3 = 0;
+            gameReady = false;
+            FindObjectOfType<LobbyUIManager>().SelectLevel(0);
+        }
+        RpcLobbyReady(playerCount, levels, startLobby);
     }
 
     [ClientRpc]
-    private void RpcLobbyReady(int playerCount, List<int> list)
+    private void RpcLobbyReady(int playerCount, List<int> list, bool startLobby)
     {
-        uiManager.OnLobbyReady(playerCount, list);
+        if (!startLobby)
+        {
+            countdownValue = 30;
+            gameReady = false;
+            FindObjectOfType<LobbyUIManager>().SelectLevel(0);
+        }
+        uiManager.OnLobbyReady(playerCount, list, startLobby);
     }
 }

@@ -154,6 +154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   delay: 0
+  destroyOnStart: 0
 --- !u!1 &7649947786167149707
 GameObject:
   m_ObjectHideFlags: 0
@@ -342,6 +343,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentState: 1
+  gravity: 0.004
+  jumpForce: 0.1
   bouncesLeft: 8
   rb: {fileID: 6432190364195601757}
   sr: {fileID: 1150207154184522519}

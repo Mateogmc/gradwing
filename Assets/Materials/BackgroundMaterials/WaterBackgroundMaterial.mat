@@ -59,8 +59,8 @@ Material:
     - _QueueOffset: 0
     m_Colors:
     - _BackColor: {r: 0.18553448, g: 0.7227286, b: 1, a: 0}
-    - _Displacement: {r: -0.42389098, g: 5.1308146, b: 0, a: 0}
+    - _Displacement: {r: 0.1286464, g: 2.0242002, b: 0, a: 0}
     - _LightColor: {r: 0.7798742, g: 0.9927828, b: 1, a: 0}
     - _SunColor: {r: 3.4415908, g: 3.2073464, b: 1.531598, a: 0}
-    - _SunDisplacement: {r: -0.2042389, g: -0.14869186, b: 0, a: 0}
+    - _SunDisplacement: {r: -0.19871354, g: -0.179758, b: 0, a: 0}
   m_BuildTextureStacks: []

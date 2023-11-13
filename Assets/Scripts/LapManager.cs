@@ -14,7 +14,10 @@ public class LapManager : MonoBehaviour
 
     private void Start()
     {
-        GameStateManager.GetInstance().gameState = GameStateManager.GameState.Running;
+        if (MultiplayerController.localPlayer.isServer)
+        {
+            GameStateManager.GetInstance().CmdSetState(GameStateManager.GameState.Running);
+        }
         checkpoints = GameObject.FindGameObjectsWithTag("Checkpoint");
         checkpointCount = checkpoints.Length;
         minimumCheckpoints = (int) (checkpointCount * checkpointTolerance);
@@ -43,7 +46,7 @@ public class LapManager : MonoBehaviour
     {
         foreach(GameObject checkpoint in checkpoints)
         {
-            if (checkpoint.GetComponent<CheckpointValue>().checkpointNumber <= currentCheckpoint)
+            if (checkpoint.GetComponent<Checkpoint>().checkpointNumber <= currentCheckpoint)
             {
                 checkpoint.SetActive(false);
             }

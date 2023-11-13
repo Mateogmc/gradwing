@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class Explosion : MonoBehaviour
+public class Explosion : NetworkBehaviour
 {
     [SerializeField] GameObject explosionRadius;
     [SerializeField] GameObject explosionBlast;
@@ -14,6 +15,8 @@ public class Explosion : MonoBehaviour
     float t;
     Color tmp;
     Color tmp2;
+
+    public string username = "";
 
     private void Start()
     {
@@ -27,6 +30,16 @@ public class Explosion : MonoBehaviour
         currentMaterial = new Material(explosionMaterial);
         explosionBlast.GetComponent<SpriteRenderer>().material = currentMaterial;
         explosionRadius.GetComponent <SpriteRenderer>().material = currentMaterial;
+        if (isServer)
+        {
+            RpcSetUsername(username);
+        }
+    }
+
+    [ClientRpc]
+    private void RpcSetUsername(string user)
+    {
+        username = user;
     }
 
     private void Update()

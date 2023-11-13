@@ -16,6 +16,10 @@ public class RaceManager : NetworkBehaviour
     [Command(requiresAuthority = false)]
     public void CmdReturnToLobby()
     {
+        if (MultiplayerController.localPlayer.isServer)
+        {
+            GameStateManager.GetInstance().CmdSetState(GameStateManager.GameState.OnLobby);
+        }
         NetworkManager.singleton.ServerChangeScene("Lobby");
     }
 }

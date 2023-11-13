@@ -7,15 +7,14 @@ using TMPro;
 
 public class LobbyUIManager : MonoBehaviour
 {
-    [SerializeField] Button disconnect;
     [SerializeField] Button startGame;
+    [SerializeField] Button stopGame;
     [SerializeField] Button tutorial;
-    [SerializeField] Button editStats;
     [SerializeField] Button setStats;
-    [SerializeField] Button setVehicle;
 
     [SerializeField] GameObject statPanel;
     [SerializeField] GameObject vehiclePanel;
+    [SerializeField] GameObject leaderboardPanel;
 
     [SerializeField] Slider velocity;
     [SerializeField] Slider acceleration;
@@ -32,24 +31,25 @@ public class LobbyUIManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI level3Text;
 
     [SerializeField] TextMeshProUGUI remainingPoints;
+    [SerializeField] VehicleScrollView vehicle;
 
     DataManager dataManager;
     [SerializeField] LobbyManager lobbyManager;
+
+    bool levelSelected = false;
 
 
 
     private void Start()
     {
-        disconnect.onClick.AddListener(() => Disconnect());
         startGame.onClick.AddListener(() => StartGame());
+        stopGame.onClick.AddListener(() => StopGame());  
         tutorial.onClick.AddListener(() => Tutorial());
-        editStats.onClick.AddListener(() => EditStats());
         velocity.onValueChanged.AddListener(delegate { SliderChange(0); });
         acceleration.onValueChanged.AddListener(delegate { SliderChange(1); });
         weight.onValueChanged.AddListener(delegate { SliderChange(2); });
         handling.onValueChanged.AddListener(delegate { SliderChange(3); });
         setStats.onClick.AddListener(() => SetStats());
-        setVehicle.onClick.AddListener(() => OpenVehicleWindow());
 
 
         level1.onClick.AddListener(() => SelectLevel(1));
@@ -65,15 +65,57 @@ public class LobbyUIManager : MonoBehaviour
         handling.value = dataManager.initHandling * 10;
 
         startGame.gameObject.SetActive(NetworkServer.active && !DataManager.GetInstance().gameStarted);
-        tutorial.gameObject.SetActive(NetworkServer.active);
+        stopGame.gameObject.SetActive(NetworkServer.active && DataManager.GetInstance().gameStarted);
+
+        VehicleScrollView.currentVehicle = DataManager.GetInstance().spriteValue;
+        SetStats();
+        //tutorial.gameObject.SetActive(NetworkServer.active);
     }
 
-    public void SetVehicleListeners()
+    private void Update()
     {
-        for (int i = 0; i < vehicles.Length; i++)
+        CheckInput();
+    }
+
+    private void CheckInput()
+    {
+        if (DataManager.GetInstance().pauseMenuOpen)
         {
-            int j = i;
-            vehicles[i].onClick.AddListener(() => SetVehicle(j));
+            return;
+        }
+        if (InputManager.instance.controls.Buttons.EditVehicle.WasPressedThisFrame())
+        {
+            EditVehicle();
+        } 
+        if (InputManager.instance.controls.Buttons.Leaderboard.WasPressedThisFrame())
+        {
+            Leaderboard();
+        }
+        if (lobbyManager.lobbyReady)
+        {
+            if (InputManager.instance.controls.General.Level1.WasPressedThisFrame() && !levelSelected)
+            {
+                SelectLevel(1);
+            }
+            else if (InputManager.instance.controls.General.Level2.WasPressedThisFrame() && !levelSelected)
+            {
+                SelectLevel(2);
+            }
+            else if (InputManager.instance.controls.General.Level3.WasPressedThisFrame() && !levelSelected)
+            {
+                SelectLevel(3);
+            }
+        }
+        if (InputManager.instance.controls.Buttons.StartGame.WasPressedThisFrame() && NetworkServer.active)
+        {
+            if (startGame.IsActive())
+            {
+                StartGame();
+            }
+            else
+            {
+                StopGame();
+            }
         }
     }
 
@@ -103,65 +145,90 @@ public class LobbyUIManager : MonoBehaviour
                 }
             }
         }
-        dataManager.SetStats(velocity.value, acceleration.value, weight.value, handling.value);
         remainingPoints.text = (DataManager.maxPoints - (velocity.value + acceleration.value + weight.value + handling.value)).ToString();
     }
 
-    private void EditStats()
+    public void EditVehicle()
     {
         statPanel.SetActive(!statPanel.activeSelf);
-        vehiclePanel.SetActive(false);
+        if (statPanel.activeSelf)
+        {
+            velocity.Select();
+            leaderboardPanel.SetActive(false);
+        }
+        DataManager.GetInstance().paused = statPanel.activeSelf;
     }
 
-    private void OpenVehicleWindow()
+    public void EditVehicle(bool activate)
     {
-        vehiclePanel.SetActive(!vehiclePanel.activeSelf);
-        statPanel.SetActive(false);
+        statPanel.SetActive(activate);
+        if (statPanel.activeSelf)
+        {
+            velocity.Select();
+            leaderboardPanel.SetActive(false);
+        }
+        DataManager.GetInstance().paused = statPanel.activeSelf;
     }
 
-    private void SetVehicle(int i)
+    public void SetStats()
     {
-        OpenVehicleWindow();
-        DataManager.GetInstance().SetVehicleSprite(i);
-        NetworkClient.localPlayer.gameObject.GetComponent<MultiplayerController>().Restart();
-    }
-
-    private void SetStats()
-    {
-        EditStats();
+        EditVehicle(false);
+        DataManager.GetInstance().SetStats(velocity.value, acceleration.value, weight.value, handling.value);
+        DataManager.GetInstance().SetVehicleSprite(VehicleScrollView.currentVehicle);
         DataManager.GetInstance().WriteStats();
         NetworkClient.localPlayer.gameObject.GetComponent<MultiplayerController>().Restart();
     }
 
-    private void SelectLevel(int level)
+    public void SelectLevel(int level)
     {
-        level1.interactable = false;
-        level2.interactable = false;
-        level3.interactable = false;
-
-        switch (level)
+        if (level == 0)
         {
-            case 1:
-                level1.GetComponent<Image>().color = Color.yellow;
-                break;
-
-            case 2:
-                level2.GetComponent<Image>().color = Color.yellow;
-                break;
-
-            case 3:
-                level3.GetComponent<Image>().color = Color.yellow;
-                break;
+            level1.interactable = true;
+            level2.interactable = true;
+            level3.interactable = true;
+            levelSelected = false;
         }
+        else
+        {
+            level1.interactable = false;
+            level2.interactable = false;
+            level3.interactable = false;
 
-        lobbyManager.CmdSelectLevel(level);
+            switch (level)
+            {
+                case 1:
+                    level1.GetComponent<Image>().color = Color.yellow;
+                    break;
+
+                case 2:
+                    level2.GetComponent<Image>().color = Color.yellow;
+                    break;
+
+                case 3:
+                    level3.GetComponent<Image>().color = Color.yellow;
+                    break;
+            }
+
+            lobbyManager.CmdSelectLevel(level);
+            levelSelected = true;
+        }
     }
 
     private void StartGame()
     {
         DataManager.GetInstance().gameStarted = true;
         startGame.gameObject.SetActive(false);
+        stopGame.gameObject.SetActive(true);
         LobbyManager.GetInstance().CmdStartLobby(true);
+    }
+
+    private void StopGame()
+    {
+        DataManager.GetInstance().gameStarted = false;
+        startGame.gameObject.SetActive(true);
+        stopGame.gameObject.SetActive(false);
+        LobbyManager.GetInstance().CmdStartLobby(false);
+        levelSelected = false;
     }
 
     private void Tutorial()
@@ -169,16 +236,33 @@ public class LobbyUIManager : MonoBehaviour
         LobbyManager.GetInstance().CmdStartGame("Tutorial");
     }
 
-    private void Disconnect()
+    /*private void Spectate()
     {
-        if (NetworkServer.active && NetworkClient.isConnected)
+        if (DataManager.GetInstance().spectating && GameStateManager.CanPlay())
         {
-            NetworkManager.singleton.StopHost();
+            DataManager.GetInstance().spectating = false;
+            MultiplayerController.localPlayer.Spectate(false);
+            spectate.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Spectate";
         }
-        else if (NetworkClient.isConnected)
+        else if (!DataManager.GetInstance().spectating)
         {
-            NetworkManager.singleton.StopClient();
+            DataManager.GetInstance().spectating = true;
+            MultiplayerController.localPlayer.Spectate(true);
+            spectate.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Play";
         }
-        DataManager.GetInstance().connectionDisplay.text = "Not connected";
+    }*/
+
+    public void Leaderboard()
+    {
+        leaderboardPanel.SetActive(!leaderboardPanel.activeSelf);
+        EditVehicle(false);
+        DataManager.GetInstance().paused = leaderboardPanel.activeSelf;
+    }
+
+    public void Leaderboard(bool activate)
+    {
+        leaderboardPanel.SetActive(activate);
+        EditVehicle(false);
+        DataManager.GetInstance().paused = leaderboardPanel.activeSelf;
     }
 }

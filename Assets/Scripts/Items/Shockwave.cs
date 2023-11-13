@@ -15,9 +15,12 @@ public class Shockwave : MonoBehaviour
     Color tmp;
     Color tmp2;
 
-    public void InitializeShockwave(Collider2D parentPlayer)
+    public string username;
+
+    public void InitializeShockwave(Collider2D parentPlayer, string parentUsername)
     {
         Physics2D.IgnoreCollision(shockwaveBlast.GetComponent<CircleCollider2D>(), parentPlayer, true);
+        username = parentUsername;
     }
 
     private void Start()

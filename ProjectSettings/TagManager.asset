@@ -32,6 +32,10 @@ TagManager:
   - Bomb
   - Equalizer
   - TutorialBox
+  - Spectator
+  - Console
+  - Fan
+  - Bouncer
   layers:
   - Default
   - TransparentFX
@@ -50,8 +54,8 @@ TagManager:
   - Checkpoint
   - Shockwave
   - BlackHoleEffect
-  - 
-  - 
+  - Fan
+  - HighWall
   - 
   - 
   - 

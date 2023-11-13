@@ -7,6 +7,8 @@ using Mirror;
 
 public class EndgameManager : MonoBehaviour
 {
+    public static EndgameManager instance;
+
     public GameObject[] playerList = new GameObject[8];
     public Image[] placementList = new Image[8];
     public TextMeshProUGUI[] usernameList = new TextMeshProUGUI[8];
@@ -15,15 +17,18 @@ public class EndgameManager : MonoBehaviour
     public Button returnToLobby;
     bool returning = true;
 
+    [SerializeField] TextMeshProUGUI bestTime;
+    [SerializeField] TextMeshProUGUI record;
+
     public void ReturnToLobby()
     {
-        Debug.Log("Click");
         RaceManager.GetInstance().CmdReturnToLobby();
     }
 
+
     private void Update()
     {
-        if (playerDictionary.Count >= GameObject.FindGameObjectsWithTag("Player").Length && returning)
+        if (MultiplayerController.localPlayer.isServer && playerDictionary.Count >= GameObject.FindGameObjectsWithTag("Player").Length && returning)
         {
             returning = false;
             StartCoroutine(ReturnInSeconds());
@@ -50,6 +55,11 @@ public class EndgameManager : MonoBehaviour
         }
     }
 
+    public void SetInstance()
+    {
+        instance = this;
+    }
+
     public void AddDictionaryEntry(int placement, GameObject player)
     {
         while (playerDictionary.ContainsKey(placement))
@@ -71,9 +81,34 @@ public class EndgameManager : MonoBehaviour
         return 8;
     }
 
+    public void NewRecord(string time)
+    {
+        bestTime.text = "NEW RECORD!";
+        record.text = time;
+        StartCoroutine(NewRecordRoutine());
+    }
+
+    public void OldRecord(string time)
+    {
+        record.text = time;
+    }
+
+    private IEnumerator NewRecordRoutine()
+    {
+        while (true)
+        {
+            bestTime.color = Color.Lerp(Color.white, Color.yellow, Mathf.Abs(Mathf.Sin(Time.time * 3)));
+            record.color = Color.Lerp(Color.white, Color.yellow, Mathf.Abs(Mathf.Sin(Time.time * 3)));
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
     private IEnumerator ReturnInSeconds()
     {
-        GameStateManager.GetInstance().gameState = GameStateManager.GameState.GameOver;
+        if (MultiplayerController.localPlayer.isServer)
+        {
+            GameStateManager.GetInstance().CmdSetState(GameStateManager.GameState.GameOver);
+        }
         yield return new WaitForSeconds(3);
         ReturnToLobby();
     }

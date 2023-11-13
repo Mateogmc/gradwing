@@ -116,6 +116,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18f0a4812feb3554a93bf6ca556fff7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gravity: 0.005
+  launchForce: 0.1
   tr: {fileID: 2851564007129496067}
   rb: {fileID: -4296827548721411591}
 --- !u!50 &-4296827548721411591
@@ -293,3 +295,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   delay: 0
+  destroyOnStart: 0

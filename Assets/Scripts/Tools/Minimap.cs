@@ -27,6 +27,8 @@ public class Minimap : MonoBehaviour
 
     private void Start()
     {
+        transform.parent.parent = null;
+
         playerIcons[0] = player1;
         playerIcons[1] = player2;
         playerIcons[2] = player3;
@@ -111,6 +113,7 @@ public class Minimap : MonoBehaviour
     {
         while (true)
         {
+            CalculateMapRatio();
             players = GameObject.FindGameObjectsWithTag("Player");
             yield return new WaitForSeconds(1);
         }

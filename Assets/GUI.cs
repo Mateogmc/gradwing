@@ -15,7 +15,7 @@ public class GUI : MonoBehaviour
 
     private void Update()
     {
-        if (GameStateManager.GetInstance().gameState == GameStateManager.GameState.Running && NetworkServer.active)
+        if (GameStateManager.GetInstance().GetState() == GameStateManager.GameState.Running && NetworkServer.active)
         {
             returnToLobby.gameObject.SetActive(true);
         }

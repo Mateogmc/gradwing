@@ -19,8 +19,8 @@ public class UIManager : MonoBehaviour
         lobbyStatus.StartCountDown();
     }
 
-    public void OnLobbyReady(int playerCount, List<int> list)
+    public void OnLobbyReady(int playerCount, List<int> list, bool startLobby)
     {
-        lobbyStatus.LobbyReady(playerCount, list);
+        lobbyStatus.LobbyReady(playerCount, list, startLobby);
     }
 }

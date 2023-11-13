@@ -6,7 +6,19 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/InitialScene.unity
+    path: Assets/Scenes/Loader.unity
+    guid: fca4e065a00a285418d2661a7015ea61
+  - enabled: 1
+    path: Assets/Scenes/Login.unity
+    guid: 8aad5e7b165a9cb44aa8bd584e10aca8
+  - enabled: 1
+    path: Assets/Scenes/Join Lobby.unity
+    guid: 3455534cda2147846b98fc239c3833e4
+  - enabled: 1
+    path: Assets/Scenes/Main Menu.unity
+    guid: af5759321c41bef44a09a3e5e5ce67f0
+  - enabled: 1
+    path: Assets/Scenes/Direct Connection.unity
     guid: b9ee4ed51aac64c40a5aac147c477ae1
   - enabled: 1
     path: Assets/Scenes/Pruebas.unity
@@ -21,7 +33,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Lobby.unity
     guid: 1ad48931feee80e4ebb4f7b414af81ba
   - enabled: 1
-    path: "Assets/Scenes/Figure \u221E.unity"
+    path: Assets/Scenes/Figure Lemniscate.unity
     guid: 8605a725e46ed464bbeb37617fcd7f5d
   - enabled: 1
     path: Assets/Scenes/Volute.unity
@@ -53,4 +65,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Tutorial.unity
     guid: 12f9b43556f98484a85bc609eac56284
+  - enabled: 1
+    path: Assets/Scenes/Helix.unity
+    guid: bee33b9b0d689694d9e8f053f49865bb
+  - enabled: 1
+    path: Assets/Scenes/Tutorial 2.unity
+    guid: 76bba90e465fcef4ea220cd2670efff8
   m_configObjects: {}

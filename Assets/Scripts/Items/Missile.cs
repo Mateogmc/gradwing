@@ -19,6 +19,7 @@ public class Missile : NetworkBehaviour
 
     private GameObject sight;
     private float distance;
+    public string username;
 
     void Start()
     {
@@ -26,9 +27,9 @@ public class Missile : NetworkBehaviour
         cc = GetComponent<CapsuleCollider2D>();
         cc.enabled = false;
 
-        target = FindFirstPlayer();
-        
+
         StartCoroutine(Activate());
+
         StartCoroutine(Beep());
         sight = Instantiate(targetAim);
         sight.GetComponent<Sight>().missile = gameObject;
@@ -36,11 +37,16 @@ public class Missile : NetworkBehaviour
 
     private IEnumerator Activate()
     {
+        if (isServer)
+        {
+            CmdFindFirstPlayer();
+            RpcSetUsername(username);
+        }
         yield return new WaitForSeconds(0.5f);
         cc.enabled = true;
-        while (true)
+        while (isServer)
         {
-            target = FindFirstPlayer();
+            CmdFindFirstPlayer();
             yield return new WaitForSeconds(3);
         }
     }
@@ -57,9 +63,11 @@ public class Missile : NetworkBehaviour
         }
     }
 
-    private GameObject FindFirstPlayer()
+    [Command(requiresAuthority = false)]
+    private void CmdFindFirstPlayer()
     {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        List<string> users = new List<string>();
 
         for (int i = 1; i <= 8; i++)
         {
@@ -67,11 +75,33 @@ public class Missile : NetworkBehaviour
             {
                 if (p.GetComponent<MultiplayerController>().placement == i && p.GetComponent<MultiplayerController>().currentState != PlayerStates.Finish)
                 {
-                    return p;
+                    users.Add(p.GetComponent<MultiplayerController>().usernameText);
                 }
             }
+            if (users.Count > 0)
+            {
+                break;
+            }
         }
-        return null;
+        RpcFindFirstPlayer(users[Random.Range(0, users.Count)]);
+    }
+
+    [ClientRpc]
+    private void RpcFindFirstPlayer(string targetUsername)
+    {
+        foreach (GameObject p in GameObject.FindGameObjectsWithTag("Player"))
+        {
+            if (p.GetComponent<MultiplayerController>().usernameText == targetUsername)
+            {
+                target = p;
+            }
+        }
+    }
+
+    [ClientRpc]
+    private void RpcSetUsername(string user)
+    {
+        username = user;
     }
 
     private void FixedUpdate()
@@ -98,7 +128,9 @@ public class Missile : NetworkBehaviour
     [Command(requiresAuthority = false)]
     public void CmdExplode(Vector3 pos)
     {
-        NetworkServer.Spawn(Instantiate(explosion, pos, Quaternion.identity));
+        GameObject ins = Instantiate(explosion, pos, Quaternion.identity);
+        ins.GetComponent<Explosion>().username = username;
+        NetworkServer.Spawn(ins);
         trail.transform.parent = null;
         trail.GetComponent<DestroyDelay>().DestroyAfterDelay();
         NetworkServer.Destroy(gameObject);

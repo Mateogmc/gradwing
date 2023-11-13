@@ -245,3 +245,40 @@
 - Revamped controls to work with Unity's new Input System
 - Implemented a locked camera system
 - Made a tutorial
+
+*Version 0.19.1*
+- Fixed a bug where the player wouldn't die off track
+- Fixed a bug where the traps wouldn't work on client side
+
+*Version 0.20*
+- Added spectator mode when entering a lobby with a race in progress
+- Remade the player interface with shaders
+- Made a new main menu with new functionalities:
+	- Host game: Host a game
+	- Direct connection: Connect to the chosen IP Address
+	- Find servers: Search for servers in the LAN
+	- Exit game: Exit the game
+- Alternative strafing now inverts strafing controls
+- Reworked checkpoint system
+
+*Version 0.21*
+- Added account and online data saving system
+- Added posibility to activate camera rotation
+- Now rolling slows your speed, and gives it back once finished
+- Reworked jumping physics
+- Reworked ice physics
+- Added new lightning level: Helix
+- Added fan props and fan physics
+- Added bouncy walls
+- Added hit announcements
+- Added record system and display
+- Added leaderboard pannel in the lobby
+- Added post-processing effects
+- Now boosting deals aditional contact damage, and ignores collision if it kills the receiver
+
+##ALPHA
+
+*Version 1.0*
+- Added full controller support for menuing
+- Updated options menu
+- Lots of bugfixes

@@ -14,6 +14,10 @@ public class CommandLine : MonoBehaviour
     {
         inputField.onSubmit.AddListener(Message);
     }
+    public bool IsActive()
+    {
+        return commandLine.activeSelf;
+    }
 
     void Update()
     {

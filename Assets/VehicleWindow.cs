@@ -10,7 +10,6 @@ public class VehicleWindow : MonoBehaviour
 
     void Start()
     {
-        manager.SetVehicleListeners();
         for (int i = 0; i < buttons.Length; i++)
         {
             buttons[i].sprite = Resources.Load<Sprite>("Vehicles/Vehicle" + i);

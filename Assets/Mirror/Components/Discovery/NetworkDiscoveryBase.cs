@@ -310,7 +310,8 @@ namespace Mirror.Discovery
 
             _ = ClientListenAsync();
 
-            if (enableActiveDiscovery) InvokeRepeating(nameof(BroadcastDiscoveryRequest), 0, ActiveDiscoveryInterval);
+            //if (enableActiveDiscovery) InvokeRepeating(nameof(BroadcastDiscoveryRequest), 0, ActiveDiscoveryInterval); ACTIVE DISCOVERY
+            BroadcastDiscoveryRequest();
         }
 
         /// <summary>

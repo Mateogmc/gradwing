@@ -5,6 +5,15 @@ using UnityEngine;
 public class DestroyDelay : MonoBehaviour
 {
     [SerializeField] float delay;
+    [SerializeField] bool destroyOnStart;
+
+    private void Start()
+    {
+        if (destroyOnStart)
+        {
+            DestroyAfterDelay();
+        }
+    }
 
     public void DestroyAfterDelay()
     {

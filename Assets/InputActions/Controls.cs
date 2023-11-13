@@ -130,9 +130,45 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""EditVehicle"",
+                    ""type"": ""Button"",
+                    ""id"": ""8e7af952-8d6f-4275-a5e9-7cac12d42c62"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Leaderboard"",
+                    ""type"": ""Button"",
+                    ""id"": ""b9daa74e-7e42-49f1-99ff-05b0c5cb7fd6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""SetLang"",
                     ""type"": ""Button"",
-                    ""id"": ""3c588978-399e-4837-b507-2c478678e250"",
+                    ""id"": ""21a92ca7-5a42-4ef0-8aea-aed14e4cbcb4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Honk"",
+                    ""type"": ""Button"",
+                    ""id"": ""4db471f4-7446-43f4-b918-a1b0fd56e315"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""StartGame"",
+                    ""type"": ""Button"",
+                    ""id"": ""8641f6e1-61a2-47a1-9ae1-00fff5450d6e"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -329,23 +365,343 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""3a070ae6-e7f9-44d5-95ed-186d4d8a5b9a"",
+                    ""id"": ""7fa987a5-be3b-404c-9830-d6546c896d3f"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""EditVehicle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""531b39c9-b0db-43dd-94a7-ef4c2791acff"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Leaderboard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e10674e7-d945-4392-addf-e9ad74e9d643"",
                     ""path"": ""<Keyboard>/i"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard"",
+                    ""groups"": """",
                     ""action"": ""SetLang"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""c94296e1-d116-4028-92be-3e963ec4feb2"",
-                    ""path"": ""<Gamepad>/select"",
+                    ""id"": ""f997ed12-2785-48dd-bb13-cd58152526ee"",
+                    ""path"": ""<Gamepad>/leftStickPress"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""SetLang"",
+                    ""action"": ""Honk"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""82b32589-0c44-4c23-9643-fd34fead3bf8"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""StartGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""General"",
+            ""id"": ""82cb0f70-271d-446e-94ba-d26a4b5a7190"",
+            ""actions"": [
+                {
+                    ""name"": ""Submit"",
+                    ""type"": ""Button"",
+                    ""id"": ""3e6ada78-2d84-4bf9-b4a9-077c37b7d9d8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Navigation"",
+                    ""type"": ""Value"",
+                    ""id"": ""bf0b07fb-3aa2-4f81-b939-4fb15eac8d43"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""PageLeft"",
+                    ""type"": ""Button"",
+                    ""id"": ""bdb33773-d08c-4373-af56-c73a89d0a87b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PageRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""c458f017-562c-4af9-a6dd-f6869e706f5b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Accept"",
+                    ""type"": ""Button"",
+                    ""id"": ""33a5b42f-ab4a-4e07-b510-a6d6625ff446"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""dd4128f5-c192-4638-9044-268dcf6ad702"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Level1"",
+                    ""type"": ""Button"",
+                    ""id"": ""f8dd8d80-18cf-4250-bd3e-2c82351670ce"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Level2"",
+                    ""type"": ""Button"",
+                    ""id"": ""ee3780ce-9d95-4333-93b7-70874685bd34"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Level3"",
+                    ""type"": ""Button"",
+                    ""id"": ""1939d0d4-cf9e-40dc-9617-3a4b16a88e66"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""d1dda214-5eca-4139-b3c3-1e9a08373908"",
+                    ""path"": ""<Keyboard>/anyKey"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Submit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3dc0547c-6064-4c1c-9b8a-783fe5ed3fa1"",
+                    ""path"": ""*/{Submit}"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Submit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Horizontal"",
+                    ""id"": ""df72231c-cbc6-4c89-9b04-0b9a62e8f4f7"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Navigation"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""09f830b5-a19d-4a13-bab8-0c87b32c9478"",
+                    ""path"": ""<Gamepad>/leftStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Navigation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""cd7a07b1-cd2c-41e0-80de-a38fd399c635"",
+                    ""path"": ""<Gamepad>/leftStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Navigation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""14199b85-0d39-499f-b9f8-86ba0baa3b0e"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""PageLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6975e2f0-2dd0-4f13-98a3-2977553c8db3"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""PageRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9bf12d0e-ab8f-4681-b047-a5d3010d5ea0"",
+                    ""path"": ""<Keyboard>/numpadEnter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Accept"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b8af9291-75f6-4619-bff1-6d77a0da21cd"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Accept"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""17b86ded-fa4a-4833-9e99-c1be70d33f2c"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Accept"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9a3d1079-d60d-41ce-a77a-b244c28a2d16"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Accept"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5e5cfae4-3a67-4ae4-af77-bf23785713a5"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Accept"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ab5abf55-356a-4e3d-b1e0-02df70d68887"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cf0b7c7c-44f4-4c77-b608-31ec1670508d"",
+                    ""path"": ""<Keyboard>/backspace"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b4e7c63a-51ec-421c-b1a2-c84a6d51e127"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""44f7510f-4bdc-4d8b-8b0a-297ba864a78d"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Level1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""db11c7d5-5c9c-4b36-89a2-f30ee89f8850"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Level2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4592ef1b-ed13-4141-a8b2-6469c373f336"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Level3"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -377,7 +733,22 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Buttons_LDrift = m_Buttons.FindAction("LDrift", throwIfNotFound: true);
         m_Buttons_RDrift = m_Buttons.FindAction("RDrift", throwIfNotFound: true);
         m_Buttons_Item = m_Buttons.FindAction("Item", throwIfNotFound: true);
+        m_Buttons_EditVehicle = m_Buttons.FindAction("EditVehicle", throwIfNotFound: true);
+        m_Buttons_Leaderboard = m_Buttons.FindAction("Leaderboard", throwIfNotFound: true);
         m_Buttons_SetLang = m_Buttons.FindAction("SetLang", throwIfNotFound: true);
+        m_Buttons_Honk = m_Buttons.FindAction("Honk", throwIfNotFound: true);
+        m_Buttons_StartGame = m_Buttons.FindAction("StartGame", throwIfNotFound: true);
+        // General
+        m_General = asset.FindActionMap("General", throwIfNotFound: true);
+        m_General_Submit = m_General.FindAction("Submit", throwIfNotFound: true);
+        m_General_Navigation = m_General.FindAction("Navigation", throwIfNotFound: true);
+        m_General_PageLeft = m_General.FindAction("PageLeft", throwIfNotFound: true);
+        m_General_PageRight = m_General.FindAction("PageRight", throwIfNotFound: true);
+        m_General_Accept = m_General.FindAction("Accept", throwIfNotFound: true);
+        m_General_Cancel = m_General.FindAction("Cancel", throwIfNotFound: true);
+        m_General_Level1 = m_General.FindAction("Level1", throwIfNotFound: true);
+        m_General_Level2 = m_General.FindAction("Level2", throwIfNotFound: true);
+        m_General_Level3 = m_General.FindAction("Level3", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -492,7 +863,11 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Buttons_LDrift;
     private readonly InputAction m_Buttons_RDrift;
     private readonly InputAction m_Buttons_Item;
+    private readonly InputAction m_Buttons_EditVehicle;
+    private readonly InputAction m_Buttons_Leaderboard;
     private readonly InputAction m_Buttons_SetLang;
+    private readonly InputAction m_Buttons_Honk;
+    private readonly InputAction m_Buttons_StartGame;
     public struct ButtonsActions
     {
         private @Controls m_Wrapper;
@@ -504,7 +879,11 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         public InputAction @LDrift => m_Wrapper.m_Buttons_LDrift;
         public InputAction @RDrift => m_Wrapper.m_Buttons_RDrift;
         public InputAction @Item => m_Wrapper.m_Buttons_Item;
+        public InputAction @EditVehicle => m_Wrapper.m_Buttons_EditVehicle;
+        public InputAction @Leaderboard => m_Wrapper.m_Buttons_Leaderboard;
         public InputAction @SetLang => m_Wrapper.m_Buttons_SetLang;
+        public InputAction @Honk => m_Wrapper.m_Buttons_Honk;
+        public InputAction @StartGame => m_Wrapper.m_Buttons_StartGame;
         public InputActionMap Get() { return m_Wrapper.m_Buttons; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -535,9 +914,21 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Item.started += instance.OnItem;
             @Item.performed += instance.OnItem;
             @Item.canceled += instance.OnItem;
+            @EditVehicle.started += instance.OnEditVehicle;
+            @EditVehicle.performed += instance.OnEditVehicle;
+            @EditVehicle.canceled += instance.OnEditVehicle;
+            @Leaderboard.started += instance.OnLeaderboard;
+            @Leaderboard.performed += instance.OnLeaderboard;
+            @Leaderboard.canceled += instance.OnLeaderboard;
             @SetLang.started += instance.OnSetLang;
             @SetLang.performed += instance.OnSetLang;
             @SetLang.canceled += instance.OnSetLang;
+            @Honk.started += instance.OnHonk;
+            @Honk.performed += instance.OnHonk;
+            @Honk.canceled += instance.OnHonk;
+            @StartGame.started += instance.OnStartGame;
+            @StartGame.performed += instance.OnStartGame;
+            @StartGame.canceled += instance.OnStartGame;
         }
 
         private void UnregisterCallbacks(IButtonsActions instance)
@@ -563,9 +954,21 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Item.started -= instance.OnItem;
             @Item.performed -= instance.OnItem;
             @Item.canceled -= instance.OnItem;
+            @EditVehicle.started -= instance.OnEditVehicle;
+            @EditVehicle.performed -= instance.OnEditVehicle;
+            @EditVehicle.canceled -= instance.OnEditVehicle;
+            @Leaderboard.started -= instance.OnLeaderboard;
+            @Leaderboard.performed -= instance.OnLeaderboard;
+            @Leaderboard.canceled -= instance.OnLeaderboard;
             @SetLang.started -= instance.OnSetLang;
             @SetLang.performed -= instance.OnSetLang;
             @SetLang.canceled -= instance.OnSetLang;
+            @Honk.started -= instance.OnHonk;
+            @Honk.performed -= instance.OnHonk;
+            @Honk.canceled -= instance.OnHonk;
+            @StartGame.started -= instance.OnStartGame;
+            @StartGame.performed -= instance.OnStartGame;
+            @StartGame.canceled -= instance.OnStartGame;
         }
 
         public void RemoveCallbacks(IButtonsActions instance)
@@ -583,6 +986,116 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         }
     }
     public ButtonsActions @Buttons => new ButtonsActions(this);
+
+    // General
+    private readonly InputActionMap m_General;
+    private List<IGeneralActions> m_GeneralActionsCallbackInterfaces = new List<IGeneralActions>();
+    private readonly InputAction m_General_Submit;
+    private readonly InputAction m_General_Navigation;
+    private readonly InputAction m_General_PageLeft;
+    private readonly InputAction m_General_PageRight;
+    private readonly InputAction m_General_Accept;
+    private readonly InputAction m_General_Cancel;
+    private readonly InputAction m_General_Level1;
+    private readonly InputAction m_General_Level2;
+    private readonly InputAction m_General_Level3;
+    public struct GeneralActions
+    {
+        private @Controls m_Wrapper;
+        public GeneralActions(@Controls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Submit => m_Wrapper.m_General_Submit;
+        public InputAction @Navigation => m_Wrapper.m_General_Navigation;
+        public InputAction @PageLeft => m_Wrapper.m_General_PageLeft;
+        public InputAction @PageRight => m_Wrapper.m_General_PageRight;
+        public InputAction @Accept => m_Wrapper.m_General_Accept;
+        public InputAction @Cancel => m_Wrapper.m_General_Cancel;
+        public InputAction @Level1 => m_Wrapper.m_General_Level1;
+        public InputAction @Level2 => m_Wrapper.m_General_Level2;
+        public InputAction @Level3 => m_Wrapper.m_General_Level3;
+        public InputActionMap Get() { return m_Wrapper.m_General; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(GeneralActions set) { return set.Get(); }
+        public void AddCallbacks(IGeneralActions instance)
+        {
+            if (instance == null || m_Wrapper.m_GeneralActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_GeneralActionsCallbackInterfaces.Add(instance);
+            @Submit.started += instance.OnSubmit;
+            @Submit.performed += instance.OnSubmit;
+            @Submit.canceled += instance.OnSubmit;
+            @Navigation.started += instance.OnNavigation;
+            @Navigation.performed += instance.OnNavigation;
+            @Navigation.canceled += instance.OnNavigation;
+            @PageLeft.started += instance.OnPageLeft;
+            @PageLeft.performed += instance.OnPageLeft;
+            @PageLeft.canceled += instance.OnPageLeft;
+            @PageRight.started += instance.OnPageRight;
+            @PageRight.performed += instance.OnPageRight;
+            @PageRight.canceled += instance.OnPageRight;
+            @Accept.started += instance.OnAccept;
+            @Accept.performed += instance.OnAccept;
+            @Accept.canceled += instance.OnAccept;
+            @Cancel.started += instance.OnCancel;
+            @Cancel.performed += instance.OnCancel;
+            @Cancel.canceled += instance.OnCancel;
+            @Level1.started += instance.OnLevel1;
+            @Level1.performed += instance.OnLevel1;
+            @Level1.canceled += instance.OnLevel1;
+            @Level2.started += instance.OnLevel2;
+            @Level2.performed += instance.OnLevel2;
+            @Level2.canceled += instance.OnLevel2;
+            @Level3.started += instance.OnLevel3;
+            @Level3.performed += instance.OnLevel3;
+            @Level3.canceled += instance.OnLevel3;
+        }
+
+        private void UnregisterCallbacks(IGeneralActions instance)
+        {
+            @Submit.started -= instance.OnSubmit;
+            @Submit.performed -= instance.OnSubmit;
+            @Submit.canceled -= instance.OnSubmit;
+            @Navigation.started -= instance.OnNavigation;
+            @Navigation.performed -= instance.OnNavigation;
+            @Navigation.canceled -= instance.OnNavigation;
+            @PageLeft.started -= instance.OnPageLeft;
+            @PageLeft.performed -= instance.OnPageLeft;
+            @PageLeft.canceled -= instance.OnPageLeft;
+            @PageRight.started -= instance.OnPageRight;
+            @PageRight.performed -= instance.OnPageRight;
+            @PageRight.canceled -= instance.OnPageRight;
+            @Accept.started -= instance.OnAccept;
+            @Accept.performed -= instance.OnAccept;
+            @Accept.canceled -= instance.OnAccept;
+            @Cancel.started -= instance.OnCancel;
+            @Cancel.performed -= instance.OnCancel;
+            @Cancel.canceled -= instance.OnCancel;
+            @Level1.started -= instance.OnLevel1;
+            @Level1.performed -= instance.OnLevel1;
+            @Level1.canceled -= instance.OnLevel1;
+            @Level2.started -= instance.OnLevel2;
+            @Level2.performed -= instance.OnLevel2;
+            @Level2.canceled -= instance.OnLevel2;
+            @Level3.started -= instance.OnLevel3;
+            @Level3.performed -= instance.OnLevel3;
+            @Level3.canceled -= instance.OnLevel3;
+        }
+
+        public void RemoveCallbacks(IGeneralActions instance)
+        {
+            if (m_Wrapper.m_GeneralActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IGeneralActions instance)
+        {
+            foreach (var item in m_Wrapper.m_GeneralActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_GeneralActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public GeneralActions @General => new GeneralActions(this);
     private int m_KeyboardSchemeIndex = -1;
     public InputControlScheme KeyboardScheme
     {
@@ -614,6 +1127,22 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         void OnLDrift(InputAction.CallbackContext context);
         void OnRDrift(InputAction.CallbackContext context);
         void OnItem(InputAction.CallbackContext context);
+        void OnEditVehicle(InputAction.CallbackContext context);
+        void OnLeaderboard(InputAction.CallbackContext context);
         void OnSetLang(InputAction.CallbackContext context);
+        void OnHonk(InputAction.CallbackContext context);
+        void OnStartGame(InputAction.CallbackContext context);
+    }
+    public interface IGeneralActions
+    {
+        void OnSubmit(InputAction.CallbackContext context);
+        void OnNavigation(InputAction.CallbackContext context);
+        void OnPageLeft(InputAction.CallbackContext context);
+        void OnPageRight(InputAction.CallbackContext context);
+        void OnAccept(InputAction.CallbackContext context);
+        void OnCancel(InputAction.CallbackContext context);
+        void OnLevel1(InputAction.CallbackContext context);
+        void OnLevel2(InputAction.CallbackContext context);
+        void OnLevel3(InputAction.CallbackContext context);
     }
 }

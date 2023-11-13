@@ -11,10 +11,13 @@ public class Equalizer : MonoBehaviour
     float t = 0;
     [SerializeField] public float maxDamage;
 
-    public void Initialize(GameObject target, int ranVal)
+    public string username;
+
+    public void Initialize(GameObject target, int ranVal, string parentUsername)
     {
         this.target = target;
         this.ranVal = ranVal;
+        username = parentUsername;
         StartCoroutine(Countdown());
     }
 

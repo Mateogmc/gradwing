@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class Rebounder : MonoBehaviour
 {
-    Vector2 lastSpeed;
+    public Vector2 lastSpeed;
     public PlayerStates currentState;
     float airborne;
+    [SerializeField] float gravity;
+    [SerializeField] float jumpForce;
     [SerializeField] int bouncesLeft;
     [SerializeField] Rigidbody2D rb;
     [SerializeField] SpriteRenderer sr;
@@ -17,8 +19,9 @@ public class Rebounder : MonoBehaviour
     float currentScale = 1;
     int grounded;
     Collider2D parentPlayer;
+    public string username;
 
-    public void InitializeRebounder(Vector2 velocity, PlayerStates playerState, float airborne, Collider2D parentPlayer)
+    public void InitializeRebounder(Vector2 velocity, PlayerStates playerState, float currentScale, float airborne, Collider2D parentPlayer, string parentUsername)
     {
         rb.velocity = velocity;
         if (rb.velocity.magnitude < minVelocity)
@@ -28,9 +31,12 @@ public class Rebounder : MonoBehaviour
         currentState = playerState;
         if (playerState == PlayerStates.Jumping)
         {
+            this.currentScale = currentScale;
             this.airborne = airborne;
             gameObject.layer = 9;
         }
+
+        username = parentUsername;
 
         this.parentPlayer = parentPlayer;
         Physics2D.IgnoreCollision(GetComponent<CircleCollider2D>(), parentPlayer, true);
@@ -75,10 +81,10 @@ public class Rebounder : MonoBehaviour
             }
         } else
         {
-            if (airborne > 0)
+            if (currentScale > 1 || airborne > 0)
             {
-                airborne -= 0.05f;
-                currentScale = 1 + Mathf.Sin(airborne);
+                airborne -= gravity;
+                currentScale += airborne;
                 transform.localScale = new Vector3(currentScale, currentScale, currentScale);
             }
             else
@@ -108,7 +114,7 @@ public class Rebounder : MonoBehaviour
         {
             sr.sortingLayerID = SortingLayer.NameToID("Foreground");
             currentState = PlayerStates.Jumping;
-            airborne = Mathf.PI;
+            airborne = jumpForce;
             gameObject.layer = 9;
         }
     }
@@ -129,7 +135,13 @@ public class Rebounder : MonoBehaviour
                 Destroy(gameObject);
             }
             Physics2D.IgnoreCollision(GetComponent<CircleCollider2D>(), parentPlayer, false);
+            VFXManager.instance.WallSparks(collision.contacts[0].point, collision.contacts[0].normal);
         } 
+        else if (collision.collider.tag == "Bouncer")
+        {
+            rb.velocity = Vector2.Reflect(lastSpeed, collision.contacts[0].normal);
+            VFXManager.instance.BounceRipple(collision.contacts[0].point, collision.contacts[0].normal);
+        }
         else if (collision.gameObject.tag == "Rebounder")
         {
             tr.gameObject.transform.parent = null;
@@ -157,21 +169,35 @@ public class Rebounder : MonoBehaviour
         {
             Jump();
         }
-        else if (collision.tag == "Ground")
+        else if (collision.tag == "Ground" || collision.tag == "Fan")
         {
             grounded++;
         }
     }
 
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Fan"))
+        {
+            if (currentScale <= 1)
+            {
+                collision.GetComponent<Fan>().Stop();
+                tr.gameObject.transform.parent = null;
+                tr.gameObject.GetComponent<DestroyDelay>().DestroyAfterDelay(1);
+                Destroy(gameObject);
+            }
+            else if (collision.gameObject.GetComponent<Fan>().force < 0)
+            {
+                airborne += collision.gameObject.GetComponent<Fan>().force / 1000;
+            }
+        }
+    }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag == "Ground")
+        if (collision.tag == "Ground" || collision.tag == "Fan")
         {
             grounded--;
-            if (currentState == PlayerStates.Grounded && grounded <= 0 && airborne <= 0)
-            {
-                currentState = PlayerStates.Dead;
-            }
         }
     }
 }

@@ -6,8 +6,9 @@ public class CameraMovement : MonoBehaviour
 {
     public static CameraMovement instance;
 
-    private Vector3 offset = new Vector3(0f, 0f, -10f);
+    private Vector3 backOffset = new Vector3(0f, 0f, -10f);
     private float smoothTime = 0.3f;
+    [SerializeField] private float smoothTimeRotation = 0.00005f;
     private Vector3 velocity = Vector3.zero;
     private Vector2 lastSpeed;
 
@@ -171,15 +172,22 @@ public class CameraMovement : MonoBehaviour
             }
 
             Vector3 targetPosition = Vector3.zero;
-            if ((pC.rolling && pC.currentState == PlayerStates.Grounded) || pC.bounceTime > Time.time)
+            if ((pC.rolling && pC.currentState == PlayerStates.Grounded) && !DataManager.GetInstance().cameraRotation && false/* || pC.bounceTime > Time.time*/)
             {
-                targetPosition = player.transform.position + offset;
+                targetPosition = player.transform.position + backOffset;
             }
             else
             {
-                targetPosition = player.transform.position + new Vector3(lastSpeed.x, lastSpeed.y, 0) + offset;
+                if (pC.rolling)
+                {
+                    float magn = lastSpeed.magnitude;
+                    lastSpeed.x = Mathf.Cos(pC.transform.rotation.eulerAngles.z * Mathf.Deg2Rad);
+                    lastSpeed.y = Mathf.Sin(pC.transform.rotation.eulerAngles.z * Mathf.Deg2Rad);
+                    lastSpeed *= magn;
+                }
+                targetPosition = player.transform.position + (DataManager.GetInstance().cameraRotation ? (new Vector3(Mathf.Cos(player.transform.rotation.eulerAngles.z * Mathf.Deg2Rad), Mathf.Sin(player.transform.rotation.eulerAngles.z * Mathf.Deg2Rad), 0).normalized * 15) + (new Vector3(lastSpeed.x / 1.3f, lastSpeed.y / 1.3f, 0)) : new Vector3(lastSpeed.x, lastSpeed.y, 0)) + backOffset;
             }
-            transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothTime);
+            transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, (pC.rolling && pC.currentState == PlayerStates.Grounded ? smoothTime / 2 : smoothTime));
         }
         else
         {
@@ -187,13 +195,24 @@ public class CameraMovement : MonoBehaviour
             Vector3 targetPosition = Vector3.zero;
             if (pC.rolling || pC.bounceTime > Time.time)
             {
-                targetPosition = player.transform.position + offset;
+                targetPosition = player.transform.position + backOffset;
             }
             else
             {
-                targetPosition = player.transform.position + new Vector3(lastSpeed.x, lastSpeed.y, 0) + offset;
+                targetPosition = player.transform.position + new Vector3(lastSpeed.x, lastSpeed.y, 0) + backOffset;
             }
             transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothTime);
+        }
+        if (DataManager.GetInstance().cameraRotation)
+        {
+            if (!pC.rolling || true)
+            {
+                transform.rotation = Quaternion.Lerp(transform.rotation, pC.transform.rotation * Quaternion.Euler(0, 0, -90), smoothTimeRotation);
+            }
+        }
+        else
+        {
+            transform.rotation = Quaternion.identity;
         }
     }
 

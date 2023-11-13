@@ -69,4 +69,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wallMaterial: {fileID: 2100000, guid: cc5931fd9647f6a49b5367ee67e7443a, type: 2}
-  countdownFont: {fileID: 11400000, guid: d771a64f3d8bfe84bb40be89a8fb9374, type: 2}
+  bouncerMaterial: {fileID: 2100000, guid: d4a5e90894939f34288e8655eb42df09, type: 2}
+  neonArrow: {fileID: 2100000, guid: 959b89ed8b6606c40add0c5636e4791a, type: 2}

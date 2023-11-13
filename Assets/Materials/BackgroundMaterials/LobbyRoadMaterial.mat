@@ -52,8 +52,8 @@ Material:
     - _Tiling: 0.2
     m_Colors:
     - _Color: {r: 0.78502053, g: 1, b: 0.46855336, a: 0}
-    - _ColorDisplacement: {r: 9.2, g: -1.02, b: 0, a: 0}
-    - _Displacement: {r: 9.2, g: -1.02, b: 0, a: 0}
+    - _ColorDisplacement: {r: 9.133333, g: 2.9333334, b: 0, a: 0}
+    - _Displacement: {r: 9.133333, g: 2.9333334, b: 0, a: 0}
     - _Glow: {r: 0.52963686, g: 0.52963686, b: 0.52963686, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &8860151183245003597
