@@ -38,7 +38,7 @@ public class RecordDisplay : MonoBehaviour
 
     public void Display(int placement, string name, string time)
     {
-        this.name.text = name;
+        this.name.text = System.Text.RegularExpressions.Regex.Unescape(name);
         this.time.text = time;
 
         if (placement < 20)

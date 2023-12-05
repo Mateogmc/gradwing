@@ -34,6 +34,7 @@ public class DataManager : MonoBehaviour
     [SerializeField] private Button guest;
     [SerializeField] public TextMeshProUGUI connectionDisplay;
     [SerializeField] public TextMeshProUGUI versionDisplay;
+    [SerializeField] public Button updateButton;
     [SerializeField] private TMP_InputField usernameField;
 
     public const float MAX_SPEED = 45;
@@ -107,6 +108,7 @@ public class DataManager : MonoBehaviour
 
     IEnumerator NewVersionRoutine()
     {
+        updateButton.gameObject.SetActive(true);
         bool flag = false;
         while (true)
         {
@@ -126,6 +128,11 @@ public class DataManager : MonoBehaviour
             }
             flag = !flag;
         }
+    }
+
+    public void OpenURL()
+    {
+        Application.OpenURL("https://moistpretzel.itch.io/Kinetic-Glide/");
     }
     
     void ChangedActiveScene(Scene current, Scene next)
@@ -202,21 +209,28 @@ public class DataManager : MonoBehaviour
     {
         if (loggedIn)
         {
-            using (StreamWriter sw = new StreamWriter(Application.persistentDataPath + "/stats.dat"))
+            using (StreamReader sr = new StreamReader(Application.persistentDataPath + "/stats.dat"))
             {
-                sw.WriteLine(0);
-                sw.WriteLine(0);
-                sw.WriteLine(0);
-                sw.WriteLine(0);
-                sw.WriteLine(1);
-                sw.WriteLine(0);
-                sw.WriteLine(0);
-                sw.WriteLine(0.2f);
-                sw.WriteLine(0.2f);
-                sw.WriteLine(1);
-                sw.WriteLine("");
-                sw.WriteLine(0);
-                sw.WriteLine(0);
+                if (sr.Peek() == -1)
+                {
+                    sr.Close();
+                    using (StreamWriter sw = new StreamWriter(Application.persistentDataPath + "/stats.dat"))
+                    {
+                        sw.WriteLine(0);
+                        sw.WriteLine(0);
+                        sw.WriteLine(0);
+                        sw.WriteLine(0);
+                        sw.WriteLine(1);
+                        sw.WriteLine(0);
+                        sw.WriteLine(0);
+                        sw.WriteLine(0.2f);
+                        sw.WriteLine(0.2f);
+                        sw.WriteLine(1);
+                        sw.WriteLine("");
+                        sw.WriteLine(0);
+                        sw.WriteLine(0);
+                    }
+                }
             }
             using (StreamReader sr = new StreamReader(Application.persistentDataPath + "/stats.dat"))
             {
@@ -474,7 +488,7 @@ public class DataManager : MonoBehaviour
                 sw.WriteLine(soundVolume);
                 sw.WriteLine(musicVolume);
                 sw.WriteLine(rumble ? 1 : 0);
-                sw.WriteLine(username);
+                sw.WriteLine(System.Text.RegularExpressions.Regex.Unescape(username));
                 sw.WriteLine(cameraRotation ? 1 :  0);
                 sw.WriteLine(visualEffects ? 1 :  0);
             }
@@ -513,7 +527,7 @@ public class DataManager : MonoBehaviour
             foreach (string stat in statsArray)
             {
                 string s = stat.Replace('.', ',');
-                sw.WriteLine(s);
+                sw.WriteLine(System.Text.RegularExpressions.Regex.Unescape(s));
             }
         }
         SetStats();

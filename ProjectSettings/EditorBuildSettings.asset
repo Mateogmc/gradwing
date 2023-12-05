@@ -17,10 +17,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Main Menu.unity
     guid: af5759321c41bef44a09a3e5e5ce67f0
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Direct Connection.unity
     guid: b9ee4ed51aac64c40a5aac147c477ae1
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Pruebas.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 0
@@ -68,7 +68,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Helix.unity
     guid: bee33b9b0d689694d9e8f053f49865bb
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Tutorial 2.unity
     guid: 76bba90e465fcef4ea220cd2670efff8
   m_configObjects: {}

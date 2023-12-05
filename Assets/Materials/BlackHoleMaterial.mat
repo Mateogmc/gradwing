@@ -52,7 +52,7 @@ Material:
     - _Radius: 4
     m_Colors:
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
-    - _Position: {r: 0.6873077, g: 0.49153847, b: 0, a: 0}
+    - _Position: {r: 0.6869231, g: 0.5029423, b: 0, a: 0}
     - _Ratio: {r: 0.5, g: 0.5, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &459161278859324247

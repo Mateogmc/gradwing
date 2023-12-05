@@ -282,3 +282,6 @@
 - Added full controller support for menuing
 - Updated options menu
 - Lots of bugfixes
+
+*Version 1.1*
+- Fixed a bug with specific username formattings
